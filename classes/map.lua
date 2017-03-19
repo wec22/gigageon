@@ -1,9 +1,91 @@
 local class = require("lib.middleclass")
+local inspect = require("lib.inspect")
 
-map = class("map")
+
+local map = class("map")
+
+local layerc = class("layerc")
+
+function layerc:initialize(visible, opacity, offsetx, offsety, x, y)
+    self.type = type
+
+    self.visible = visible or true
+    self.opacity = opacity or 1
+
+    self.offsetx = offsetx or 0
+    self.offsety = offsety or 0
+
+    self.x = x or 0
+    self.y = y or 0
+end
+
+function layerc:draw(x,y, map)
+    assert(type(map)=="table", "bad argument #3 in function 'draw' (table expected got "..type(map)..")")
+
+    if self.type == "tile" then
+        love.graphics.push()
+
+        love.graphics.setColor(255, 255, 255, 255 * self.opacity)
+        --love.graphics.scale(32/self.tileW, 32/self.tileH)
+        for i, v in ipairs(self.data) do
+            if v~=0 then
+                love.graphics.draw(map.img, map.quads[v], ((i)%self.width-1)*map.tileW+x, (math.floor(i/self.height)-1)*map.tileH+y)
+            end
+        end
+
+        love.graphics.pop()
+
+    elseif self.type == "group" then
+        for _,v in ipairs(self) do
+            v:draw(x, y, map)
+        end
+    end
+end
+
+local function buildlayers(layers)
+    assert(type(layers)=="table", "layers must be a table. it is curently of type: "..type(layers))
+    local t={
+        meta={}
+    }
+    for _,layer in ipairs(layers) do
+        local l = layerc(layer.visible, layer.opacity, layer.offsetx, layer.offsety)
+
+        if layer.type == "tilelayer" then
+            l.type = "tile"
+
+            l.x = layer.x
+            l.y = layer.y
+
+            l.width = layer.width
+            l.height = layer.height
+
+            l.data = layer.data
+
+        elseif layer.type == "imagelayer" and layers then --a layer group
+            l.type = "group"
+
+            local data = buildlayers(layer.layers)
+
+            for _,v in ipairs(data) do
+                v.opacity = v.opacity * l.opacity
+                table.insert(l, v)
+            end
+
+        elseif layer.type == "imagelayer" and image then --a proper image layer
+            l.type = "image"
+
+            l.data = layer.image
+        end
+
+        table.insert(t, l)
+    end
+    return t
+end
 
 function map:initialize(filepath)
     local tiled = require(filepath)
+
+    assert(tiled, "tilemap file does not exist")
 
     self.width = tiled.width
     self.height = tiled.height
@@ -23,24 +105,31 @@ function map:initialize(filepath)
         end
     end
 
-    self.layers = tiled.layers
+    --assert(false, type(tiled.layers))
+    self.layers = buildlayers(tiled.layers)
     self.img:setFilter("linear", "nearest")
 end
 
 function map:draw(x, y)
+    x = x or 0
+    y = y or 0
     for _, layer in ipairs(self.layers) do
-        if layer.type == "tilelayer" and layer.visible then
-            love.graphics.push()
-            love.graphics.setColor(255, 255, 255, 255 * layer.opacity)
-            x = x or 0
-            y = y or 0
-            --love.graphics.scale(32/self.tileW, 32/self.tileH)
-            for i, v in ipairs(layer.data) do
-                    love.graphics.draw(self.img, self.quads[v], ((i)%layer.width-1)*self.tileW+x, (math.floor(i/layer.width)-1)*self.tileH+y)
-            end
-
-            love.graphics.pop()
-        end
+        layer:draw(x, y, self)
     end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 return map
