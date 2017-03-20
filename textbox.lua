@@ -1,25 +1,26 @@
 local class = require("lib.middleclass")
 
+
 local textbox = class("textbox")
-require("lib.AnAL")
+
 local arrow = love.graphics.newImage("Sprites/textarrow.png")
 local textarrow = newAnimation(arrow, 16, 16, 0.1, 1, 2)
 textarrow:setSpeed(0.1)
 
-function textbox:initialize()
+function textbox:initialize(text, cooldown)
     self.text = text
-    self.cooldown = 0
+    self.cooldown = cooldown
     self.index = 1
 end
 
-function textbox:update()
+function textbox:update(dt)
     if self.cooldown ~= 0 then
         self.cooldown = self.cooldown-1
     end
 end
 
-function textbox:draw(text)
-    if(text[index]) then
+function textbox:draw()
+    --if(text[index]) then
         local textboxlocationy = love.graphics.getHeight() - 100
         love.graphics.setColor(0, 0, 0, 255*70/100)
         love.graphics.rectangle("fill", 0, textboxlocationy, love.graphics.getWidth(), 100)
@@ -33,5 +34,5 @@ function textbox:draw(text)
                 self.cooldown=20
             end
         end
-    end
+    --end
 end

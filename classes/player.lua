@@ -18,7 +18,7 @@ function player:initialize()
     self.y=0
     self.h=30
     self.w=30
-    self.speed=2
+    self.speed=80
 end
 
 function player:update(dt)
@@ -43,11 +43,10 @@ function player:update(dt)
 function player:draw()
     if(love.keyboard.isDown("d")) then
         walkright:draw(self.x, self.y)
+    elseif(love.keyboard.isDown("a")) then
+        walkleft:draw(self.x, self.y)
     elseif(love.keyboard.isDown("w")) then
         walkup:draw(self.x, self.y)
-    end
-    if(love.keyboard.isDown("a")) then
-        walkleft:draw(self.x, self.y)
     elseif(love.keyboard.isDown("s")) then
         walkdown:draw(self.x, self.y)
     end
