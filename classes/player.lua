@@ -1,13 +1,15 @@
 local class = require("lib.middleclass")
-
+local animation = require("classes.animation")
 
 local player = class("player")
 
 local spritesheet = love.graphics.newImage("Sprites/PlayerSprites.png")
-local walkdown = newAnimation(spritesheet, 64, 64, 0.1, 1, 4)
-local walkup = newAnimation(spritesheet, 64, 64, 0.1, 13, 16)
-local walkleft = newAnimation(spritesheet, 64, 64, 0.1, 5, 8)
-local walkright = newAnimation(spritesheet, 64, 64, 0.1, 9, 12)
+
+local walkdown = animation(spritesheet, 64, 64, 0.1, 1, 4)
+local walkup = animation(spritesheet, 64, 64, 0.1, 13, 16)
+local walkleft = animation(spritesheet, 64, 64, 0.1, 5, 8)
+local walkright = animation(spritesheet, 64, 64, 0.1, 9, 12)
+
 walkdown:setSpeed(0.5)
 walkup:setSpeed(0.5)
 walkleft:setSpeed(0.5)
