@@ -41,14 +41,14 @@ function player:update(dt)
   end
 
 function player:draw()
-    if(love.keyboard.isDown("d")) then
-        walkright:draw(self.x, self.y)
-    elseif(love.keyboard.isDown("a")) then
-        walkleft:draw(self.x, self.y)
-    elseif(love.keyboard.isDown("w")) then
+    if love.keyboard.isDown("w") then
         walkup:draw(self.x, self.y)
-    elseif(love.keyboard.isDown("s")) then
+    elseif love.keyboard.isDown("s") then
         walkdown:draw(self.x, self.y)
+    elseif love.keyboard.isDown("d")  then
+        walkright:draw(self.x, self.y)
+    elseif love.keyboard.isDown("a")  then
+        walkleft:draw(self.x, self.y)
     end
 end
 
