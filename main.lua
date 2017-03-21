@@ -14,8 +14,7 @@ function love.load()
     box = textbox(1, {"Hello Adventurer",
                     "I used to be an adventurer like you",
                     "until I took an arrow to the knee"})
-
-    test = map("Maps.Testmap")
+    test = map("maps.Testmap")
     player = p()
 
     cam = gamera.new(0, 0, 512, 512)
