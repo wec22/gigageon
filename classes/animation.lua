@@ -23,8 +23,10 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 ]]
 
-local animation = {}
-animation.__index = animation
+local class = require("lib.middleclass")
+
+local animation = class("animation")
+
 
 --- Create a new animation
 -- Replaces love.graphics.newAnimation
@@ -34,19 +36,18 @@ animation.__index = animation
 -- @param delay The delay between two frames
 -- @param frames The number of frames, 0 for autodetect
 -- @return The created animation
-function newAnimation(image, fw, fh, delay, start, frames)
-	local a = {}
-	a.img = image
-	a.frames = {}
-	a.delays = {}
-	a.timer = 0
-	a.position = 1
-	a.fw = fw
-	a.fh = fh
-	a.playing = true
-	a.speed = 1
-	a.mode = 1
-	a.direction = 1
+function animation:initialize(image, fw, fh, delay, start, frames)
+	self.img = image
+	self.frames = {}
+	self.delays = {}
+	self.timer = 0
+	self.position = 1
+	self.fw = fw
+	self.fh = fh
+	self.playing = true
+	self.speed = 1
+	self.mode = 1
+	self.direction = 1
 	local imgw = image:getWidth()
 	local imgh = image:getHeight()
 	if frames == 0 then
@@ -57,10 +58,9 @@ function newAnimation(image, fw, fh, delay, start, frames)
 		local row = math.floor((i-1)/rowsize)
 		local column = (i-1)%rowsize
 		local frame = love.graphics.newQuad(column*fw, row*fh, fw, fh, imgw, imgh)
-		table.insert(a.frames, frame)
-		table.insert(a.delays, delay)
+		table.insert(self.frames, frame)
+		table.insert(self.delays, delay)
 	end
-	return setmetatable(a, animation)
 end
 
 --- Update the animation
@@ -201,3 +201,5 @@ if Animations_legacy_support then
 		end
 	end
 end
+
+return animation
