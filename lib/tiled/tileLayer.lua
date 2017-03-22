@@ -41,7 +41,7 @@ function tileLayer:draw(x, y, map)
     for r,row in ipairs(self.data) do
         for c,v in ipairs(row) do
             if v ~= 0 then
-                love.graphics.draw(map.img, map.quads[v], (c-1)*map.tileW+x, (r-1)*map.tileH+y)
+                love.graphics.draw(map.img, map.tiles[v].quad, (c-1)*map.tileW+x, (r-1)*map.tileH+y)
             end
         end
     end

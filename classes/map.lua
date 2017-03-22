@@ -71,7 +71,7 @@ local function buildlayers(layers)
 
             end
 
-        elseif layer.type == "imagelayer" and layers then --a layer group
+        elseif layer.type == "imagelayer" and layer.layers then --a layer group
             l.type = "group"
 
             local data = buildlayers(layer.layers)
@@ -81,7 +81,7 @@ local function buildlayers(layers)
                 table.insert(l, v)
             end
 
-        elseif layer.type == "imagelayer" and image then --a proper image layer
+        elseif layer.type == "imagelayer" and layer.image then --a proper image layer
             l.type = "image"
 
             l.data = layer.image

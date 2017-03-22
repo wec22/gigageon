@@ -18,7 +18,7 @@ function love.load()
                     "until I took an arrow to the knee"})
 
     player = p()
-    test = tiled.map("maps.Testmap")
+    test = tiled.map("maps.animation")
     cam = gamera.new(0, 0, 512, 512)
     cam:setScale(1.5)
     cam:setPosition(player.x, player.y)
@@ -36,8 +36,8 @@ end
 
 function love.draw()
   cam:draw(function(l,t,w,h)
-      test:draw(0,0)
-      player:draw()
+        test:draw(0,0)
+        player:draw()
   end)
 
 

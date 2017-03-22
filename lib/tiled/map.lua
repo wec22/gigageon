@@ -26,19 +26,20 @@ function map:initialize(filepath)
     for _,v in ipairs(t.layers) do
         if v.type == "tilelayer" then
             table.insert(self.layers, tileLayer(v))
-        elseif v.type == "imagelayer" and image then
+        elseif v.type == "imagelayer" and v.image then
             table.insert(self.layers, imageLayer(v))
-        elseif v.type == "imagelayer" and layers then
-            table.insert(self.layers, (v))
+        elseif v.type == "imagelayer" and v.layers then
+            table.insert(self.layers, groupLayer(v))
         end
     end
 end
 
-function map:draw(x, y)
+function map:draw(x, y, tileset)
     x = x or 0
     y = y or 0
+    tileset = tileset or self.tilesets[1]
     for _, layer in ipairs(self.layers) do
-        layer:draw(x, y, self.tilesets[1])
+        layer:draw(x, y, tileset)
     end
 end
 

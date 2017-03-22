@@ -20,19 +20,20 @@ function groupLayer:initialize(t)
 
     layer.initialize(self, t)
 
+    self.layers = {}
     for _,v in ipairs(t.layers) do
-        if v.type == "tileLayer" then
-            table.insert(self.layers, tileLayer:new(v))
-        elseif v.type == "imageLayer" and image then
-            table.insert(self.layers, imageLayer:new(v))
-        elseif v.type == "imageLayer" and layers then
-            table.insert(self.layers, groupLayer:new(v))
+        if v.type == "tilelayer" then
+            table.insert(self.layers, tileLayer(v))
+        elseif v.type == "imagelayer" and image then
+            table.insert(self.layers, imageLayer(v))
+        elseif v.type == "imagelayer" and layers then
+            table.insert(self.layers, groupLayer(v))
         end
     end
 end
 
 function groupLayer:draw(x, y, map)
-    for _,v in ipairs(layers) do
+    for _,v in ipairs(self.layers) do
         v:draw(x, y, map)
     end
 end

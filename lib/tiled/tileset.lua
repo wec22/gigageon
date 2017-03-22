@@ -10,12 +10,11 @@
 
 
 ]]
-
-
-
-
+local path = (...):match("(.-)[^%.]+$")
 
 local class = require("lib.middleclass")
+
+local tile = require(path .. "tile")
 
 local tileset = class("tileset")
 
@@ -26,13 +25,15 @@ function tileset:initialize(t)
     self.tileH = t.tileheight
     self.spacing = t.spacing
 
-    self.quads = {}
+    self.tiles = {}
+
     local totalW, totalH = self.img:getWidth(), self.img:getHeight()
-    local x, y=0, 0
+    local x, y = 0, 0
+    --local i = 2
 
     for y = 0, totalH-self.tileH, self.tileH+self.spacing do
         for x = 0, totalW-self.tileW, self.tileW+self.spacing do
-            table.insert(self.quads, love.graphics.newQuad(x, y, self.tileW, self.tileH, totalW, totalH))
+            table.insert(self.tiles, tile(t.tiles[#self.tiles+1], love.graphics.newQuad(x, y, self.tileW, self.tileH, totalW, totalH)))
         end
     end
 end
