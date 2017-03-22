@@ -71,7 +71,6 @@ local function buildlayers(layers)
 
             end
 
-
         elseif layer.type == "imagelayer" and layers then --a layer group
             l.type = "group"
 
