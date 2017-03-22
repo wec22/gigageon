@@ -4,7 +4,7 @@ local gamera = require("lib.gamera")
 local lovebird = require("lib.lovebird")
 inspect = require("lib.inspect")
 
-local map = require("lib.tiled")
+local tiled = require("lib.tiled")
 local p = require("classes.player")
 
 local textbox = require("classes.textbox")
@@ -18,7 +18,7 @@ function love.load()
                     "until I took an arrow to the knee"})
 
     player = p()
-    test = map("maps.Testmap")
+    test = tiled.map("maps.Testmap")
     cam = gamera.new(0, 0, 512, 512)
     cam:setScale(1.5)
     cam:setPosition(player.x, player.y)
