@@ -4,7 +4,7 @@ local animation = require("classes.animation")
 
 local textbox = class("textbox")
 
-local arrow = love.graphics.newImage("Sprites/textarrow.png")
+local arrow = love.graphics.newImage("assets/art/textarrow.png")
 local textarrow = animation(arrow, 16, 16, 0.1, 1, 2)
 
 textarrow:setSpeed(0.1)
