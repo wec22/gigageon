@@ -1,0 +1,20 @@
+--[[
+-- A layer that contains just an image
+-- Members:
+    - img - the image to draw
+
+
+]]
+local path = (...):match("(.-)[^%.]+$")
+
+local class = require("lib.middleclass")
+
+local layer = require(path .. "layer")
+
+local imageLayer = class("imageLayer", layer)
+
+function imageLayer:initilaize(t)
+    print "building new imageLayer"
+end
+
+return imageLayer

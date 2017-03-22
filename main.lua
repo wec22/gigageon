@@ -1,27 +1,29 @@
 
 local gamera = require("lib.gamera")
+
 local lovebird = require("lib.lovebird")
+inspect = require("lib.inspect")
 
-
-local map = require("classes.map")
+local tiled = require("lib.tiled")
 local p = require("classes.player")
 
 local textbox = require("classes.textbox")
-
+lovebird:update()
 
 
 function love.load()
+    lovebird:update()
     box = textbox(1, {"Hello Adventurer",
                     "I used to be an adventurer like you",
                     "until I took an arrow to the knee"})
 
-    test = map("Maps.Testmap")
     player = p()
-
+    test = tiled.map("maps.animation")
     cam = gamera.new(0, 0, 512, 512)
     cam:setScale(1.5)
     cam:setPosition(player.x, player.y)
 end
+
 
 function love.update(dt)
     lovebird:update()
@@ -34,8 +36,8 @@ end
 
 function love.draw()
   cam:draw(function(l,t,w,h)
-      test:draw(0,0)
-      player:draw()
+        test:draw(0,0)
+        player:draw()
   end)
 
 

@@ -26,10 +26,12 @@ function layerc:draw(x,y, map)
         love.graphics.push()
 
         love.graphics.setColor(255, 255, 255, 255 * self.opacity)
-        --love.graphics.scale(32/self.tileW, 32/self.tileH)
-        for i, v in ipairs(self.data) do
-            if v~=0 then
-                love.graphics.draw(map.img, map.quads[v], ((i)%self.width-1)*map.tileW+x, (math.floor(i/self.height)-1)*map.tileH+y)
+
+        for r,row in ipairs(self.data) do
+            for c,v in ipairs(row) do
+                if v ~= 0 then
+                    love.graphics.draw(map.img, map.quads[v], (c-1)*map.tileW+x, (r-1)*map.tileH+y)
+                end
             end
         end
 
@@ -59,9 +61,17 @@ local function buildlayers(layers)
             l.width = layer.width
             l.height = layer.height
 
-            l.data = layer.data
+            l.data = {}
+            for i=1,layer.height do
+                table.insert(l.data,{})
+            end
+            for i,v in ipairs(layer.data) do
+                --assert(l.data[math.floor(i/l.height)+1],math.floor(i/l.height)+1)
+                table.insert(l.data[math.floor((i-1)/l.height)+1],v)
 
-        elseif layer.type == "imagelayer" and layers then --a layer group
+            end
+
+        elseif layer.type == "imagelayer" and layer.layers then --a layer group
             l.type = "group"
 
             local data = buildlayers(layer.layers)
@@ -71,7 +81,7 @@ local function buildlayers(layers)
                 table.insert(l, v)
             end
 
-        elseif layer.type == "imagelayer" and image then --a proper image layer
+        elseif layer.type == "imagelayer" and layer.image then --a proper image layer
             l.type = "image"
 
             l.data = layer.image
