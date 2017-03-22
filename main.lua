@@ -1,5 +1,6 @@
 
 local gamera = require("lib.gamera")
+
 local lovebird = require("lib.lovebird")
 local bump = require("lib.bump")
 
@@ -7,6 +8,11 @@ local map = require("classes.map")
 local p = require("classes.player")
 local c = require("classes.collision")
 local textbox = require("classes.textbox")
+
+inspect = require("lib.inspect")
+
+local tiled = require("lib.tiled")
+lovebird:update()
 
 world = bump.newWorld()
 
@@ -24,10 +30,12 @@ function love.load()
     block5 = c(100, 100, 100, 100)
 
 
-    cam = gamera.new(0,0,512-16,512-16)
+    cam = gamera.new(0,0,512,512)
+
     cam:setScale(1.5)
     cam:setPosition(player.x, player.y)
 end
+
 
 function love.update(dt)
     lovebird:update()
@@ -45,7 +53,6 @@ function love.draw()
     player:stand()
     player:draw()
   end)
-
 
   box:draw()
 end

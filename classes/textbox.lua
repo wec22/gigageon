@@ -4,7 +4,8 @@ local animation = require("classes.animation")
 
 local textbox = class("textbox")
 
-local arrow = love.graphics.newImage("Sprites/textarrow.png")
+
+local arrow = love.graphics.newImage("assets/art/textarrow.png")
 local textarrow = animation(arrow, 16, 16, 0.1, 1, 2)
 
 textarrow:setSpeed(0.1)
@@ -36,6 +37,7 @@ function textbox:draw()
         if(love.keyboard.isDown("e")) then
             if(self.cooldown==0) then
                 self.index = self.index + 1
+                self.cooldown = 20
                 self.cooldown=15
             end
         end

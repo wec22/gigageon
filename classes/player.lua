@@ -1,14 +1,18 @@
 local class = require("lib.middleclass")
 local animation = require("classes.animation")
+
 local bump = require("lib.bump")
+
 
 local player = class("player")
 
-local spritesheet = love.graphics.newImage("Sprites/PlayerSprites.png")
+local spritesheet = love.graphics.newImage("assets/art/PlayerSprites.png")
+
 local walkdown = animation(spritesheet, 64, 64, 0.1, 1, 4)
 local walkup = animation(spritesheet, 64, 64, 0.1, 13, 16)
 local walkleft = animation(spritesheet, 64, 64, 0.1, 5, 8)
 local walkright = animation(spritesheet, 64, 64, 0.1, 9, 12)
+
 local standdown = animation(spritesheet, 64, 64, 0.1, 1, 1)
 local standup = animation(spritesheet, 64, 64, 0.1, 13, 13)
 local standleft = animation(spritesheet, 64, 64, 0.1, 5, 5)
