@@ -4,7 +4,6 @@ local gamera = require("lib.gamera")
 local lovebird = require("lib.lovebird")
 local bump = require("lib.bump")
 
-local map = require("classes.map")
 local p = require("classes.player")
 local slime = require("classes.slime")
 local npc = require("classes.npc")
@@ -19,7 +18,7 @@ world = bump.newWorld()
 
 
 function love.load()
-    test = map("maps.Testmap")
+    test = tiled.map("maps.animation")
 
     player=p()
     slime1=slime(400, 400)
