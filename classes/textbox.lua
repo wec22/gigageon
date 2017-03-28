@@ -12,7 +12,7 @@ textarrow:setSpeed(0.1)
 
 function textbox:initialize(cooldown, text)
     self.text = text
-    self.cooldown = 0
+    self.cooldown = 20
     self.index = 1
 end
 

@@ -31,6 +31,7 @@ function player:initialize()
     self.h=15
     self.w=20
     self.speed=80
+    self.health=3
     self.lastpushed='s'
     world:add(self, self.x, self.y, self.w, self.h)
 end
