@@ -63,13 +63,13 @@ function enemy:update(dt)
   end
 
 function enemy:draw()
-    if (player.x>self.x-10 and player.x<self.x+10) then
-        walkup_down:draw(self.x, self.y-45+30)
+    if (player.x > self.x-10 and player.x < self.x+10) then
+        walkup_down:draw(self.x, self.y - 15)
     else
         if (player.x>self.x) then
-            walkright:draw(self.x, self.y-45+30)
+            walkright:draw(self.x, self.y-15)
         elseif (player.x<self.x) then
-            walkleft:draw(self.x, self.y-45+30)
+            walkleft:draw(self.x, self.y-15)
         end
     end
 end
