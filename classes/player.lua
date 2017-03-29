@@ -2,7 +2,7 @@ local class = require("lib.middleclass")
 local animation = require("classes.animation")
 
 local bump = require("lib.bump")
-
+local drawOrder = require("lib.drawOrder")
 
 local player = class("player")
 
@@ -34,8 +34,12 @@ function player:initialize()
     self.health=10
     self.hit=0
     self.lastpushed='s'
+
     self.position = nil
+
     world:add(self, self.x, self.y, self.w, self.h)
+
+    drawOrder:register(self)
 end
 
 function player:update(dt)
@@ -68,37 +72,28 @@ function player:update(dt)
     end
   end
 
-  function player:gameover()
-      font = love.graphics.newFont(20)
-      love.graphics.setFont(font)
-      love.graphics.print("Health : ", 0, 0)
-      love.graphics.print(self.health, 80, 0)
-      if(self.health <= 0) then
-          love.graphics.setColor(0, 0, 0)
-          love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-          love.graphics.setColor(255, 255, 255)
-          love.graphics.print("Game Over", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
-      end
-  end
+function player:gameover()
+    font = love.graphics.newFont(20)
+    love.graphics.setFont(font)
+    love.graphics.print("Health : ", 0, 0)
+    love.graphics.print(self.health, 80, 0)
+    if(self.health <= 0) then
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        love.graphics.setColor(255, 255, 255)
+        love.graphics.print("Game Over", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
+	end
+end
 
-local function stand(player)
-    if(love.keyboard.isDown("d")) then
-        player.lastpushed = nil
-    elseif(love.keyboard.isDown("a")) then
-        player.lastpushed = nil
-    elseif(love.keyboard.isDown("w")) then
-        player.lastpushed = nil
-    elseif(love.keyboard.isDown("s")) then
-        player.lastpushed = nil
-    end
-    if(player.lastpushed == 'd') then
-        standright:draw(player.x-20, player.y-45)
-    elseif(player.lastpushed == 'a') then
-        standleft:draw(player.x-20, player.y-45)
-    elseif(player.lastpushed == 'w') then
-        standup:draw(player.x-20, player.y-45)
-    elseif(player.lastpushed == 's') then
-        standdown:draw(player.x-20, player.y-45)
+function player:stand()
+    if(self.lastpushed == 'd') then
+        standright:draw(self.x-20, self.y-45)
+    elseif(self.lastpushed == 'a') then
+        standleft:draw(self.x-20, self.y-45)
+    elseif(self.lastpushed == 'w') then
+        standup:draw(self.x-20, self.y-45)
+    elseif(self.lastpushed == 's') then
+        standdown:draw(self.x-20, self.y-45)
     end
 end
 
@@ -120,6 +115,8 @@ function player:draw()
     elseif(love.keyboard.isDown("s")) then
         walkdown:draw(self.x-20, self.y-45)
         self.lastpushed = 's'
+    else
+        self:stand()
     end
     love.graphics.setColor(255, 255, 255, 255)
 end

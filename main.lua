@@ -4,6 +4,9 @@ local gamera = require("lib.gamera")
 local lovebird = require("lib.lovebird")
 local bump = require("lib.bump")
 
+local drawOrder = require("lib.drawOrder")
+members = drawOrder.members
+
 local map = require("classes.map")
 local p = require("classes.player")
 local c = require("classes.collisionblock")
@@ -44,11 +47,9 @@ end
 
 
 function love.draw()
- cam:draw(function(l,t,w,h)
-    test:draw(0,0)
-    player:draw()
-    man:draw()
-    slime1:draw()
-  end)
-  player:gameover()
+	cam:draw(function(l,t,w,h)
+    	test:draw(0,0)
+    	drawOrder:draw()
+	end)
+	player:gameover()
 end
