@@ -33,9 +33,15 @@ function groupLayer:initialize(t)
 end
 
 function groupLayer:draw(x, y, map)
+    love.graphics.push()
+
+    love.graphics.setColor(255, 255, 255, 255 * self.opacity)
+
     for _,v in ipairs(self.layers) do
         v:draw(x, y, map)
     end
+
+    love.graphics.pop()
 end
 
 return groupLayer
