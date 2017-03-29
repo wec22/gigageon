@@ -51,10 +51,6 @@ function enemy:initialize(x,y)
     self.w=30
     self.speed=10
     self.health=3
-
-    self.position = nil
-
-
     world:add(self, self.x, self.y, self.w, self.h)
 
     drawOrder:register(self)

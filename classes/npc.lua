@@ -2,6 +2,7 @@ local class = require("lib.middleclass")
 
 local textbox = require("classes.textbox")
 local bump = require("lib.bump")
+local drawOrder = require("lib.drawOrder")
 local animation = require("classes.animation")
 local npc = class("npc")
 
@@ -21,6 +22,8 @@ function npc:initialize(x, y, interact, text)
     self.position = nil
     box = textbox(1, text)
     world:add(self, self.x, self.y, self.w, self.h)
+
+    drawOrder:register(self)
 end
 
 function npc:setDraw(input)

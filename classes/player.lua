@@ -35,8 +35,6 @@ function player:initialize()
     self.hit=0
     self.lastpushed='s'
 
-    self.position = nil
-
     world:add(self, self.x, self.y, self.w, self.h)
 
     drawOrder:register(self)
@@ -102,7 +100,6 @@ function player:draw()
         love.graphics.setColor(255, 0, 0)
         self.hit = self.hit-1
     end
-    stand(self)
     if(love.keyboard.isDown("d")) then
         walkright:draw(self.x-20, self.y-45)
         self.lastpushed = 'd'
