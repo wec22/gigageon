@@ -70,18 +70,18 @@ function player:update(dt)
     end
   end
 
-  function player:gameover()
-      font = love.graphics.newFont(20)
-      love.graphics.setFont(font)
-      love.graphics.print("Health : ", 0, 0)
-      love.graphics.print(self.health, 80, 0)
-      if(self.health <= 0) then
-          love.graphics.setColor(0, 0, 0)
-          love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-          love.graphics.setColor(255, 255, 255)
-          love.graphics.print("Game Over", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
-      end
-  end
+function player:gameover()
+    font = love.graphics.newFont(20)
+    love.graphics.setFont(font)
+    love.graphics.print("Health : ", 0, 0)
+    love.graphics.print(self.health, 80, 0)
+    if(self.health <= 0) then
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        love.graphics.setColor(255, 255, 255)
+        love.graphics.print("Game Over", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
+	end
+end
 
 function player:stand()
     if(self.lastpushed == 'd') then

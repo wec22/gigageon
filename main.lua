@@ -47,9 +47,9 @@ end
 
 
 function love.draw()
- cam:draw(function(l,t,w,h)
-    test:draw(0,0)
-    drawOrder:draw()
-  end)
-  player:gameover()
+	cam:draw(function(l,t,w,h)
+    	test:draw(0,0)
+    	drawOrder:draw()
+	end)
+	player:gameover()
 end
