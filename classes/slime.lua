@@ -2,7 +2,7 @@ local class = require("lib.middleclass")
 local animation = require("classes.animation")
 
 local bump = require("lib.bump")
-
+local drawOrder = require("lib.drawOrder")
 
 local enemy = class("enemy")
 
@@ -25,7 +25,10 @@ function enemy:initialize(x,y)
     self.w=30
     self.speed=10
     self.health=3
+
     world:add(self, self.x, self.y, self.w, self.h)
+
+    drawOrder:register(self)
 end
 
 function enemy:update(dt)

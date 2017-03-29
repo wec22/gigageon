@@ -2,7 +2,7 @@ local class = require("lib.middleclass")
 local animation = require("classes.animation")
 
 local bump = require("lib.bump")
-
+local drawOrder = require("lib.drawOrder")
 
 local player = class("player")
 
@@ -33,7 +33,10 @@ function player:initialize()
     self.speed=80
     self.health=3
     self.lastpushed='s'
+
     world:add(self, self.x, self.y, self.w, self.h)
+
+    drawOrder:register(self)
 end
 
 function player:update(dt)
@@ -66,7 +69,7 @@ function player:update(dt)
   end
 
 function player:stand()
-    if(love.keyboard.isDown("d")) then
+    --[[if(love.keyboard.isDown("d")) then
         self.lastpushed = nil
     elseif(love.keyboard.isDown("a")) then
         self.lastpushed = nil
@@ -74,7 +77,7 @@ function player:stand()
         self.lastpushed = nil
     elseif(love.keyboard.isDown("s")) then
         self.lastpushed = nil
-    end
+    end]]--
     if(self.lastpushed == 'd') then
         standright:draw(self.x-20, self.y-45)
     elseif(self.lastpushed == 'a') then
@@ -99,6 +102,8 @@ function player:draw()
     elseif(love.keyboard.isDown("s")) then
         walkdown:draw(self.x-20, self.y-45)
         self.lastpushed = 's'
+    else
+        self:stand()
     end
 end
 
