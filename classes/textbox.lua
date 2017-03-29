@@ -8,7 +8,7 @@ local textbox = class("textbox")
 local arrow = love.graphics.newImage("assets/art/textarrow.png")
 local textarrow = animation(arrow, 16, 16, 0.1, 1, 2)
 
-textarrow:setSpeed(0.1)
+textarrow:setSpeed(0.3)
 
 function textbox:initialize(cooldown, text)
     self.text = text

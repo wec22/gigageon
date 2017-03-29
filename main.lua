@@ -9,14 +9,14 @@ members = drawOrder.members
 
 local map = require("classes.map")
 local p = require("classes.player")
+local c = require("classes.collisionblock")
 local slime = require("classes.slime")
 local npc = require("classes.npc")
-local c = require("classes.collisionblock")
+local tb = require("classes.textbox")
 
 inspect = require("lib.inspect")
 
 local tiled = require("lib.tiled")
-lovebird:update()
 
 world = bump.newWorld()
 
@@ -25,7 +25,8 @@ function love.load()
     test = map("maps.Testmap")
 
     player=p()
-    slime1=slime(400, 400)
+    man = npc(100, 100, 0)
+    slime1 = slime(200,200)
 
     cam = gamera.new(0,0,512,512)
 
@@ -40,16 +41,15 @@ function love.update(dt)
     cam:setPosition(player.x, player.y)
 
     player:update(dt)
+    man:update(dt)
     slime1:update(dt)
 end
 
-function love.draw()
-  cam:draw(function(l,t,w,h)
-    test:draw(0,0)
-    --player:stand()
-    --player:draw()
-    drawOrder:draw()
-    --slime1:draw()
-  end)
 
+function love.draw()
+	cam:draw(function(l,t,w,h)
+    	test:draw(0,0)
+    	drawOrder:draw()
+	end)
+	player:gameover()
 end
