@@ -4,7 +4,8 @@ local animation = require("classes.animation")
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
 
-local enemy = class("enemy")
+local entity = require("classes.entity")
+local slime = class("slime")
 
 local spritesheet = love.graphics.newImage("assets/art/slime_spritesheet.png")
 
@@ -38,13 +39,13 @@ local function iscolliding(one, x, y, w, h)
             player.health = player.health - 1
             player.hit=5
         end
-        cooldown = 20
+        cooldown = 10
     end
 end
 
 local cols_len = 0
 
-function enemy:initialize(x,y)
+function slime:initialize(x,y)
     self.x=x
     self.y=y
     self.h=15
@@ -56,7 +57,7 @@ function enemy:initialize(x,y)
     drawOrder:register(self)
 end
 
-function enemy:update(dt)
+function slime:update(dt)
     cols_len=0
     walkright:update(dt)
     walkleft:update(dt)
@@ -92,7 +93,7 @@ function enemy:update(dt)
         end
   end
 
-function enemy:draw()
+function slime:draw()
     if (player.x>self.x-10 and player.x<self.x+10) then
         walkup_down:draw(self.x, self.y-15)
     else
@@ -104,4 +105,4 @@ function enemy:draw()
     end
 end
 
-return enemy
+return slime

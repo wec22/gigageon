@@ -25,8 +25,8 @@ function love.load()
     test = map("maps.Testmap")
 
     player=p()
-    man = npc(100, 100, 0)
-    slime1 = slime(200,200)
+    man = npc(100, 100, 1, {"It's dangerous to go alone", "Take this!!"})
+    --slime1 = slime(200,200)
 
     cam = gamera.new(0,0,512,512)
 
@@ -42,7 +42,7 @@ function love.update(dt)
 
     player:update(dt)
     man:update(dt)
-    slime1:update(dt)
+    --slime1:update(dt)
 end
 
 
@@ -51,5 +51,6 @@ function love.draw()
     	test:draw(0,0)
     	drawOrder:draw()
 	end)
+    man:drawtextbox()
 	player:gameover()
 end
