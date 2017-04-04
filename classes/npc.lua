@@ -8,9 +8,9 @@ local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
 local animation = require("classes.animation")
 
-local spritesheet = love.graphics.newImage("assets/art/PlayerSprites.png")
+local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
 
-local standdown = animation(spritesheet, 64, 64, 0.1, 1, 1)
+local standdown = animation(spritesheet, 32, 32, 0.1, 1, 1)
 
 
 local draw = 0
@@ -19,8 +19,8 @@ local cooldown = 0
 function npc:initialize(x, y, interact, text)
     self.x=x
     self.y=y
-    self.h=15
-    self.w=40
+    self.h=8
+    self.w=10
     self.text = text
     self.interaction=interact
     box = textbox(1, self.text)
@@ -43,7 +43,7 @@ function npc:update(dt)
  end
 
 function npc:draw()
-    standdown:draw(self.x-10,self.y-45)
+    standdown:draw(self.x-10,self.y-20)
 end
 
 function npc:drawtextbox()

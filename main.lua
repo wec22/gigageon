@@ -22,15 +22,15 @@ world = bump.newWorld()
 
 
 function love.load()
-    test = map("maps.Testmap")
+    area = map("maps.Testmap")
 
     player=p()
-    man = npc(100, 100, 1, {"It's dangerous to go alone", "Take this!!"})
-    --slime1 = slime(200,200)
+    man = npc(100, 100, 1, {"It's dangerous to go alone", "Take this"})
+    slime1 = slime(200,200)
 
     cam = gamera.new(0,0,512,512)
 
-    cam:setScale(1.5)
+    cam:setScale(3)
     cam:setPosition(player.x, player.y)
 end
 
@@ -42,13 +42,13 @@ function love.update(dt)
 
     player:update(dt)
     man:update(dt)
-    --slime1:update(dt)
+    slime1:update(dt)
 end
 
 
 function love.draw()
 	cam:draw(function(l,t,w,h)
-    	test:draw(0,0)
+    	area:draw(0,0)
     	drawOrder:draw()
 	end)
     man:drawtextbox()
