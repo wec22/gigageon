@@ -8,8 +8,11 @@ function collision:initialize(x, y, w, h)
     self.y = y
     self.w = w
     self.h = h
-    local block = {x=x,y=y,w=w,h=h}
-    world:add(block, x,y,w,h)
+    world:add(self, self.x,self.y,self.w,self.h)
+end
+
+function collision:remove()
+    world:remove(self)
 end
 
 function collision:draw()
