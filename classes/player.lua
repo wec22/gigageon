@@ -28,8 +28,8 @@ walkright:setSpeed(0.5)
 local cols_len = 0
 
 function player:initialize()
-    self.x=50
-    self.y=50
+    self.x=16*16
+    self.y=16*18
     self.h=8
     self.w=10
     self.speed=60

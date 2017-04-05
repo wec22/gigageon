@@ -9,8 +9,8 @@ members = drawOrder.members
 
 local map = require("classes.map")
 local p = require("classes.player")
-local Testmap = require("maps.map1")
-local animation = require("maps.map2")
+local outsideCastle = require("maps.Castle_Outside")
+local insideCastle = require("maps.Castle_Inside")
 local c = require("classes.collisionblock")
 
 inspect = require("lib.inspect")
@@ -27,8 +27,6 @@ function love.load()
     lowerboundry = c(0,512, 512, 1)
     rightboundry = c(512, 0, 1, 512)
 
-    area = map("maps.Testmap")
-
     player=p()
     cam = gamera.new(0,0,512,512)
 
@@ -40,10 +38,10 @@ end
 function love.update(dt)
 
     if(playerlocation == 1) then
-            arealoaded = Testmap()
+            arealoaded = outsideCastle()
             playerlocation = 0
     elseif(playerlocation == 2) then
-            arealoaded = animation()
+            arealoaded = insideCastle()
             playerlocation = 0
     end
 
@@ -62,5 +60,6 @@ function love.draw()
     	area:draw(0,0)
     	drawOrder:draw()
 	end)
+    arealoaded:drawoutcam()
 	player:gameover()
 end
