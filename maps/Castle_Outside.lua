@@ -4,7 +4,6 @@ local c = require("classes.collisionblock")
 local slime = require("classes.slime")
 local npc = require("classes.npc")
 local tb = require("classes.textbox")
-local background = require("classes.map")
 
 local map = class("map")
 
@@ -16,7 +15,7 @@ end
 local blocks = {}
 
 function map:initialize()
-    area = background("maps.Outside_Castle")
+    area = tiled.map("maps.Outside_Castle")
     CastleEnter = {x=15*16,y=16*5,w=32,h=16}
     init_outside_castle = 1
 end
@@ -29,7 +28,7 @@ function map:update(dt)
         blocks[4] = c(16*17,0,16*10,16*6)
         blocks[5] = c(0,16*22,16*32,16*10)
         blocks[6] = c(16*3,16*10,16*10,16*7)
-        blocks[6] = c(16*19,16*10,16*10,16*7)
+        blocks[7] = c(16*19,16*10,16*10,16*7)
         init_outside_castle = 0
     end
     local changeMap = IntersectingwithPlayer(player.x,player.y,player.w,player.h, CastleEnter.x, CastleEnter.y,CastleEnter.w,CastleEnter.h)

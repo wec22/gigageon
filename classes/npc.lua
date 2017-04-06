@@ -21,6 +21,7 @@ function npc:initialize(x, y, interact, text)
     self.y=y
     self.h=8
     self.w=10
+    self.times=0
     self.text = text
     self.health = 1
     self.interaction=interact
@@ -32,6 +33,11 @@ end
 
 function npc:setText(input)
     self.text=input
+    box:setText(input)
+end
+
+function npc:getText()
+    return box:getText()
 end
 
 function npc:update(dt)
@@ -70,6 +76,7 @@ function npc:drawtextbox()
             box:draw()
         end
         if(box:getText() == nil) then
+            self.times = self.times + 1
             box:resetIndex()
             draw = 0
             cooldown = 20
