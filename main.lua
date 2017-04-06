@@ -9,7 +9,6 @@ local shine = require("lib.shine")
 
 members = drawOrder.members
 
-local map = require("classes.map")
 local p = require("classes.player")
 local slime = require("classes.slime")
 local npc = require("classes.npc")
@@ -24,34 +23,22 @@ world = bump.newWorld()
 
 
 function love.load()
-    local ray = shine.godsray()
+    local ray = shine.godsray{density = 0.1, exposure = 0.2, decay = 0.96}
     ray.density = 0.1
     ray.exposure = 0.2
     ray.decay = 0.96
 
-    local grain = shine.filmgrain()
-    grain.opacity = 0.2
-
-    local vignette = shine.vignette()
-    vignette.parameters = {radius = 0.75, opacity = 0.7}
+    local grain = shine.filmgrain{opacity = 0.2}
+    local vignette = shine.vignette{radius = 0.75, opacity = 0.7}
 
 
     local desaturate = shine.desaturate{strength = 0.8, tint = {255,250,200}}
-
-    local crt = shine.crt()
 
     pixelate = shine.pixelate()
     pixelate.samples = 5
     pixelate.pixel_size = 50
 
-    local sep = shine.separate_chroma()
-    --postEffect = desaturate:chain(ray):chain(grain):chain(vignette)
-
-    --postEffect = ray:chain(grain):chain(vignette):chain(crt)
-    postEffect = sep
-
-
-    test = map("maps.animation")
+    test = tiled.map("maps.animation")
 
     player=p()
     slime1=slime(400, 400)
@@ -80,8 +67,6 @@ end
 
 function love.draw()
     love.graphics.print(love.timer.getFPS(),0,0)
-
-    postEffect:draw(function()
         pixelate:draw(function()
             cam:draw(function(l,t,w,h)
                     test:draw(0,0)
@@ -90,5 +75,4 @@ function love.draw()
                 --end)
             end)
         end)
-    end)
 end

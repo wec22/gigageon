@@ -10989,7 +10989,7 @@ return {
       type = "imagelayer",
       name = "buildings",
       visible = true,
-      opacity = 0.37,
+      opacity = 1,
       offsetx = 0,
       offsety = 0,
       properties = {},
