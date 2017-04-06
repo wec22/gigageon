@@ -17,7 +17,7 @@ local blocks = {}
 local slimes = {}
 
 function map:initialize()
-    area = tiled.map("maps.DungeonBasement")
+    self.area = tiled.map("maps.DungeonBasement")
     slimes[1] = slime(32,300)
     slimes[2] = slime(32,300)
     slimes[3] = slime(64,300)

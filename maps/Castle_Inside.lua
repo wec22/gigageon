@@ -15,7 +15,7 @@ end
 local blocks = {}
 
 function map:initialize()
-    area = tiled.map("maps.Inside_Castle")
+    self.area = tiled.map("maps.Inside_Castle")
     king = npc(16*15,16*4,1,textTable)
 
     CastleExit = {x=16*14,y=512-16,w=64,h=16}

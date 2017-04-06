@@ -15,7 +15,7 @@ end
 local blocks = {}
 
 function map:initialize()
-    area = tiled.map("maps.Outside_Castle")
+    self.area = tiled.map("maps.Outside_Castle")
     CastleEnter = {x=15*16,y=16*5,w=32,h=16}
     init_outside_castle = 1
 end
