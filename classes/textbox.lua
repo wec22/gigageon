@@ -16,6 +16,18 @@ function textbox:initialize(cooldown, text)
     self.index = 1
 end
 
+function textbox:resetIndex()
+    self.index = 1
+end
+
+function textbox:getText()
+    return self.text[self.index]
+end
+
+function textbox:setText(text)
+    self.text = text
+end
+
 function textbox:update(dt)
     textarrow:update(dt)
     if self.cooldown ~= 0 then
