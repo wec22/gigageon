@@ -9,17 +9,17 @@ local fireball = class("fireball")
 local fireshot = love.graphics.newImage("assets/art/fireball_sprite.png")
 
 function fireball:initialize(player)
-    self.x = player.x
+    self.x = player.x + 3
     self.y = player.y
-    self.w = 20
-    self.h = 20
+    self.w = 5
+    self.h = 5
     self.fired = 0
     self.lastpushed = player.lastpushed
 end
 
 function fireball:update(dt)
     if(fired == 0) then
-        self.x = player.x
+        self.x = player.x - 5
         self.y = player.y
     end
 
@@ -60,7 +60,8 @@ function fireball:update(dt)
 end
 
 function fireball:draw()
-    love.graphics.draw(fireshot, self.x, self.y)
+    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+    love.graphics.draw(fireshot, self.x - 7, self.y - 5)
 end
 
 

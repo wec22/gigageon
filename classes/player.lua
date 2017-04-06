@@ -8,17 +8,17 @@ local magic = require("classes.fireball")
 local entity = require("classes.entity")
 local player = class("player")
 
-local spritesheet = love.graphics.newImage("assets/art/PlayerSprites.png")
+local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
 
-local walkdown = animation(spritesheet, 64, 64, 0.1, 1, 4)
-local walkup = animation(spritesheet, 64, 64, 0.1, 13, 16)
-local walkleft = animation(spritesheet, 64, 64, 0.1, 5, 8)
-local walkright = animation(spritesheet, 64, 64, 0.1, 9, 12)
+local walkdown = animation(spritesheet, 32, 32, 0.1, 1, 4)
+local walkup = animation(spritesheet, 32, 32, 0.1, 13, 16)
+local walkleft = animation(spritesheet, 32, 32, 0.1, 5, 8)
+local walkright = animation(spritesheet, 32, 32, 0.1, 9, 12)
 
-local standdown = animation(spritesheet, 64, 64, 0.1, 1, 1)
-local standup = animation(spritesheet, 64, 64, 0.1, 13, 13)
-local standleft = animation(spritesheet, 64, 64, 0.1, 5, 5)
-local standright = animation(spritesheet, 64, 64, 0.1, 9, 9)
+local standdown = animation(spritesheet, 32, 32, 0.1, 1, 1)
+local standup = animation(spritesheet, 32, 32, 0.1, 13, 13)
+local standleft = animation(spritesheet, 32, 32, 0.1, 5, 5)
+local standright = animation(spritesheet, 32, 32, 0.1, 9, 9)
 
 walkdown:setSpeed(0.5)
 walkup:setSpeed(0.5)
@@ -28,11 +28,11 @@ walkright:setSpeed(0.5)
 local cols_len = 0
 
 function player:initialize()
-    self.x=50
-    self.y=50
-    self.h=15
-    self.w=20
-    self.speed=80
+    self.x=16*16
+    self.y=16*18
+    self.h=8
+    self.w=10
+    self.speed=60
     self.health=10
     self.hit=0
     self.cooldown = 0
@@ -57,7 +57,7 @@ function player:update(dt)
 
     if(love.keyboard.isDown("space") and self.cooldown == 0) then
         table.insert(self.fireballs, magic(self))
-        self.cooldown = 10
+        self.cooldown = 20
     end
 
     local index = 1
@@ -109,13 +109,13 @@ end
 
 function player:stand()
     if(self.lastpushed == 'd') then
-        standright:draw(self.x-20, self.y-45)
+        standright:draw(self.x-10, self.y-20)
     elseif(self.lastpushed == 'a') then
-        standleft:draw(self.x-20, self.y-45)
+        standleft:draw(self.x-10, self.y-20)
     elseif(self.lastpushed == 'w') then
-        standup:draw(self.x-20, self.y-45)
+        standup:draw(self.x-10, self.y-20)
     elseif(self.lastpushed == 's') then
-        standdown:draw(self.x-20, self.y-45)
+        standdown:draw(self.x-10, self.y-20)
     end
 end
 
@@ -132,16 +132,16 @@ function player:draw()
         self.hit = self.hit-1
     end
     if(love.keyboard.isDown('d')) then
-        walkright:draw(self.x-20, self.y-45)
+        walkright:draw(self.x-10, self.y-20)
         self.lastpushed = 'd'
     elseif(love.keyboard.isDown('a')) then
-        walkleft:draw(self.x-20, self.y-45)
+        walkleft:draw(self.x-10, self.y-20)
         self.lastpushed = 'a'
     elseif(love.keyboard.isDown('w')) then
-       walkup:draw(self.x-20, self.y-45)
+       walkup:draw(self.x-10, self.y-20)
         self.lastpushed = 'w'
     elseif(love.keyboard.isDown('s')) then
-        walkdown:draw(self.x-20, self.y-45)
+        walkdown:draw(self.x-10, self.y-20)
         self.lastpushed = 's'
     else
         self:stand()
