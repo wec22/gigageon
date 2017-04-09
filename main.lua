@@ -4,22 +4,35 @@ local gamera = require("lib.gamera")
 local lovebird = require("lib.lovebird")
 
 local bump = require("lib.bump")
-local npc = require("classes.npc")
 
-local bump = require("lib.bump")
+
 local drawOrder = require("lib.drawOrder")
 local shine = require("lib.shine")
+local push = require("lib.push")
 
-members = drawOrder.members
+
+
 
 local p = require("classes.player")
 local outsideCastle = require("maps.Castle_Outside")
 local insideCastle = require("maps.Castle_Inside")
 local dungeon = require("maps.Dungeon")
 local c = require("classes.collisionblock")
+local npc = require("classes.npc")
 
+--debug stuff
 inspect = require("lib.inspect")
+members = drawOrder.members
 
+
+
+
+--set up push resolution scaling
+local gameWidth, gameHeight = 512, 512 --fixed game resolution
+local windowWidth, windowHeight = 512, 512
+push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false})
+
+--create the physics world
 world = bump.newWorld()
 
 playerlocation = 1
