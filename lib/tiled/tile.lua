@@ -11,7 +11,7 @@
 
 local class = require("lib.middleclass")
 
-local tile = class("tile")
+local tile = class("tiled.tile")
 
 function tile:initialize(t, quad)
     self.id = t.id

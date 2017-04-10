@@ -8,7 +8,7 @@ local groupLayer = require(path .. "groupLayer")
 
 local tileset = require(path .. "tileset")
 
-local map = class("map")
+local map = class("tiled.map")
 
 function map:initialize(filepath)
     local t = require(filepath)
