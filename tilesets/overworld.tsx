@@ -15,7 +15,7 @@
    <property name="collide" type="bool" value="false"/>
   </properties>
  </tile>
- <tile id="1" terrain="2,2,2,2">
+ <tile id="1" terrain="1,1,1,1">
   <properties>
    <property name="collide" type="bool" value="false"/>
   </properties>
