@@ -1,6 +1,8 @@
 --[[
 -- A layer for objects
 -- Members:
+    - draworder     - the order used to draw the objects
+    - properties    - table of properties given by tiled
 
 ]]
 
