@@ -19,7 +19,7 @@ local entity = class("entity")
 function entity:initialize(x, y, drawOrder, h, w)
     self.x = x or 0
     self.y = y or 0
-    self.drawOrder = drawOrder or 0
+    self.drawOrder = drawOrder or 1
     self.w = w
     self.h = h
 

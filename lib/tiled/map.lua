@@ -5,6 +5,7 @@ local class = require("lib.middleclass")
 local tileLayer = require(path .. "tileLayer")
 local imageLayer = require(path .. "imageLayer")
 local groupLayer = require(path .. "groupLayer")
+local objectLayer = require(path .. "objectLayer")
 
 local tileset = require(path .. "tileset")
 
@@ -30,6 +31,8 @@ function map:initialize(filepath)
             table.insert(self.layers, imageLayer(v))
         elseif v.type == "imagelayer" and v.layers then
             table.insert(self.layers, groupLayer(v))
+        elseif v.type == "objectgroup" then
+            table.insert(self.layers, objectLayer(v))
         end
     end
 end

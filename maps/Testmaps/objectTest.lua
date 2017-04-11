@@ -19,7 +19,7 @@ return {
       tileheight = 16,
       spacing = 1,
       margin = 0,
-      image = "../../tilesets/roguelikeSheet_transparent.png",
+      image = "tilesets/roguelikeSheet_transparent.png",
       imagewidth = 968,
       imageheight = 526,
       tileoffset = {

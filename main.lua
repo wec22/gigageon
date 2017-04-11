@@ -1,29 +1,35 @@
+--[[
+-- main entry point
+
+
+]]
+
+require("devmode")
 
 local gamera = require("lib.gamera")
-
 local lovebird = require("lib.lovebird")
-
 local bump = require("lib.bump")
-
-
 local drawOrder = require("lib.drawOrder")
 local shine = require("lib.shine")
 local push = require("lib.push")
+local tiled = require("lib.tiled")
 
-
-
-
+local entity = require("classes.entity")
+local enemy = require("classes.enemy")
 local p = require("classes.player")
+local c = require("classes.collisionBlock")
+local npc = require("classes.npc")
+
 local outsideCastle = require("maps.Castle_Outside")
 local insideCastle = require("maps.Castle_Inside")
 local dungeon = require("maps.Dungeon")
-local c = require("classes.collisionblock")
-local npc = require("classes.npc")
 
 --debug stuff
-inspect = require("lib.inspect")
-members = drawOrder.members
-
+if devmode then
+    inspect = require("lib.inspect")
+    members = drawOrder.members
+    bump_debug = require("lib.bump_debug")
+end
 
 
 
@@ -42,11 +48,12 @@ function love.load()
     pixelate.samples = 5
     pixelate.pixel_size = 50
 
+    testmap = tiled.map("maps.Testmaps.objectTest")
 
-    upperboundry = c(0,0, 512, 1)
-    leftboundry = c(0,0, 1, 512)
-    lowerboundry = c(0,512, 512, 1)
-    rightboundry = c(512, 0, 1, 512)
+    --upperboundry = c(0,0, 512, 1)
+    --leftboundry = c(0,0, 1, 512)
+    --lowerboundry = c(0,512, 512, 1)
+    --rightboundry = c(512, 0, 1, 512)
 
     missioncomplete = 0
 
@@ -65,18 +72,18 @@ end
 
 
 function love.update(dt)
-
-    if(playerlocation == 1) then
-            arealoaded = outsideCastle()
-            playerlocation = 0
-    elseif(playerlocation == 2) then
-            arealoaded = insideCastle()
-            playerlocation = 0
-    elseif(playerlocation == 3) then
-            arealoaded = dungeon()
-            playerlocation = 0
+--[[
+    if playerlocation == 1 then
+        arealoaded = outsideCastle()
+        playerlocation = 0
+    elseif playerlocation == 2 then
+        arealoaded = insideCastle()
+        playerlocation = 0
+    elseif playerlocation == 3 then
+        arealoaded = dungeon()
+        playerlocation = 0
     end
-
+]]
     lovebird:update()
 
     cam:setPosition(player.x, player.y)
@@ -87,19 +94,28 @@ function love.update(dt)
         pixelate:set("pixel_size", 1)
     end
 
-    player:update(dt)
+    local items = world:getItems()
+    for _,v in ipairs(items) do
+        if v:isInstanceOf(entity) then
+            v:update(dt)
+        end
+    end
 
-    arealoaded:update(dt)
+    --arealoaded:update(dt)
 end
 
 function love.draw()
     love.graphics.print(love.timer.getFPS(),0,0)
     pixelate:draw(function()
         cam:draw(function(l,t,w,h)
-                arealoaded.area:draw()
-                drawOrder:draw()
+                --arealoaded.area:draw()
+                testmap:draw()
+                --drawOrder:draw()
+                if devmode then
+                    bump_debug.draw(world)
+                end
         end)
     end)
-    arealoaded:drawoutcam()
+    --arealoaded:drawoutcam()
 	player:gameover()
 end

@@ -12,6 +12,7 @@ local layer = require(path .. "layer")
 
 local tileLayer = require(path .. "tileLayer")
 local imageLayer = require(path .. "imageLayer")
+local objectLayer = require(path .. "objectLayer")
 
 local groupLayer = class("tiled.groupLayer", layer)
 
@@ -28,6 +29,8 @@ function groupLayer:initialize(t)
             table.insert(self.layers, imageLayer(v))
         elseif v.type == "imagelayer" and layers then
             table.insert(self.layers, groupLayer(v))
+        elseif v.type == "objectgroup" then
+            table.insert(self.layers, objectLayer(v))
         end
     end
 end

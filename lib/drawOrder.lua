@@ -9,6 +9,7 @@ function order:register(t)
 	assert(t:isInstanceOf(entity),"Error: parameter must be an entity")
 	assert(t.y, "Error: missing a y coordinate")
 	assert(t.draw, "Error: missing a draw function")
+	print("drawOrder: registered a " .. t.class.name)
 	if not t.drawOrder then
 		t.drawOrder = 1
 		print("missing a drawOrder value, defaulting to 1")

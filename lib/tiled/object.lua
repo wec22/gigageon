@@ -20,7 +20,17 @@ local class = require("lib.middleclass")
 local object = class("tiled.object")
 
 function object:initialize(t)
-
+    self.id = t.id
+    self.name = t.name
+    self.type = t.type
+    self.shape = t.shape
+    self.x = t.x
+    self.y = t.y
+    self.width = t.width
+    self.height = t.height
+    self.rotation = t.rotation
+    self.visible = t.visible
+    self.properties = t.properties
 end
 
 
