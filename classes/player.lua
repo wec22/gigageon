@@ -6,7 +6,8 @@ local drawOrder = require("lib.drawOrder")
 local magic = require("classes.fireball")
 
 local entity = require("classes.entity")
-local player = class("player")
+local character = require("classes.character")
+local player = class("player", character)
 
 local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
 spritesheet:setFilter("nearest","nearest")

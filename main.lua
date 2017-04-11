@@ -53,7 +53,7 @@ function love.load()
     textTable = {"Hello Traveler!","I am the king of this land!", "I have heard lots about you and your journeys!", "Might I implore you for an issue we have been \nexperiencing?",
     "Our monster dungeon has been overrun with \nslimes!", "Many of our warriors have been unsuccessful in \neliminating the threat\nBut now you have come!",
     "The tales of the ancients have talked about your \nlegendary fire magic!", "They say you make it look as easy as \npressing the 'space' key on a keyboard",
-    "Whatever a keyboard is, Im sure we have nothing\nto worry about now", "Oh yes! The dungeon! Why its downstairs\njust turn right and youll see it!",
+    "Whatever a keyboard is, I'm sure we have nothing\nto worry about now", "Oh yes! The dungeon! Why its downstairs\njust turn right and you'll see it!",
     "Now, I will see you when you've killed every\nlast one of those slimes!"}
 
     player=p()

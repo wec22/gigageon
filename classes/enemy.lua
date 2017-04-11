@@ -1,19 +1,17 @@
-
-
-
+--[[
+-- base class for all enemies
+-- members
+    -
+-- methods
+    -
+]]
 local class = require("lib.middleclass")
 
-local entity = require("classes.entity")
+local character = require("classes.character")
+local enemy = class("enemy", character)
 
-local enemy = class("enemy", entity)
-
-function enemy:initialize(health)
-    assert(health, "an enemy must have a health")
-    self.health = health
-end
-
-function enemy:takeDamage(amount)
-    self.health = self.health - amount
+function enemy:initialize(x,y,drawOrder,h,w, health)
+    character.initialize(self, x,y,drawOrder,h,w, health)
 end
 
 return enemy
