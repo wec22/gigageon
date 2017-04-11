@@ -13,7 +13,7 @@ local layer = require(path .. "layer")
 local tileLayer = require(path .. "tileLayer")
 local imageLayer = require(path .. "imageLayer")
 
-local groupLayer = class("groupLayer", layer)
+local groupLayer = class("tiled.groupLayer", layer)
 
 function groupLayer:initialize(t)
     print "building new groupLayer"

@@ -8,6 +8,7 @@ local entity = require("classes.entity")
 local slime = class("slime")
 
 local spritesheet = love.graphics.newImage("assets/art/slime_spritesheet.png")
+spritesheet:setFilter("nearest","nearest")
 
 local walkup_down = animation(spritesheet, 16, 16.4, 0.3, 1, 3)
 local walkleft = animation(spritesheet, 16, 16.5, 0.3, 13, 15)

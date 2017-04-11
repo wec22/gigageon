@@ -9,6 +9,7 @@ local entity = require("classes.entity")
 local player = class("player")
 
 local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
+spritesheet:setFilter("nearest","nearest")
 
 local walkdown = animation(spritesheet, 32, 32, 0.1, 1, 4)
 local walkup = animation(spritesheet, 32, 32, 0.1, 13, 16)

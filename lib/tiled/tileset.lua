@@ -16,7 +16,7 @@ local class = require("lib.middleclass")
 
 local tile = require(path .. "tile")
 
-local tileset = class("tileset")
+local tileset = class("tiled.tileset")
 
 function tileset:initialize(t)
     self.img = love.graphics.newImage(t.image)

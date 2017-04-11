@@ -11,7 +11,7 @@ local path = (...):match("(.-)[^%.]+$")
 local class = require("lib.middleclass")
 local layer = require(path .. "layer")
 
-local tileLayer = class("tileLayer", layer)
+local tileLayer = class("tiled.tileLayer", layer)
 
 function tileLayer:initialize(t)
     print "building new tileLayer"

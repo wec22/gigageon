@@ -9,6 +9,7 @@ local drawOrder = require("lib.drawOrder")
 local animation = require("classes.animation")
 
 local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
+spritesheet:setFilter("nearest","nearest")
 
 local standdown = animation(spritesheet, 32, 32, 0.1, 1, 1)
 
