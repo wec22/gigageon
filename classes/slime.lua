@@ -5,7 +5,7 @@ local drawOrder = require("lib.drawOrder")
 local animation = require("classes.animation")
 
 local enemy = require("classes.enemy")
-local slime = class("slime", enemy)
+local slime = class("enemy.slime", enemy)
 
 local spritesheet = love.graphics.newImage("assets/art/slime_spritesheet.png")
 spritesheet:setFilter("nearest","nearest")

@@ -17,7 +17,7 @@ local objectLayer = require(path .. "objectLayer")
 local groupLayer = class("tiled.groupLayer", layer)
 
 function groupLayer:initialize(t)
-    print "building new groupLayer"
+    print "Tiled: building new groupLayer"
 
     layer.initialize(self, t)
 

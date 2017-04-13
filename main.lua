@@ -15,10 +15,7 @@ local push = require("lib.push")
 local tiled = require("lib.tiled")
 
 local entity = require("classes.entity")
-local enemy = require("classes.enemy")
 local p = require("classes.player")
-local c = require("classes.collisionBlock")
-local npc = require("classes.npc")
 
 local outsideCastle = require("maps.Castle_Outside")
 local insideCastle = require("maps.Castle_Inside")
@@ -29,6 +26,7 @@ if devmode then
     inspect = require("lib.inspect")
     members = drawOrder.members
     bump_debug = require("lib.bump_debug")
+    lovebird:update()
 end
 
 
@@ -48,7 +46,6 @@ function love.load()
     pixelate.samples = 5
     pixelate.pixel_size = 50
 
-    testmap = tiled.map("maps.Testmaps.objectTest")
 
     --upperboundry = c(0,0, 512, 1)
     --leftboundry = c(0,0, 1, 512)
@@ -68,6 +65,7 @@ function love.load()
 
     cam:setScale(2)
     cam:setPosition(player.x, player.y)
+    testmap = tiled.map("maps.Testmaps.objectTest")
 end
 
 

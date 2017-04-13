@@ -14,7 +14,7 @@ local layer = require(path .. "layer")
 local tileLayer = class("tiled.tileLayer", layer)
 
 function tileLayer:initialize(t)
-    print "building new tileLayer"
+    print "Tiled: building new tileLayer"
 
     layer.initialize(self, t)
 

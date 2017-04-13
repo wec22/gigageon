@@ -21,7 +21,7 @@ local layer = require(path .. "layer")
 local objectLayer = class("tiled.objectLayer", layer)
 
 function objectLayer:initialize(t)
-    print("building new objectLayer")
+    print("Tiled: building new objectLayer")
 
     layer.initialize(self, t)
     self.draworder = t.draworder
@@ -34,12 +34,12 @@ function objectLayer:initialize(t)
     for _,v in ipairs(self.objects) do
         if v.type == "slime" then
             slime(v.x,v.y)
-        end
-        if v.type == "wall" then
+        elseif v.type == "wall" then
             collisionBlock(v.x, v.y, v.width, v.height)
-        end
-        if v.spawn == "spawn" then
-
+        elseif v.type == "spawn" then
+            print("Tiled: objectLayer: spawn not implemented")
+        elseif v.type == "npc" then
+            print("Tiled: objectLayer: npc not implemented")
         end
     end
 end
