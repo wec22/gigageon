@@ -102,6 +102,21 @@ function love.update(dt)
     --arealoaded:update(dt)
 end
 
+local function drawSort(lh, rh)
+    if lh:isInstanceOf(entity) or rh:isInstanceOf(entity) then
+        return false
+    end
+    if not lh or not rh then
+		return false
+	end
+	if lh.drawOrder == rh.drawOrder then
+		return lh.y < rh.y
+	else
+		return lh.drawOrder < rh.drawOrder
+	end
+end
+
+t={}
 function love.draw()
     love.graphics.print(love.timer.getFPS(),0,0)
     pixelate:draw(function()

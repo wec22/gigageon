@@ -29,8 +29,10 @@ function order:remove(t)
 end
 
 local function sort(lh, rh)
-	if not lh or not rh then
+	if not lh then
 		return false
+	elseif not rh then
+		return true
 	end
 	if lh.drawOrder == rh.drawOrder then
 		return lh.y < rh.y

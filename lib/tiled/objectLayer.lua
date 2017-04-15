@@ -13,7 +13,7 @@ local drawOrder = require("lib.drawOrder")
 
 local collisionBlock = require("classes.collisionBlock")
 local slime = require("classes.slime")
-
+local doorway = require("classes.doorway")
 
 local object = require(path .. "object")
 
@@ -36,10 +36,13 @@ function objectLayer:initialize(t)
             slime(v.x,v.y)
         elseif v.type == "wall" then
             collisionBlock(v.x, v.y, v.width, v.height)
+        elseif v.type == "doorway" then
+            print("Tiled.objectlayer: doorway not implemented")
+            doorway()
         elseif v.type == "spawn" then
-            print("Tiled: objectLayer: spawn not implemented")
+            print("Tiled.objectLayer: spawn not implemented")
         elseif v.type == "npc" then
-            print("Tiled: objectLayer: npc not implemented")
+            print("Tiled.objectLayer: npc not implemented")
         end
     end
 end
