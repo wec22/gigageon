@@ -65,7 +65,7 @@ function love.load()
 
     cam:setScale(2)
     cam:setPosition(player.x, player.y)
-    testmap = tiled.map("maps.Testmaps.objectTest")
+    testmap = tiled.map("maps.Testmaps.newTilesets")
 end
 
 
@@ -122,7 +122,7 @@ function love.draw()
     pixelate:draw(function()
         cam:draw(function(l,t,w,h)
                 --arealoaded.area:draw()
-                testmap:draw()
+                --testmap:draw()
                 --drawOrder:draw()
                 if devmode then
                     bump_debug.draw(world)

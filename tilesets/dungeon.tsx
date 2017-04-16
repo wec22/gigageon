@@ -144,19 +144,19 @@
    <frame tileid="439" duration="250"/>
   </animation>
  </tile>
- <tile id="493" terrain="2,2,0,0">
+ <tile id="493" terrain=",,0,0">
   <animation>
    <frame tileid="493" duration="200"/>
    <frame tileid="320" duration="200"/>
   </animation>
  </tile>
- <tile id="494" terrain="2,2,0,0">
+ <tile id="494" terrain=",,0,0">
   <animation>
    <frame tileid="494" duration="200"/>
    <frame tileid="320" duration="200"/>
   </animation>
  </tile>
- <tile id="495" terrain="2,2,0,0">
+ <tile id="495" terrain=",,0,0">
   <animation>
    <frame tileid="495" duration="200"/>
    <frame tileid="320" duration="200"/>
@@ -166,6 +166,15 @@
   <animation>
    <frame tileid="497" duration="250"/>
    <frame tileid="320" duration="250"/>
+  </animation>
+ </tile>
+ <tile id="498" terrain="1,,1,1"/>
+ <tile id="499" terrain=",,1,1"/>
+ <tile id="500" terrain=",1,1,1"/>
+ <tile id="506">
+  <animation>
+   <frame tileid="506" duration="100"/>
+   <frame tileid="507" duration="100"/>
   </animation>
  </tile>
 </tileset>

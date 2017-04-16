@@ -5,7 +5,7 @@ local order = {}
 
 order.members = {}
 
-setmetatable(order.members, {__mode = "v"})
+--setmetatable(order.members, {__mode = "v"})
 
 function order:register(t)
 	assert(t:isInstanceOf(entity),"Error: parameter must be an entity")
