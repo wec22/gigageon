@@ -38,7 +38,7 @@ function objectLayer:initialize(t)
             collisionBlock(v.x, v.y, v.width, v.height)
         elseif v.type == "doorway" then
             print("Tiled.objectlayer: doorway not implemented")
-            doorway()
+            --doorway()
         elseif v.type == "spawn" then
             print("Tiled.objectLayer: spawn not implemented")
         elseif v.type == "npc" then

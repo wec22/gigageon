@@ -17,11 +17,20 @@ function map:initialize(filepath)
     self.width = t.width
     self.height = t.height
 
+    self.tileW = t.tilewidth
+    self.tileH = t.tileheight
+
     self.tilesets = {}
     for _,v in ipairs(t.tilesets) do
         table.insert(self.tilesets, tileset(v))
     end
 
+    self.tiles = {}
+    for _,v in ipairs(self.tilesets) do
+        for _,tile in ipairs(v.tiles) do
+            table.insert(self.tiles, tile)
+        end
+    end
 
     self.layers = {}
     for _,v in ipairs(t.layers) do
@@ -37,12 +46,12 @@ function map:initialize(filepath)
     end
 end
 
-function map:draw(x, y, tileset)
+function map:draw(x, y)
     x = x or 0
     y = y or 0
     tileset = tileset or self.tilesets[1]
     for _, layer in ipairs(self.layers) do
-        layer:draw(x, y, tileset)
+        layer:draw(x, y, self)
     end
 end
 

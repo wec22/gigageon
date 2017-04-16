@@ -5,7 +5,7 @@ local order = {}
 
 order.members = {}
 
---setmetatable(order.members, {__mode = "v"})
+setmetatable(order.members, {__mode = "v"})
 
 function order:register(t)
 	assert(t:isInstanceOf(entity),"Error: parameter must be an entity")
@@ -30,9 +30,9 @@ end
 
 local function sort(lh, rh)
 	if not lh then
-		return false
-	elseif not rh then
 		return true
+	elseif not rh then
+		return false
 	end
 	if lh.drawOrder == rh.drawOrder then
 		return lh.y < rh.y

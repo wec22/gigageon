@@ -122,7 +122,7 @@ function love.draw()
     pixelate:draw(function()
         cam:draw(function(l,t,w,h)
                 --arealoaded.area:draw()
-                --testmap:draw()
+                testmap:draw()
                 --drawOrder:draw()
                 if devmode then
                     bump_debug.draw(world)

@@ -38,19 +38,16 @@ function tileLayer:draw(x, y, map)
 
     love.graphics.setColor(255, 255, 255, 255 * self.opacity)
 
+    local i = 1
     for r,row in ipairs(self.data) do
         for c,v in ipairs(row) do
             if v ~= 0 then
-                love.graphics.draw(map.img, map.tiles[v].quad, (c-1)*map.tileW+x, (r-1)*map.tileH+y)
+                map.tiles[v]:draw((c-1)*map.tileW+x, (r-1)*map.tileH+y)
             end
         end
     end
 
     love.graphics.pop()
 end
-
-
-
-
 
 return tileLayer
