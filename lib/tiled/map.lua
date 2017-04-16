@@ -49,10 +49,13 @@ end
 function map:draw(x, y)
     x = x or 0
     y = y or 0
+
+    local color = {love.graphics.getColor()}
     tileset = tileset or self.tilesets[1]
     for _, layer in ipairs(self.layers) do
         layer:draw(x, y, self)
     end
+    love.graphics.setColor(unpack(color))
 end
 
 return map

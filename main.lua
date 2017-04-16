@@ -15,7 +15,8 @@ local push = require("lib.push")
 local tiled = require("lib.tiled")
 
 local entity = require("classes.entity")
-local p = require("classes.player")
+
+local player = require("classes.player")
 
 local outsideCastle = require("maps.Castle_Outside")
 local insideCastle = require("maps.Castle_Inside")
@@ -47,6 +48,7 @@ function love.load()
     pixelate.pixel_size = 50
 
 
+
     --upperboundry = c(0,0, 512, 1)
     --leftboundry = c(0,0, 1, 512)
     --lowerboundry = c(0,512, 512, 1)
@@ -60,7 +62,7 @@ function love.load()
     "Whatever a keyboard is, I'm sure we have nothing\nto worry about now", "Oh yes! The dungeon! Why its downstairs\njust turn right and you'll see it!",
     "Now, I will see you when you've killed every\nlast one of those slimes!"}
 
-    player=p()
+    player=player()
     cam = gamera.new(0,0,512,512)
 
     cam:setScale(2)

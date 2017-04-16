@@ -36,7 +36,9 @@ end
 function tileLayer:draw(x, y, map)
     love.graphics.push()
 
-    love.graphics.setColor(255, 255, 255, 255 * self.opacity)
+    local r,g,b,a = love.graphics.getColor()
+
+    love.graphics.setColor(r, g, b, a * self.opacity)
 
     local i = 1
     for r,row in ipairs(self.data) do
@@ -47,6 +49,7 @@ function tileLayer:draw(x, y, map)
         end
     end
 
+    love.graphics.setColor(r,g,b)
     love.graphics.pop()
 end
 
