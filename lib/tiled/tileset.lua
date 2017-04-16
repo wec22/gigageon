@@ -16,7 +16,7 @@ local class = require("lib.middleclass")
 
 local tile = require(path .. "tile")
 
-local tileset = class("tileset")
+local tileset = class("tiled.tileset")
 
 function tileset:initialize(t)
     self.img = love.graphics.newImage(t.image)
@@ -33,7 +33,11 @@ function tileset:initialize(t)
 
     for y = 0, totalH-self.tileH, self.tileH+self.spacing do
         for x = 0, totalW-self.tileW, self.tileW+self.spacing do
-            table.insert(self.tiles, tile(t.tiles[#self.tiles+1], love.graphics.newQuad(x, y, self.tileW, self.tileH, totalW, totalH)))
+            if t.tiles[#self.tiles+1] then
+                table.insert(self.tiles, tile(t.tiles[#self.tiles+1], love.graphics.newQuad(x, y, self.tileW, self.tileH, totalW, totalH), self.img))
+            else
+                table.insert(self.tiles, tile(#self.tiles+1, love.graphics.newQuad(x, y, self.tileW, self.tileH, totalW, totalH), self.img))
+            end
         end
     end
 end

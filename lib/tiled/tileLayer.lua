@@ -11,10 +11,10 @@ local path = (...):match("(.-)[^%.]+$")
 local class = require("lib.middleclass")
 local layer = require(path .. "layer")
 
-local tileLayer = class("tileLayer")
+local tileLayer = class("tiled.tileLayer", layer)
 
 function tileLayer:initialize(t)
-    print "building new tileLayer"
+    print "Tiled: building new tileLayer"
 
     layer.initialize(self, t)
 
@@ -40,10 +40,11 @@ function tileLayer:draw(x, y, map)
 
     love.graphics.setColor(r, g, b, a * self.opacity)
 
+    local i = 1
     for r,row in ipairs(self.data) do
         for c,v in ipairs(row) do
             if v ~= 0 then
-                love.graphics.draw(map.img, map.tiles[v].quad, (c-1)*map.tileW+x, (r-1)*map.tileH+y)
+                map.tiles[v]:draw((c-1)*map.tileW+x, (r-1)*map.tileH+y)
             end
         end
     end
@@ -51,9 +52,5 @@ function tileLayer:draw(x, y, map)
     love.graphics.setColor(r,g,b)
     love.graphics.pop()
 end
-
-
-
-
 
 return tileLayer
