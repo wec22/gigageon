@@ -8,9 +8,9 @@ local fireball = class("fireball")
 
 local fireshot = love.graphics.newImage("assets/art/fireball_sprite.png")
 
-function fireball:initialize(lastpushed)
-    self.x = player.x + 3
-    self.y = player.y
+function fireball:initialize(lastpushed, x, y)
+    self.x = x + 3
+    self.y = y
     self.w = 5
     self.h = 5
     self.fired = 0
@@ -31,7 +31,7 @@ function fireball:initialize(lastpushed)
     end
 
 
-    self.y = player.y
+
 
 end
 

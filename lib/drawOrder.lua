@@ -20,6 +20,7 @@ function order:register(t)
 end
 
 function order:remove(t)
+	print("drawOrder: removing a ", t.class.name)
 	for i,v in ipairs(self.members) do
 		if v == t then
 			self.members[i] = nil
@@ -30,9 +31,9 @@ end
 
 local function sort(lh, rh)
 	if not lh then
-		return true
-	elseif not rh then
 		return false
+	elseif not rh then
+		return true
 	end
 	if lh.drawOrder == rh.drawOrder then
 		return lh.y < rh.y

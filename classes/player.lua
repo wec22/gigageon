@@ -92,7 +92,7 @@ function player:update(dt)
     end
 
     if love.keyboard.isDown("space") and self.cooldown == 0 then
-        table.insert(self.fireballs, fireball(self.lastpushed))
+        table.insert(self.fireballs, fireball(self.lastpushed, self.x, self.y))
         self.cooldown = 20
     end
 

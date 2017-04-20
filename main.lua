@@ -16,6 +16,7 @@ local tiled = require("lib.tiled")
 
 local entity = require("classes.entity")
 
+local explosion = require("classes.explosion")
 local player = require("classes.player")
 
 local outsideCastle = require("maps.Castle_Outside")
@@ -47,6 +48,7 @@ function love.load()
     pixelate.samples = 5
     pixelate.pixel_size = 50
 
+    explosion(256, 256)
 
 
     --upperboundry = c(0,0, 512, 1)
@@ -93,44 +95,34 @@ function love.update(dt)
     else
         pixelate:set("pixel_size", 1)
     end
-
-    local items = world:getItems()
-    for _,v in ipairs(items) do
-        if v:isInstanceOf(entity) then
-            v:update(dt)
+    if pixelate._pixel_size == 1 then
+        local items = world:getItems()
+        for _,v in ipairs(items) do
+            if v:isInstanceOf(entity) then
+                v:update(dt)
+            end
         end
-    end
 
+
+    end
     --arealoaded:update(dt)
 end
 
-local function drawSort(lh, rh)
-    if lh:isInstanceOf(entity) or rh:isInstanceOf(entity) then
-        return false
-    end
-    if not lh or not rh then
-		return false
-	end
-	if lh.drawOrder == rh.drawOrder then
-		return lh.y < rh.y
-	else
-		return lh.drawOrder < rh.drawOrder
-	end
-end
-
-t={}
 function love.draw()
     love.graphics.print(love.timer.getFPS(),0,0)
     pixelate:draw(function()
         cam:draw(function(l,t,w,h)
                 --arealoaded.area:draw()
                 testmap:draw()
+
                 --drawOrder:draw()
                 if devmode then
                     bump_debug.draw(world)
                 end
         end)
     end)
+
+    --love.graphics.rectangle("fill", 256, 256, 10, 10)
     --arealoaded:drawoutcam()
 	player:gameover()
 end
