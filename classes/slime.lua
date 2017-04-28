@@ -18,10 +18,6 @@ walkup_down:setSpeed(0.35)
 walkleft:setSpeed(0.35)
 walkright:setSpeed(0.35)
 
-local cooldown = 0
-local slimecooldown = 0
-
-local cols_len = 0
 
 function slime:TakingDamage()
     if(self.cooldown==0) then
@@ -36,7 +32,9 @@ function slime:initialize(x,y)
 
     self.speed = 10
     self.hit = 0
+
 	self.cooldown = 0
+
     world:add(self, self.x, self.y, self.w, self.h)
     drawOrder:register(self)
 end
@@ -75,8 +73,11 @@ function slime:update(dt)
         end
 
         if dx ~= 0 or dy ~= 0 then
-            local cols
-            self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+          local cols
+          self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+          for _,v in ipairs(cols) do
+
+          end
         end
     end
     if self.health == 0 then

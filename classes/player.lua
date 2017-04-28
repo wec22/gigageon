@@ -3,7 +3,11 @@ local animation = require("classes.animation")
 
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
+
 local fireball = require("classes.fireball")
+
+local slime = require("classes.slime")
+
 local entity = require("classes.entity")
 
 
@@ -40,6 +44,7 @@ function player:initialize()
     self.speed=60
     self.health=10
     self.hit=0
+
 	self.firecooldown = 0
 	self.dmgcooldown = 0
     self.fireballs = {}
@@ -81,13 +86,18 @@ function player:update(dt)
     walkup:update(dt)
     walkdown:update(dt)
 
-	if(self.firecooldown ~= 0) then
-		self.firecooldown = self.firecooldown - 1
-	end
+    if self.firecooldown ~= 0 then
+        self.firecooldown = self.firecooldown - 1
+    end
 
-	if(self.dmgcooldown ~= 0) then
-		self.dmgcooldown = self.dmgcooldown - 1
-	end
+	if self.dmgcooldown ~= 0 then
+        self.dmgcooldown = self.dmgcooldown - 1
+    end
+
+    if love.keyboard.isDown("space") and self.firecooldown == 0 then
+        table.insert(self.fireballs, magic(self))
+        self.firecooldown = 20
+    end
 
     local index = 1
     for _,v in pairs(self.fireballs) do
@@ -122,6 +132,7 @@ function player:update(dt)
     if dx ~= 0 or dy ~= 0 then
       local cols
       self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+
 	  for _,v in ipairs(cols) do
         local col = v
 		if v.other:isInstanceOf(slime) then

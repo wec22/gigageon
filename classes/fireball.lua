@@ -21,6 +21,7 @@ function fireball:initialize(lastpushed, x, y)
 	self.offsetx = 0
 	self.offsety = 0
     self.fired = 0
+
     self.lastpushed = lastpushed
 	self.removed = false
 
