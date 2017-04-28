@@ -21,59 +21,24 @@ walkright:setSpeed(0.35)
 local cooldown = 0
 local slimecooldown = 0
 
-local function IntersectingwithPlayer(x1,y1,w1,h1, x2,y2,w2,h2)
-    return x1 < x2+w2 and x2 < x1+w1 and
-           y1 < y2+h2 and y2 < y1+h1
-end
-
-
-local function IntersectingwithFire(fireTable, x,y,w,h)
-    for _,f in pairs(fireTable) do
-        if f.x < x+w and x < f.x+f.w and
-               f.y < y+h and y < f.y+f.h then
-                   return true
-               end
-    end
-    return false
-end
-
 local cols_len = 0
+
+function slime:TakingDamage()
+    if(self.cooldown==0) then
+        self.health = self.health - 1
+        self.hit=5
+    end
+    self.cooldown = 10
+end
 
 function slime:initialize(x,y)
     enemy.initialize(self, x,y,1,10,14, 3)
 
     self.speed = 10
     self.hit = 0
+	self.cooldown = 0
     world:add(self, self.x, self.y, self.w, self.h)
     drawOrder:register(self)
-end
-
-function slime:TakingDamage(one, two, x, y, w, h)
-    if one then
-        if player.x<x and player.y>=y and player.y<=y+h then
-            player.x = player.x-30
-        elseif player.x>=x and player.y>y and player.x<=x+h then
-            player.y = player.y+30
-        elseif player.x>x and player.y>=y and player.y<=y+h then
-            player.x = player.x+30
-        elseif player.x>=x and player.y<y and player.x<=x+w then
-            player.y = player.y-30
-        end
-
-        if cooldown==0 then
-            player.health = player.health - 1
-            player.hit=5
-        end
-        cooldown = 10
-    end
-
-    if two then
-        if slimecooldown==0 then
-            self.health = self.health - 1
-            self.hit=5
-        end
-        slimecooldown = 10
-    end
 end
 
 function slime:update(dt)
@@ -100,12 +65,9 @@ function slime:update(dt)
                 end
             end
         end
-        if cooldown ~= 0 then
-            cooldown = cooldown - 1
-        end
 
-        if slimecooldown ~= 0 then
-            slimecooldown = slimecooldown - 1
+		if self.cooldown ~= 0 then
+            self.cooldown = self.cooldown - 1
         end
 
         if self.hit ~=0 then
@@ -115,13 +77,7 @@ function slime:update(dt)
         if dx ~= 0 or dy ~= 0 then
             local cols
             self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
-            for i=1, cols_len do
-                local col = cols[i]
-            end
         end
-        local one = IntersectingwithPlayer(player.x,player.y,player.w,player.h, self.x-1,self.y-1,self.w+2,self.h+2)
-        local two = IntersectingwithFire(player.fireballs, self.x-1,self.y-1,self.w+2,self.h+2)
-        self:TakingDamage(one, two, self.x-1,self.y-1,self.w+2,self.h+2)
     end
     if self.health == 0 then
         self.health = self.health - 1

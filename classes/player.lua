@@ -40,7 +40,8 @@ function player:initialize()
     self.speed=60
     self.health=10
     self.hit=0
-    self.cooldown = 0
+	self.firecooldown = 0
+	self.dmgcooldown = 0
     self.fireballs = {}
     self.lastpushed='s'
     --self.in
@@ -54,6 +55,23 @@ function player:initialize()
     drawOrder:register(self)
 end
 
+function player:TakingDamage(x,y,h,w)
+	if self.x<x and self.y>=y and self.y<=y+h then
+	        self.x = self.x-30
+	    elseif self.y>y and self.x>=x and self.x<=x+h then
+	        self.y = self.y+30
+	    elseif self.x>x and self.y>=y and self.y<=y+h then
+	        self.x = self.x+30
+	    elseif  self.y<y and self.x>=x and self.x<=x+w then
+	        self.y = self.y-30
+	    end
+	if self.dmgcooldown==0 then
+		self.health = self.health - 1
+	    self.hit=5
+	end
+	self.dmgcooldown = 10
+end
+
 function player:update(dt)
     self:inputUpdate()
 
@@ -63,9 +81,13 @@ function player:update(dt)
     walkup:update(dt)
     walkdown:update(dt)
 
-    if(self.cooldown ~= 0) then
-        self.cooldown = self.cooldown - 1
-    end
+	if(self.firecooldown ~= 0) then
+		self.firecooldown = self.firecooldown - 1
+	end
+
+	if(self.dmgcooldown ~= 0) then
+		self.dmgcooldown = self.dmgcooldown - 1
+	end
 
     local index = 1
     for _,v in pairs(self.fireballs) do
@@ -91,17 +113,20 @@ function player:update(dt)
       self.lastpushed = 'w'
     end
 
-    if love.keyboard.isDown("space") and self.cooldown == 0 then
+    if love.keyboard.isDown("space") and self.firecooldown == 0 then
         table.insert(self.fireballs, fireball(self.lastpushed, self.x, self.y))
-        self.cooldown = 20
+        self.firecooldown = 20
     end
 
 
     if dx ~= 0 or dy ~= 0 then
       local cols
       self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
-      for i=1, cols_len do
-        local col = cols[i]
+	  for _,v in ipairs(cols) do
+        local col = v
+		if v.other:isInstanceOf(slime) then
+				self:TakingDamage(v.other.x,v.other.y,v.other.h,v.other.w)
+		end
       end
     end
   end
