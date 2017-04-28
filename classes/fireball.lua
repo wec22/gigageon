@@ -4,6 +4,7 @@ local animation = require("classes.animation")
 local bump = require("lib.bump")
 
 local slime = require("classes.slime")
+local explosion = require("classes.explosion")
 
 local projectile = require("classes.projectile")
 local fireball = class("fireball")
@@ -75,6 +76,7 @@ function fireball:update(dt)
 				local col = v
 
 				if cols_len >= 1 then
+					explosion(self.x, self.y)
 					self.removed = true
 					world:remove(self)
 				end

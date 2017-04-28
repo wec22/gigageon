@@ -47,7 +47,7 @@ function explosion:update(dt)
 end
 
 function explosion:draw()
-    love.graphics.draw(self.particle, 256, 256)
+    love.graphics.draw(self.particle, self.x, self.y)
 end
 
 
