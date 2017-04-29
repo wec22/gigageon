@@ -2,12 +2,12 @@
 <tileset name="overworld" tilewidth="16" tileheight="16" spacing="1" tilecount="1767" columns="57">
  <image source="roguelikeSheet_transparent.png" width="968" height="526"/>
  <terraintypes>
-  <terrain name="grass" tile="351"/>
-  <terrain name="water (natural)" tile="351"/>
-  <terrain name="water (man-made)" tile="351"/>
-  <terrain name="Flowers (red)" tile="351"/>
-  <terrain name="Flowers (white)" tile="351"/>
-  <terrain name="Flowers (blue)" tile="351"/>
+  <terrain name="grass" tile="5"/>
+  <terrain name="water (natural)" tile="60"/>
+  <terrain name="water (man-made)" tile="231"/>
+  <terrain name="Flowers (red)" tile="402"/>
+  <terrain name="Flowers (white)" tile="573"/>
+  <terrain name="Flowers (blue)" tile="744"/>
   <terrain name="Path (brown)" tile="578"/>
  </terraintypes>
  <tile id="0" terrain="2,2,2,2">
@@ -15,7 +15,7 @@
    <property name="collide" type="bool" value="false"/>
   </properties>
  </tile>
- <tile id="1" terrain="2,2,2,2">
+ <tile id="1" terrain="1,1,1,1">
   <properties>
    <property name="collide" type="bool" value="false"/>
   </properties>
@@ -2011,8 +2011,8 @@
    <property name="collide" type="bool" value="false"/>
   </properties>
   <animation>
-   <frame tileid="396" duration="250"/>
-   <frame tileid="397" duration="250"/>
+   <frame tileid="396" duration="100"/>
+   <frame tileid="397" duration="100"/>
   </animation>
  </tile>
  <tile id="397">
@@ -2115,8 +2115,8 @@
    <property name="collide" type="bool" value="false"/>
   </properties>
   <animation>
-   <frame tileid="416" duration="250"/>
-   <frame tileid="417" duration="250"/>
+   <frame tileid="416" duration="100"/>
+   <frame tileid="417" duration="100"/>
   </animation>
  </tile>
  <tile id="417">
@@ -2304,8 +2304,8 @@
    <property name="collide" type="bool" value="false"/>
   </properties>
   <animation>
-   <frame tileid="453" duration="250"/>
-   <frame tileid="454" duration="250"/>
+   <frame tileid="453" duration="100"/>
+   <frame tileid="454" duration="100"/>
   </animation>
  </tile>
  <tile id="454">
@@ -2412,8 +2412,8 @@
    <property name="collide" type="bool" value="false"/>
   </properties>
   <animation>
-   <frame tileid="473" duration="250"/>
-   <frame tileid="474" duration="250"/>
+   <frame tileid="473" duration="100"/>
+   <frame tileid="474" duration="100"/>
   </animation>
  </tile>
  <tile id="474">
@@ -2601,8 +2601,8 @@
    <property name="collide" type="bool" value="false"/>
   </properties>
   <animation>
-   <frame tileid="510" duration="250"/>
-   <frame tileid="511" duration="250"/>
+   <frame tileid="510" duration="100"/>
+   <frame tileid="511" duration="100"/>
   </animation>
  </tile>
  <tile id="511">
@@ -2890,8 +2890,8 @@
    <property name="collide" type="bool" value="false"/>
   </properties>
   <animation>
-   <frame tileid="567" duration="250"/>
-   <frame tileid="568" duration="250"/>
+   <frame tileid="567" duration="100"/>
+   <frame tileid="568" duration="100"/>
   </animation>
  </tile>
  <tile id="568">
@@ -3179,8 +3179,8 @@
    <property name="collide" type="bool" value="false"/>
   </properties>
   <animation>
-   <frame tileid="624" duration="250"/>
-   <frame tileid="625" duration="250"/>
+   <frame tileid="624" duration="100"/>
+   <frame tileid="625" duration="100"/>
   </animation>
  </tile>
  <tile id="625">
