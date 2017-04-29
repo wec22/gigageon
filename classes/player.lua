@@ -3,21 +3,13 @@ local animation = require("classes.animation")
 
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
-
-local fireball = require("classes.fireball")
-
+local magic = require("classes.fireball")
 local slime = require("classes.slime")
 
 local entity = require("classes.entity")
-
-
-local zinput = require("lib.zinput")
-local character = require("classes.character")
-local player = class("player", character):include(zinput)
-
+local player = class("player")
 
 local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
-spritesheet:setFilter("nearest","nearest")
 
 local walkdown = animation(spritesheet, 32, 32, 0.1, 1, 4)
 local walkup = animation(spritesheet, 32, 32, 0.1, 13, 16)
@@ -44,16 +36,10 @@ function player:initialize()
     self.speed=60
     self.health=10
     self.hit=0
-
-	self.firecooldown = 0
+    self.firecooldown = 0
 	self.dmgcooldown = 0
     self.fireballs = {}
     self.lastpushed='s'
-    --self.in
-
-
-
-
 
     world:add(self, self.x, self.y, self.w, self.h)
 
@@ -75,26 +61,25 @@ function player:TakingDamage(x,y,h,w)
 	    self.hit=5
 	end
 	self.dmgcooldown = 10
+
 end
 
 function player:update(dt)
-    self:inputUpdate()
-
     cols_len=0
     walkright:update(dt)
     walkleft:update(dt)
     walkup:update(dt)
     walkdown:update(dt)
 
-    if self.firecooldown ~= 0 then
+    if(self.firecooldown ~= 0) then
         self.firecooldown = self.firecooldown - 1
     end
 
-	if self.dmgcooldown ~= 0 then
+	if(self.dmgcooldown ~= 0) then
         self.dmgcooldown = self.dmgcooldown - 1
     end
 
-    if love.keyboard.isDown("space") and self.firecooldown == 0 then
+    if(love.keyboard.isDown("space") and self.firecooldown == 0) then
         table.insert(self.fireballs, magic(self))
         self.firecooldown = 20
     end
@@ -123,17 +108,11 @@ function player:update(dt)
       self.lastpushed = 'w'
     end
 
-    if love.keyboard.isDown("space") and self.firecooldown == 0 then
-        table.insert(self.fireballs, fireball(self.lastpushed, self.x, self.y))
-        self.firecooldown = 20
-    end
-
 
     if dx ~= 0 or dy ~= 0 then
       local cols
       self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
-
-	  for _,v in ipairs(cols) do
+      for _,v in ipairs(cols) do
         local col = v
 		if v.other:isInstanceOf(slime) then
 				self:TakingDamage(v.other.x,v.other.y,v.other.h,v.other.w)
@@ -147,7 +126,7 @@ function player:gameover()
     love.graphics.setFont(font)
     love.graphics.print("Health : ", love.graphics.getWidth() - 110, 0)
     love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
-    if self.health <= 0 then
+    if(self.health <= 0) then
         love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(255, 255, 255)
@@ -156,13 +135,13 @@ function player:gameover()
 end
 
 function player:stand()
-    if self.lastpushed == 'd' then
+    if(self.lastpushed == 'd') then
         standright:draw(self.x-10, self.y-20)
-    elseif self.lastpushed == 'a' then
+    elseif(self.lastpushed == 'a') then
         standleft:draw(self.x-10, self.y-20)
-    elseif self.lastpushed == 'w' then
+    elseif(self.lastpushed == 'w') then
         standup:draw(self.x-10, self.y-20)
-    elseif self.lastpushed == 's' then
+    elseif(self.lastpushed == 's') then
         standdown:draw(self.x-10, self.y-20)
     end
 end
@@ -175,20 +154,20 @@ function player:draw()
         index = index + 1
     end
 
-    if self.hit~=0 then
+    if(self.hit~=0) then
         love.graphics.setColor(255, 0, 0)
         self.hit = self.hit-1
     end
-    if love.keyboard.isDown('d') then
+    if(love.keyboard.isDown('d')) then
         walkright:draw(self.x-10, self.y-20)
         self.lastpushed = 'd'
-    elseif love.keyboard.isDown('a') then
+    elseif(love.keyboard.isDown('a')) then
         walkleft:draw(self.x-10, self.y-20)
         self.lastpushed = 'a'
-    elseif love.keyboard.isDown('w') then
+    elseif(love.keyboard.isDown('w')) then
        walkup:draw(self.x-10, self.y-20)
         self.lastpushed = 'w'
-    elseif love.keyboard.isDown('s') then
+    elseif(love.keyboard.isDown('s')) then
         walkdown:draw(self.x-10, self.y-20)
         self.lastpushed = 's'
     else

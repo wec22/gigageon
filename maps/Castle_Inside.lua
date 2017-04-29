@@ -1,6 +1,6 @@
 local class = require("lib.middleclass")
 local tiled = require("lib.tiled")
-local c = require("classes.collisionBlock")
+local c = require("classes.collisionblock")
 local slime = require("classes.slime")
 local npc = require("classes.npc")
 local tb = require("classes.textbox")
@@ -25,7 +25,7 @@ end
 
 function map:update(dt)
 
-    if init_inside_castle == 1 then
+    if(init_inside_castle == 1) then
         blocks[1] = c(16*2,16*3,16*3,16*3)
         blocks[2] = c(16*10,16*3,16*3,16*3)
         blocks[3] = c(16*19,16*3,16*3,16*3)
@@ -52,7 +52,7 @@ function map:update(dt)
     local LeavingCastle = IntersectingwithPlayer(player.x,player.y,player.w,player.h, CastleExit.x, CastleExit.y,CastleExit.w,CastleExit.h)
     local EnteringDungeon = IntersectingwithPlayer(player.x,player.y,player.w,player.h, DungeonEnter.x, DungeonEnter.y,DungeonEnter.w,DungeonEnter.h)
 
-    if LeavingCastle then
+    if(LeavingCastle) then
         player.x = 16*15.5
         player.y = 16*6
         for _,b in pairs(blocks) do
@@ -62,7 +62,7 @@ function map:update(dt)
         playerlocation = 1
     end
 
-    if EnteringDungeon then
+    if(EnteringDungeon) then
         player.x = 512-32
         player.y = 16*15
         player.lastpushed = 'a'
@@ -78,10 +78,10 @@ end
 
 function map:drawoutcam()
     king:drawtextbox()
-    if king.times > 0 and missioncomplete == 0 then
+    if(king.times > 0 and missioncomplete == 0) then
         textTable = {"Kill those slimes!!"}
         king:setText(textTable)
-    elseif king.times > 0 and missioncomplete ~= 0 then
+    elseif(king.times > 0 and missioncomplete ~= 0) then
         textTable = {"Thank You!"}
         king:setText(textTable)
     end
