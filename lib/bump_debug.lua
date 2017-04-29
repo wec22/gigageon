@@ -1,5 +1,5 @@
 
-local bump = require 'lib.bump'
+local bump = require 'bump'
 
 local bump_debug = {}
 
@@ -20,19 +20,11 @@ function bump_debug.draw(world)
       local intensity = cell.itemCount * 12 + 16
       love.graphics.setColor(255,255,255,intensity)
       love.graphics.rectangle('fill', l,t,w,h)
-      love.graphics.setColor(255,255,255, 128)
+      love.graphics.setColor(255,255,255, 64)
       love.graphics.printf(cell.itemCount, l, t+topOffset, cellSize, 'center')
-      love.graphics.setColor(255,255,255,64)
+      love.graphics.setColor(255,255,255,10)
       love.graphics.rectangle('line', l,t,w,h)
     end
-  end
-  for _,v in ipairs(world:getItems()) do
-    local x,y,w,h = world:getRect(v)
-    love.graphics.setColor(48, 89, 133, 128)
-    love.graphics.rectangle('fill',x,y,w,h)
-    love.graphics.setColor(48, 89, 133, 64)
-    love.graphics.rectangle('line',x,y,w,h)
-
   end
 end
 
