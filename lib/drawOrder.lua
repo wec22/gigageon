@@ -23,10 +23,11 @@ function order:remove(t)
 	print("drawOrder: removing a ", t.class.name)
 	for i,v in ipairs(self.members) do
 		if v == t then
-			self.members[i] = nil
+			table.remove(self.members,i)
+
 		end
 	end
-	collectgarbage()
+	--collectgarbage()
 end
 
 local function sort(lh, rh)
@@ -34,8 +35,7 @@ local function sort(lh, rh)
 		return false
 	elseif not rh then
 		return true
-	end
-	if lh.drawOrder == rh.drawOrder then
+	elseif lh.drawOrder == rh.drawOrder then
 		return lh.y < rh.y
 	else
 		return lh.drawOrder < rh.drawOrder

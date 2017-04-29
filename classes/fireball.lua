@@ -2,12 +2,14 @@ local class = require("lib.middleclass")
 local animation = require("classes.animation")
 
 local bump = require("lib.bump")
+local drawOrder = require("lib.drawOrder")
 
 local slime = require("classes.slime")
 local explosion = require("classes.explosion")
 
+local entity = require("classes.entity")
 local projectile = require("classes.projectile")
-local fireball = class("fireball")
+local fireball = class("fireball",entity)
 
 local fireshot = love.graphics.newImage("assets/art/fireball_sprite.png")
 
@@ -46,8 +48,8 @@ function fireball:initialize(lastpushed, x, y)
 	self.x = self.x + self.offsetx
 	self.y = self.y + self.offsety
 
-	world:add(self,self.x,self.y,self.w,self.h)
-
+	world:add(self, self.x,self.y,self.w,self.h)
+	drawOrder:register(self)
 
 end
 
@@ -72,18 +74,25 @@ function fireball:update(dt)
 
 		if dx ~= 0 or dy ~= 0 then
 		  local cols
-		  self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+		  self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy,function(item, other)
+		  																				if other:isInstanceOf(explosion) then
+																							return "cross"
+																						else
+																							return "touch"
+																						end
+																					end)
 		  for _,v in ipairs(cols) do
 				local col = v
 
-				if cols_len >= 1 then
+				if v.other:isInstanceOf(slime) then
+						v.other:TakingDamage()
+				end
+
+				if not v.other:isInstanceOf(explosion) then
 					explosion(self.x, self.y)
 					self.removed = true
 					world:remove(self)
-				end
-
-				if v.other:isInstanceOf(slime) then
-						v.other:TakingDamage()
+					drawOrder:remove(self)
 				end
 
 			end
@@ -92,10 +101,8 @@ function fireball:update(dt)
 end
 
 function fireball:draw()
-	if self.removed == false then
-    	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-    	love.graphics.draw(fireshot, self.x - 7, self.y - 5)
-	end
+    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+    love.graphics.draw(fireshot, self.x - 7, self.y - 5)
 end
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.04.14" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" nextobjectid="22">
+<map version="2017.04.17" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" nextobjectid="28">
  <tileset firstgid="1" source="../../tilesets/dungeon.tsx"/>
  <tileset firstgid="523" source="../../tilesets/overworld.tsx"/>
  <layer name="ground" width="32" height="32">
@@ -148,7 +148,7 @@
 </data>
   </layer>
  </group>
- <objectgroup name="Object Layer 1" visible="0">
+ <objectgroup name="Object Layer 1">
   <object id="1" type="doorway" x="98" y="386" width="28" height="30"/>
   <object id="3" type="doorway" x="354" y="214" width="28" height="26"/>
   <object id="5" type="wall" x="64" y="320" width="34" height="96"/>
@@ -165,5 +165,11 @@
   <object id="19" type="wall" x="0" y="448" width="496" height="64"/>
   <object id="20" type="wall" x="496" y="64" width="16" height="448"/>
   <object id="21" type="wall" x="16" y="0" width="496" height="64"/>
+  <object id="22" type="slime" x="19" y="80" width="16" height="16"/>
+  <object id="23" type="slime" x="41" y="95" width="16" height="16"/>
+  <object id="24" type="slime" x="28" y="122" width="16" height="16"/>
+  <object id="25" type="slime" x="39" y="361" width="16" height="16"/>
+  <object id="26" type="slime" x="85" y="426" width="16" height="16"/>
+  <object id="27" type="slime" x="28" y="412" width="16" height="16"/>
  </objectgroup>
 </map>
