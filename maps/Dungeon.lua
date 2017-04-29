@@ -1,6 +1,6 @@
 local class = require("lib.middleclass")
 local tiled = require("lib.tiled")
-local c = require("classes.collisionblock")
+local c = require("classes.collisionBlock")
 local slime = require("classes.slime")
 local npc = require("classes.npc")
 local tb = require("classes.textbox")
@@ -31,7 +31,7 @@ function map:initialize()
 end
 
 function map:update(dt)
-    if(init_outside_castle == 1) then
+    if init_outside_castle == 1 then
         blocks[1] = c(0,16*8,512,1)
         blocks[2] = c(0,16*23,512,1)
         init_outside_castle = 0
@@ -42,21 +42,21 @@ function map:update(dt)
         sum = sum + slimes[index].health
     end
 
-    if(sum <= 0) then
+    if sum <= 0 then
         textTable = {"Thank you for killing all of\nthose rotten slimes!", "I knew we could trust you!"}
         missioncomplete = 1
     end
 
     local changeMap = IntersectingwithPlayer(player.x,player.y,player.w,player.h, DungeonExit.x, DungeonExit.y,DungeonExit.w,DungeonExit.h)
 
-    if(changeMap) then
+    if changeMap then
         player.x = 512-48
         player.y = 16*8
         for _,b in pairs(blocks) do
             b:remove()
         end
         for index = 1, 8 do
-            if(slimes[index].health~=-1) then
+            if slimes[index].health~=-1 then
                 slimes[index].health = 0
             end
         end

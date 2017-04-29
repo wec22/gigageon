@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="slime" color="#0055ff">
+  <property name="health" type="float" default="0"/>
+ </objecttype>
+ <objecttype name="doorway" color="#55ffff">
+  <property name="mapName" type="string"/>
+ </objecttype>
+ <objecttype name="wall" color="#000000"/>
+ <objecttype name="spawn" color="#ff0000"/>
+</objecttypes>
