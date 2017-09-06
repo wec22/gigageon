@@ -1,6 +1,6 @@
 local class = require("lib.middleclass")
 local tiled = require("lib.tiled")
-local c = require("classes.collisionBlock")
+local c = require("classes.collisionblock")
 local slime = require("classes.slime")
 local npc = require("classes.npc")
 local tb = require("classes.textbox")
@@ -21,7 +21,7 @@ function map:initialize()
 end
 
 function map:update(dt)
-    if init_outside_castle == 1 then
+    if(init_outside_castle == 1) then
         blocks[1] = c(16,16,16*3,16*3)
         blocks[2] = c(16*28,16,16*3,16*3)
         blocks[3] = c(16*5,0,16*10,16*6)
@@ -32,7 +32,7 @@ function map:update(dt)
         init_outside_castle = 0
     end
     local changeMap = IntersectingwithPlayer(player.x,player.y,player.w,player.h, CastleEnter.x, CastleEnter.y,CastleEnter.w,CastleEnter.h)
-    if changeMap then
+    if(changeMap) then
         player.x = 16*16
         player.y = 512-32
         for _,b in pairs(blocks) do

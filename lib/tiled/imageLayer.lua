@@ -11,10 +11,10 @@ local class = require("lib.middleclass")
 
 local layer = require(path .. "layer")
 
-local imageLayer = class("tiled.imageLayer", layer)
+local imageLayer = class("imageLayer", layer)
 
 function imageLayer:initilaize(t)
-    print "Tiled: building new imageLayer"
+    print "building new imageLayer"
 end
 
 return imageLayer

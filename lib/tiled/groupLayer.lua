@@ -12,12 +12,11 @@ local layer = require(path .. "layer")
 
 local tileLayer = require(path .. "tileLayer")
 local imageLayer = require(path .. "imageLayer")
-local objectLayer = require(path .. "objectLayer")
 
-local groupLayer = class("tiled.groupLayer", layer)
+local groupLayer = class("groupLayer", layer)
 
 function groupLayer:initialize(t)
-    print "Tiled: building new groupLayer"
+    print "building new groupLayer"
 
     layer.initialize(self, t)
 
@@ -29,22 +28,14 @@ function groupLayer:initialize(t)
             table.insert(self.layers, imageLayer(v))
         elseif v.type == "imagelayer" and layers then
             table.insert(self.layers, groupLayer(v))
-        elseif v.type == "objectgroup" then
-            table.insert(self.layers, objectLayer(v))
         end
     end
 end
 
 function groupLayer:draw(x, y, map)
-    love.graphics.push()
-
-    love.graphics.setColor(255, 255, 255, 255 * self.opacity)
-
     for _,v in ipairs(self.layers) do
         v:draw(x, y, map)
     end
-
-    love.graphics.pop()
 end
 
 return groupLayer

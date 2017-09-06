@@ -10,13 +10,11 @@ local fireball = require("classes.fireball")
 local slime = require("classes.slime")
 local entity = require("classes.entity")
 
-
 local character = require("classes.character")
 local player = class("player", character):include(zinput)
 
 
 local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
-spritesheet:setFilter("nearest","nearest")
 
 local walkdown = animation(spritesheet, 32, 32, 0.1, 1, 4)
 local walkup = animation(spritesheet, 32, 32, 0.1, 13, 16)
@@ -42,8 +40,7 @@ function player:initialize()
     self.speed=60
     self.health=10
     self.hit=0
-
-	self.firecooldown = 0
+    self.firecooldown = 0
 	self.dmgcooldown = 0
     self.fireballs = {}
     self.lastpushed = 's'
@@ -80,11 +77,10 @@ function player:TakingDamage(x,y,h,w)
 	    self.hit=5
 	end
 	self.dmgcooldown = 10
+
 end
 
 function player:update(dt)
-    self:inputUpdate()
-
     cols_len=0
     walkright:update(dt)
     walkleft:update(dt)
@@ -133,7 +129,6 @@ function player:update(dt)
       self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
 
 	  for _,v in ipairs(cols) do
-
         local col = v
 		if v.other:isInstanceOf(slime) then
 			self:TakingDamage(v.other.x,v.other.y,v.other.h,v.other.w)
@@ -147,7 +142,8 @@ function player:gameover()
     love.graphics.setFont(font)
     love.graphics.print("Health : ", love.graphics.getWidth() - 110, 0)
     love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
-    if self.health <= 0 then
+
+	if self.health <= 0 then
         love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(255, 255, 255)
@@ -175,7 +171,7 @@ function player:draw()
         index = index + 1
     end
 
-    if self.hit~=0 then
+    if self.hit ~= 0 then
         love.graphics.setColor(255, 0, 0)
         self.hit = self.hit-1
     end

@@ -1,27 +1,24 @@
---[[
--- main entry point
 
+local gamera = require("lib.gamera")
 
-]]
+local lovebird = require("lib.lovebird")
 
 --require("devmode")
 
-local gamera = require("lib.gamera")
-local lovebird = require("lib.lovebird")
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
 local shine = require("lib.shine")
-local push = require("lib.push")
-local tiled = require("lib.tiled")
 
 local entity = require("classes.entity")
 local c = require("classes.collisionBlock")
 local p = require("classes.player")
 local explosion = require("classes.explosion")
 
+local p = require("classes.player")
 local outsideCastle = require("maps.Castle_Outside")
 local insideCastle = require("maps.Castle_Inside")
 local dungeon = require("maps.Dungeon")
+local c = require("classes.collisionblock")
 
 --debug stuff
 if devmode then
@@ -51,7 +48,7 @@ function love.load()
     textTable = {"Hello Traveler!","I am the king of this land!", "I have heard lots about you and your journeys!", "Might I implore you for an issue we have been \nexperiencing?",
     "Our monster dungeon has been overrun with \nslimes!", "Many of our warriors have been unsuccessful in \neliminating the threat\nBut now you have come!",
     "The tales of the ancients have talked about your \nlegendary fire magic!", "They say you make it look as easy as \npressing the 'space' key on a keyboard",
-    "Whatever a keyboard is, I'm sure we have nothing\nto worry about now", "Oh yes! The dungeon! Why its downstairs\njust turn right and you'll see it!",
+    "Whatever a keyboard is, Im sure we have nothing\nto worry about now", "Oh yes! The dungeon! Why its downstairs\njust turn right and youll see it!",
     "Now, I will see you when you've killed every\nlast one of those slimes!"}
 
     player=p()
@@ -59,7 +56,6 @@ function love.load()
 
     cam:setScale(2)
     cam:setPosition(player.x, player.y)
-    testmap = tiled.map("maps.Testmaps.newTilesets")
 end
 
 
