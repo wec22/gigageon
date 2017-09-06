@@ -12,23 +12,9 @@ function order:register(t)
 	table.insert(self.members, t)
 end
 
-function order:remove(t)
-	print("drawOrder: removing a ", t.class.name)
-	for i,v in ipairs(self.members) do
-		if v == t then
-			table.remove(self.members,i)
-
-		end
-	end
-	--collectgarbage()
-end
 
 local function sort(lh, rh)
-	if not lh then
-		return false
-	elseif not rh then
-		return true
-	elseif lh.drawOrder == rh.drawOrder then
+	if lh.drawOrder == rh.drawOrder then
 		return lh.y < rh.y
 	else
 		return lh.drawOrder < rh.drawOrder

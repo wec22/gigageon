@@ -3,16 +3,11 @@ local animation = require("classes.animation")
 
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
-local zinput = require("lib.zinput")
-local det = require("lib.detectors")
-
-local fireball = require("classes.fireball")
+local magic = require("classes.fireball")
 local slime = require("classes.slime")
+
 local entity = require("classes.entity")
-
-local character = require("classes.character")
-local player = class("player", character):include(zinput)
-
+local player = class("player")
 
 local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
 
@@ -31,6 +26,7 @@ walkup:setSpeed(0.5)
 walkleft:setSpeed(0.5)
 walkright:setSpeed(0.5)
 
+local cols_len = 0
 
 function player:initialize()
     self.x=16*16
@@ -43,19 +39,7 @@ function player:initialize()
     self.firecooldown = 0
 	self.dmgcooldown = 0
     self.fireballs = {}
-    self.lastpushed = 's'
-
-    self:newbutton("up", det.button.key("w"))
-    self:newbutton("down", det.button.key("s"))
-    self:newbutton("left", det.button.key("a"))
-    self:newbutton("right", det.button.key("d"))
-    self:newbutton("fire", det.button.key("space"))
-
-    self.inputs.up:addDetector(det.button.gamepad("dpup",1))
-    self.inputs.down:addDetector(det.button.gamepad("dpdown",1))
-    self.inputs.left:addDetector(det.button.gamepad("dpleft",1))
-    self.inputs.right:addDetector(det.button.gamepad("dpright",1))
-    self.inputs.fire:addDetector(det.button.gamepad("a",1))
+    self.lastpushed='s'
 
     world:add(self, self.x, self.y, self.w, self.h)
 
@@ -87,16 +71,16 @@ function player:update(dt)
     walkup:update(dt)
     walkdown:update(dt)
 
-    if self.firecooldown ~= 0 then
+    if(self.firecooldown ~= 0) then
         self.firecooldown = self.firecooldown - 1
     end
 
-	if self.dmgcooldown ~= 0 then
+	if(self.dmgcooldown ~= 0) then
         self.dmgcooldown = self.dmgcooldown - 1
     end
 
-    if self.inputs.fire() and self.firecooldown == 0 then
-		fireball(self.lastpushed, self.x, self.y)
+    if(love.keyboard.isDown("space") and self.firecooldown == 0) then
+        table.insert(self.fireballs, magic(self))
         self.firecooldown = 20
     end
 
@@ -109,29 +93,29 @@ function player:update(dt)
     local speed = self.speed
 
     local dx, dy = 0, 0
-    if self.inputs.right() then
+    if love.keyboard.isDown('d') then
       dx = speed * dt
       self.lastpushed = 'd'
-	elseif self.inputs.left() then
+    elseif love.keyboard.isDown('a') then
       dx = -speed * dt
       self.lastpushed = 'a'
     end
-    if self.inputs.down() then
+    if love.keyboard.isDown('s') then
       dy = speed * dt
       self.lastpushed = 's'
-  elseif self.inputs.up() then
+    elseif love.keyboard.isDown('w') then
       dy = -speed * dt
       self.lastpushed = 'w'
     end
 
+
     if dx ~= 0 or dy ~= 0 then
       local cols
       self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
-
-	  for _,v in ipairs(cols) do
+      for _,v in ipairs(cols) do
         local col = v
 		if v.other:isInstanceOf(slime) then
-			self:TakingDamage(v.other.x,v.other.y,v.other.h,v.other.w)
+				self:TakingDamage(v.other.x,v.other.y,v.other.h,v.other.w)
 		end
       end
     end
@@ -142,8 +126,7 @@ function player:gameover()
     love.graphics.setFont(font)
     love.graphics.print("Health : ", love.graphics.getWidth() - 110, 0)
     love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
-
-	if self.health <= 0 then
+    if(self.health <= 0) then
         love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(255, 255, 255)
@@ -152,13 +135,13 @@ function player:gameover()
 end
 
 function player:stand()
-    if self.lastpushed == 'd' then
+    if(self.lastpushed == 'd') then
         standright:draw(self.x-10, self.y-20)
-    elseif self.lastpushed == 'a' then
+    elseif(self.lastpushed == 'a') then
         standleft:draw(self.x-10, self.y-20)
-    elseif self.lastpushed == 'w' then
+    elseif(self.lastpushed == 'w') then
         standup:draw(self.x-10, self.y-20)
-    elseif self.lastpushed == 's' then
+    elseif(self.lastpushed == 's') then
         standdown:draw(self.x-10, self.y-20)
     end
 end
@@ -171,20 +154,20 @@ function player:draw()
         index = index + 1
     end
 
-    if self.hit ~= 0 then
+    if(self.hit~=0) then
         love.graphics.setColor(255, 0, 0)
         self.hit = self.hit-1
     end
-    if self.inputs.right() then
+    if(love.keyboard.isDown('d')) then
         walkright:draw(self.x-10, self.y-20)
         self.lastpushed = 'd'
-    elseif self.inputs.left() then
+    elseif(love.keyboard.isDown('a')) then
         walkleft:draw(self.x-10, self.y-20)
         self.lastpushed = 'a'
-    elseif self.inputs.up() then
+    elseif(love.keyboard.isDown('w')) then
        walkup:draw(self.x-10, self.y-20)
         self.lastpushed = 'w'
-    elseif self.inputs.down() then
+    elseif(love.keyboard.isDown('s')) then
         walkdown:draw(self.x-10, self.y-20)
         self.lastpushed = 's'
     else

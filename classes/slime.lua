@@ -84,7 +84,6 @@ function slime:update(dt)
     if(self.health == 0) then
         self.health = self.health - 1
         world:remove(self)
-		drawOrder:remove(self)
     end
   end
 
