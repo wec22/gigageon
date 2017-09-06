@@ -13,10 +13,10 @@
 
 local class = require("lib.middleclass")
 
-local layer = class("layer")
+local layer = class("tiled.layer")
 
 function layer:initialize(t)
-    print "building new layer"
+    print "Tiled: building new layer"
 
     self.name = t.name
 
