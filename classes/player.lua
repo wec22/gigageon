@@ -35,13 +35,13 @@ walkright:setSpeed(0.5)
 
 
 function player:initialize()
-    self.x=16*16
-    self.y=16*18
-    self.h=8
-    self.w=10
-    self.speed=60
-    self.health=10
-    self.hit=0
+    self.x = 16*16  		--spawn 16 tiles right
+    self.y = 18*16		--spawn 18 tiles down
+    self.h = 8
+    self.w = 10
+    self.speed = 60
+    self.health = 10
+    self.hit = 0
 
 	self.firecooldown = 0
 	self.dmgcooldown = 0
@@ -54,11 +54,11 @@ function player:initialize()
     self:newbutton("right", det.button.key("d"))
     self:newbutton("fire", det.button.key("space"))
 
-    self.inputs.up:addDetector(det.button.gamepad("dpup",1))
-    self.inputs.down:addDetector(det.button.gamepad("dpdown",1))
-    self.inputs.left:addDetector(det.button.gamepad("dpleft",1))
-    self.inputs.right:addDetector(det.button.gamepad("dpright",1))
-    self.inputs.fire:addDetector(det.button.gamepad("a",1))
+    self.inputs.up:addDetector(det.button.gamepad("dpup", 1))
+    self.inputs.down:addDetector(det.button.gamepad("dpdown", 1))
+    self.inputs.left:addDetector(det.button.gamepad("dpleft", 1))
+    self.inputs.right:addDetector(det.button.gamepad("dpright", 1))
+    self.inputs.fire:addDetector(det.button.gamepad("a", 1))
 
     world:add(self, self.x, self.y, self.w, self.h)
 
@@ -114,33 +114,33 @@ function player:update(dt)
 
     local dx, dy = 0, 0
     if self.inputs.right() then
-      dx = speed * dt
-      self.lastpushed = 'd'
+    	dx = speed * dt
+    	self.lastpushed = 'd'
 	elseif self.inputs.left() then
-      dx = -speed * dt
-      self.lastpushed = 'a'
+    	dx = -speed * dt
+    	self.lastpushed = 'a'
     end
     if self.inputs.down() then
-      dy = speed * dt
-      self.lastpushed = 's'
-  elseif self.inputs.up() then
-      dy = -speed * dt
-      self.lastpushed = 'w'
+    	dy = speed * dt
+    	self.lastpushed = 's'
+	elseif self.inputs.up() then
+    	dy = -speed * dt
+    	self.lastpushed = 'w'
     end
 
     if dx ~= 0 or dy ~= 0 then
-      local cols
-      self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+    	local cols
+		self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
 
-	  for _,v in ipairs(cols) do
+		for _,v in ipairs(cols) do
 
-        local col = v
-		if v.other:isInstanceOf(slime) then
-			self:TakingDamage(v.other.x,v.other.y,v.other.h,v.other.w)
-		end
-      end
-    end
-  end
+			local col = v
+			if v.other:isInstanceOf(slime) then
+				self:TakingDamage(v.other.x, v.other.y, v.other.h, v.other.w)
+			end
+    	end
+	end
+end
 
 function player:gameover()
     font = love.graphics.newFont(20)
