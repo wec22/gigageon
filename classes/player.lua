@@ -14,20 +14,23 @@ local entity = require("classes.entity")
 local character = require("classes.character")
 local player = class("player", character):include(zinput)
 
-
+--Setting up player spritesheet for walking/idle
 local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
 spritesheet:setFilter("nearest","nearest")
 
+--Walking animations set up from spritesheet
 local walkdown = animation(spritesheet, 32, 32, 0.1, 1, 4)
 local walkup = animation(spritesheet, 32, 32, 0.1, 13, 16)
 local walkleft = animation(spritesheet, 32, 32, 0.1, 5, 8)
 local walkright = animation(spritesheet, 32, 32, 0.1, 9, 12)
 
+--Idle animation set uo from spritesheet
 local standdown = animation(spritesheet, 32, 32, 0.1, 1, 1)
 local standup = animation(spritesheet, 32, 32, 0.1, 13, 13)
 local standleft = animation(spritesheet, 32, 32, 0.1, 5, 5)
 local standright = animation(spritesheet, 32, 32, 0.1, 9, 9)
 
+--Speed of walking animations
 walkdown:setSpeed(0.5)
 walkup:setSpeed(0.5)
 walkleft:setSpeed(0.5)
@@ -45,9 +48,12 @@ function player:initialize()
 
 	self.firecooldown = 0
 	self.dmgcooldown = 0
+	--Table that holds all fireballs shot from the player
     self.fireballs = {}
+	--Storing the last movement key pressed
     self.lastpushed = 's'
 
+	--Setting up gamepad controls
     self:newbutton("up", det.button.key("w"))
     self:newbutton("down", det.button.key("s"))
     self:newbutton("left", det.button.key("a"))
@@ -60,24 +66,28 @@ function player:initialize()
     self.inputs.right:addDetector(det.button.gamepad("dpright",1))
     self.inputs.fire:addDetector(det.button.gamepad("a",1))
 
+	--Adding player to the physics world and the drawing registery
     world:add(self, self.x, self.y, self.w, self.h)
-
     drawOrder:register(self)
 end
 
+--Function called whenever player should lose health
 function player:TakingDamage(x,y,h,w)
-	if self.x<x and self.y>=y and self.y<=y+h then
+
+	--Player knockback when taking damage
+	if self.x < x and self.y >= y and self.y <= y+h then
 	        self.x = self.x-30
-	    elseif self.y>y and self.x>=x and self.x<=x+h then
+	    elseif self.y > y and self.x >= x and self.x <= x+h then
 	        self.y = self.y+30
-	    elseif self.x>x and self.y>=y and self.y<=y+h then
+	    elseif self.x > x and self.y >= y and self.y <= y+h then
 	        self.x = self.x+30
-	    elseif  self.y<y and self.x>=x and self.x<=x+w then
+	    elseif  self.y < y and self.x >= x and self.x <= x+w then
 	        self.y = self.y-30
 	    end
+
 	if self.dmgcooldown==0 then
 		self.health = self.health - 1
-	    self.hit=5
+	    self.hit = 5
 	end
 	self.dmgcooldown = 10
 end
@@ -85,12 +95,16 @@ end
 function player:update(dt)
     self:inputUpdate()
 
+	--Counting the amount of collisions on the player
     cols_len=0
+
+	--Update for walking animations
     walkright:update(dt)
     walkleft:update(dt)
     walkup:update(dt)
     walkdown:update(dt)
 
+	--Updating all cooldowns needed from player
     if self.firecooldown ~= 0 then
         self.firecooldown = self.firecooldown - 1
     end
@@ -104,6 +118,7 @@ function player:update(dt)
         self.firecooldown = 20
     end
 
+	--Updating fireballs from fireball table
     local index = 1
     for _,v in pairs(self.fireballs) do
         v:update(dt)
@@ -112,6 +127,7 @@ function player:update(dt)
 
     local speed = self.speed
 
+	--Initializing dx and dy to change player hitbox location with player movement
     local dx, dy = 0, 0
     if self.inputs.right() then
       dx = speed * dt
@@ -128,20 +144,25 @@ function player:update(dt)
       self.lastpushed = 'w'
     end
 
+	--Collision logic
     if dx ~= 0 or dy ~= 0 then
       local cols
       self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
 
+	  --Logic when colliding with an enemy
 	  for _,v in ipairs(cols) do
-
         local col = v
 		if v.other:isInstanceOf(slime) then
 			self:TakingDamage(v.other.x,v.other.y,v.other.h,v.other.w)
 		end
+
       end
+
     end
+
   end
 
+--The game ending when the player dies
 function player:gameover()
     font = love.graphics.newFont(20)
     love.graphics.setFont(font)
@@ -155,6 +176,7 @@ function player:gameover()
 	end
 end
 
+--Function called for player idle animations
 function player:stand()
     if self.lastpushed == 'd' then
         standright:draw(self.x-10, self.y-20)
@@ -169,16 +191,20 @@ end
 
 function player:draw()
 
+	--Drawing fireballs from the fireball table
     local index = 1
     for _,v in pairs(self.fireballs) do
         v:draw()
         index = index + 1
     end
 
+	--Playing blinks red after taking damage
     if self.hit~=0 then
         love.graphics.setColor(255, 0, 0)
         self.hit = self.hit-1
     end
+
+	--Drawing correct animation based on player movement
     if self.inputs.right() then
         walkright:draw(self.x-10, self.y-20)
         self.lastpushed = 'd'
@@ -194,6 +220,8 @@ function player:draw()
     else
         self:stand()
     end
+
+	--Changing color of player to normal in case of taking damage
     love.graphics.setColor(255, 255, 255, 255)
 end
 
