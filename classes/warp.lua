@@ -8,7 +8,7 @@ local class = require("lib.middleclass")
 
 local warp = class("warp")
 
-function warp:initialize()
+function warp:initialize(mapName)
     assert(mapName,"mapName missing")
     self.mapName = mapName
 end
