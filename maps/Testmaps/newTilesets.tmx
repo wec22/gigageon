@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.04.17" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" nextobjectid="28">
+<map version="1.0" tiledversion="1.0.2668" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextobjectid="28">
  <tileset firstgid="1" source="../../tilesets/dungeon.tsx"/>
  <tileset firstgid="523" source="../../tilesets/overworld.tsx"/>
+ <templategroup firsttid="1" source="../../tilesets/enemies.tgx"/>
  <layer name="ground" width="32" height="32">
   <data encoding="csv">
 482,481,484,481,483,481,482,483,482,483,485,482,481,484,485,484,485,485,481,483,481,482,483,481,483,485,483,482,481,483,481,483,
@@ -165,11 +166,11 @@
   <object id="19" type="wall" x="0" y="448" width="496" height="64"/>
   <object id="20" type="wall" x="496" y="64" width="16" height="448"/>
   <object id="21" type="wall" x="16" y="0" width="496" height="64"/>
-  <object id="22" type="slime" x="19" y="80" width="16" height="16"/>
-  <object id="23" type="slime" x="41" y="95" width="16" height="16"/>
-  <object id="24" type="slime" x="28" y="122" width="16" height="16"/>
-  <object id="25" type="slime" x="39" y="361" width="16" height="16"/>
-  <object id="26" type="slime" x="85" y="426" width="16" height="16"/>
-  <object id="27" type="slime" x="28" y="412" width="16" height="16"/>
+  <object id="22" type="slime" x="16" y="64" width="16" height="16"/>
+  <object id="23" type="slime" x="32" y="96" width="16" height="16"/>
+  <object id="24" type="slime" x="32" y="128" width="16" height="16"/>
+  <object id="25" tid="1" x="32" y="368" width="16" height="16"/>
+  <object id="26" type="slime" x="96" y="432" width="16" height="16"/>
+  <object id="27" type="slime" x="32" y="416" width="16" height="16"/>
  </objectgroup>
 </map>

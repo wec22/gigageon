@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templategroup name="enemies" nexttemplateid="1">
+ <template name="slime" id="0">
+  <object type="slime" width="16" height="16"/>
+ </template>
+</templategroup>
