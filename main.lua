@@ -4,7 +4,7 @@
 
 ]]
 
---require("devmode")
+require("devmode")
 
 local gamera = require("lib.gamera")
 local lovebird = require("lib.lovebird")
@@ -22,6 +22,7 @@ local explosion = require("classes.explosion")
 local outsideCastle = require("maps.Castle_Outside")
 local insideCastle = require("maps.Castle_Inside")
 local dungeon = require("maps.Dungeon")
+local aStarTest = require("maps.aStarTest")
 
 --debug stuff
 if devmode then
@@ -38,8 +39,6 @@ push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen =
 
 --create the physics world
 world = bump.newWorld()
-
-playerlocation = 1
 
 function love.load()
     pixelate = shine.pixelate()
@@ -59,7 +58,7 @@ function love.load()
 
     cam:setScale(2)
     cam:setPosition(player.x, player.y)
-    testmap = tiled.map("maps.Testmaps.newTilesets")
+    testmap = tiled.map("maps.aStarTest")
 end
 
 
@@ -94,5 +93,5 @@ function love.draw()
                 end
         end)
     end)
-	player:gameover()
+	  player:gameover()
 end
