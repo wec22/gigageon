@@ -85,19 +85,21 @@ function slime:initialize(x,y)
 end
 
 function slime:update(dt)
-
+    -- variables for the slime and player positions
     local startX = self.x / 16
     local startY = self.y / 16
     local playerx = player.x / 16
     local playery = player.y / 16
 
     -- Calculates the path, and length
-        -- Slime and player cords are currently a wall so i need to figure out a way to convert pixels to columns and rows
-    local path, length = myFinder:getPath(startX, startY, playerx, playery)
+    -- rn it doesnt like having it that way, so for now use:
+    local path, length = myFinder:getPath(32, 32, 1, 1)
+    -- local path, length = myFinder:getPath(startX, startY, playerx, playery)
     if path then
     --   print(('Path found! Length: %.2f'):format(path:getLength()))
     	for node, count in path:nodes() do
     	--   print(('Step: %d - x: %d - y: %d'):format(count, node:getX(), node:getY()))
+        -- i havent implemented the nodelist to movment for the slime yet but that will go here.
     	end
     end
 
