@@ -58,7 +58,7 @@ function love.load()
 
     cam:setScale(2)
     cam:setPosition(player.x, player.y)
-    testmap = tiled.map("maps.aStarTest")
+    testmap = tiled.map("maps.aStarMap")
 end
 
 

@@ -35,8 +35,8 @@ walkright:setSpeed(0.5)
 
 
 function player:initialize(x,y)
-    character.initialize(self, x,y,1,8,10,10)
-    
+    character.initialize(self, x,y,3,8,10,10)
+
     self.speed=60
     self.hit=0
 
