@@ -1,20 +1,20 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "2017.04.17",
+  tiledversion = "1.0.3",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 32,
   height = 32,
   tilewidth = 16,
   tileheight = 16,
-  nextobjectid = 28,
+  nextobjectid = 30,
   properties = {},
   tilesets = {
     {
       name = "Dungeon",
       firstgid = 1,
-      filename = "../../tilesets/dungeon.tsx",
+      filename = "tilesets/dungeon.tsx",
       tilewidth = 16,
       tileheight = 16,
       spacing = 1,
@@ -500,7 +500,7 @@ return {
     {
       name = "overworld",
       firstgid = 523,
-      filename = "../../tilesets/overworld.tsx",
+      filename = "tilesets/overworld.tsx",
       tilewidth = 16,
       tileheight = 16,
       spacing = 1,
@@ -11362,6 +11362,321 @@ return {
           }
         }
       }
+    },
+    {
+      name = "City",
+      firstgid = 2290,
+      filename = "tilesets/city.tsx",
+      tilewidth = 16,
+      tileheight = 16,
+      spacing = 1,
+      margin = 0,
+      image = "tilesets/roguelikeCity_transparent.png",
+      imagewidth = 628,
+      imageheight = 475,
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 16,
+        height = 16
+      },
+      properties = {},
+      terrains = {
+        {
+          name = "grass",
+          tile = 963,
+          properties = {}
+        },
+        {
+          name = "dirt",
+          tile = 973,
+          properties = {}
+        },
+        {
+          name = "enclosed water",
+          tile = 212,
+          properties = {}
+        },
+        {
+          name = "enclosed grass",
+          tile = 70,
+          properties = {}
+        }
+      },
+      tilecount = 1036,
+      tiles = {
+        {
+          id = 32,
+          terrain = { -1, -1, -1, 0 }
+        },
+        {
+          id = 33,
+          terrain = { -1, -1, 0, 0 }
+        },
+        {
+          id = 34,
+          terrain = { -1, -1, 0, -1 }
+        },
+        {
+          id = 35,
+          terrain = { 0, 0, 0, -1 }
+        },
+        {
+          id = 36,
+          terrain = { 0, 0, -1, 0 }
+        },
+        {
+          id = 69,
+          terrain = { -1, 0, -1, 0 }
+        },
+        {
+          id = 70,
+          terrain = { 3, 3, 3, 3 }
+        },
+        {
+          id = 71,
+          terrain = { 0, -1, 0, -1 }
+        },
+        {
+          id = 72,
+          terrain = { 0, -1, 0, 0 }
+        },
+        {
+          id = 73,
+          terrain = { -1, 0, 0, 0 }
+        },
+        {
+          id = 106,
+          terrain = { -1, 0, -1, -1 }
+        },
+        {
+          id = 107,
+          terrain = { 0, 0, -1, -1 }
+        },
+        {
+          id = 108,
+          terrain = { 0, -1, -1, -1 }
+        },
+        {
+          id = 174,
+          terrain = { -1, -1, -1, 2 }
+        },
+        {
+          id = 175,
+          terrain = { -1, -1, 2, 2 }
+        },
+        {
+          id = 176,
+          terrain = { -1, -1, 2, -1 }
+        },
+        {
+          id = 177,
+          terrain = { 2, 2, 2, -1 }
+        },
+        {
+          id = 178,
+          terrain = { 2, 2, -1, 2 }
+        },
+        {
+          id = 211,
+          terrain = { -1, 2, -1, 2 }
+        },
+        {
+          id = 212,
+          terrain = { 2, 2, 2, 2 }
+        },
+        {
+          id = 213,
+          terrain = { 2, -1, 2, -1 }
+        },
+        {
+          id = 214,
+          terrain = { 2, -1, 2, 2 }
+        },
+        {
+          id = 215,
+          terrain = { -1, 2, 2, 2 }
+        },
+        {
+          id = 248,
+          terrain = { -1, 2, -1, -1 }
+        },
+        {
+          id = 249,
+          terrain = { 2, 2, -1, -1 }
+        },
+        {
+          id = 250,
+          terrain = { 2, -1, -1, -1 }
+        },
+        {
+          id = 888,
+          terrain = { 3, 3, 3, 3 }
+        },
+        {
+          id = 889,
+          terrain = { 3, 3, 3, 3 }
+        },
+        {
+          id = 925,
+          terrain = { 1, 1, 1, 0 }
+        },
+        {
+          id = 926,
+          terrain = { 1, 1, 0, 0 }
+        },
+        {
+          id = 927,
+          terrain = { 1, 1, 0, 1 }
+        },
+        {
+          id = 928,
+          terrain = { 0, 0, 0, -1 }
+        },
+        {
+          id = 929,
+          terrain = { 0, 0, -1, 0 }
+        },
+        {
+          id = 935,
+          terrain = { 0, 0, 0, 1 }
+        },
+        {
+          id = 936,
+          terrain = { 0, 0, 1, 1 }
+        },
+        {
+          id = 937,
+          terrain = { 0, 0, 1, 0 }
+        },
+        {
+          id = 938,
+          terrain = { 1, 1, 1, 0 }
+        },
+        {
+          id = 939,
+          terrain = { 1, 1, 0, 1 }
+        },
+        {
+          id = 962,
+          terrain = { 1, 0, 1, 0 }
+        },
+        {
+          id = 963,
+          terrain = { 0, 0, 0, 0 }
+        },
+        {
+          id = 964,
+          terrain = { 0, 1, 0, 1 }
+        },
+        {
+          id = 965,
+          terrain = { 0, -1, 0, 0 }
+        },
+        {
+          id = 966,
+          terrain = { -1, 0, 0, 0 }
+        },
+        {
+          id = 972,
+          terrain = { 0, 1, 0, 1 }
+        },
+        {
+          id = 973,
+          terrain = { 1, 1, 1, 1 }
+        },
+        {
+          id = 974,
+          terrain = { 1, 0, 1, 0 }
+        },
+        {
+          id = 975,
+          terrain = { 1, 0, 1, 1 }
+        },
+        {
+          id = 976,
+          terrain = { 0, 1, 1, 1 }
+        },
+        {
+          id = 999,
+          terrain = { 1, 0, 1, 1 }
+        },
+        {
+          id = 1000,
+          terrain = { 0, 0, 1, 1 }
+        },
+        {
+          id = 1001,
+          terrain = { 0, 1, 1, 1 }
+        },
+        {
+          id = 1009,
+          terrain = { 0, 1, 0, 0 }
+        },
+        {
+          id = 1010,
+          terrain = { 1, 1, 0, 0 }
+        },
+        {
+          id = 1011,
+          terrain = { 1, 0, 0, 0 }
+        }
+      }
+    },
+    {
+      name = "Indoor",
+      firstgid = 3326,
+      filename = "tilesets/Indoor.tsx",
+      tilewidth = 16,
+      tileheight = 16,
+      spacing = 1,
+      margin = 0,
+      image = "tilesets/roguelikeIndoor_transparent.png",
+      imagewidth = 457,
+      imageheight = 305,
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 16,
+        height = 16
+      },
+      properties = {},
+      terrains = {},
+      tilecount = 468,
+      tiles = {
+        {
+          id = 176,
+          animation = {
+            {
+              tileid = 176,
+              duration = 100
+            },
+            {
+              tileid = 177,
+              duration = 100
+            }
+          }
+        },
+        {
+          id = 202,
+          animation = {
+            {
+              tileid = 202,
+              duration = 100
+            },
+            {
+              tileid = 203,
+              duration = 100
+            }
+          }
+        }
+      }
     }
   },
   layers = {
@@ -11414,7 +11729,7 @@ return {
       }
     },
     {
-      type = "imagelayer",
+      type = "group",
       name = "Group 1",
       visible = true,
       opacity = 1,
@@ -11860,6 +12175,19 @@ return {
           y = 412,
           width = 16,
           height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 28,
+          name = "",
+          type = "spawn",
+          shape = "rectangle",
+          x = 414,
+          y = 357.818,
+          width = 10,
+          height = 10,
           rotation = 0,
           visible = true,
           properties = {}
