@@ -54,19 +54,20 @@ function love.load()
     "Whatever a keyboard is, I'm sure we have nothing\nto worry about now", "Oh yes! The dungeon! Why its downstairs\njust turn right and you'll see it!",
     "Now, I will see you when you've killed every\nlast one of those slimes!"}
 
-    player=p()
+    -- this is calling a player on load. this will cause 2 playes to spawn if a spawn object is in the map. this player will spawn at 0,0 and the 'duplicate' will spwn as intended
+    testmap = tiled.map("maps.Testmaps.newTilesets")
     cam = gamera.new(0,0,512,512)
 
     cam:setScale(2)
-    cam:setPosition(player.x, player.y)
-    testmap = tiled.map("maps.Testmaps.newTilesets")
+    cam:setPosition(mainPlayer.x, mainPlayer.y)
+
 end
 
 
 function love.update(dt)
     lovebird:update()
 
-    cam:setPosition(math.floor(player.x + 0.5), math.floor(player.y + 0.5))
+    cam:setPosition(math.floor(mainPlayer.x + 0.5), math.floor(mainPlayer.y + 0.5))
 
     if pixelate._pixel_size>1 then
         pixelate:set("pixel_size", pixelate._pixel_size-50*dt)
@@ -94,5 +95,5 @@ function love.draw()
                 end
         end)
     end)
-	player:gameover()
+	mainPlayer:gameover()
 end
