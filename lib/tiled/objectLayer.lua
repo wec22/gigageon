@@ -40,7 +40,7 @@ function objectLayer:initialize(t)
         elseif v.type == "doorway" then
             print("Tiled.objectlayer: doorway not implemented")
         elseif v.type == "spawn" then
-            player(v.x, v.y)
+            _G.mainPlayer = player(v.x, v.y)
         elseif v.type == "npc" then
             print("Tiled.objectLayer: npc not implemented")
         end
