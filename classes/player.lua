@@ -37,14 +37,10 @@ walkleft:setSpeed(0.5)
 walkright:setSpeed(0.5)
 
 
-function player:initialize()
-    self.x = 16*16  		--spawn 16 tiles right
-    self.y = 18*16		--spawn 18 tiles down
-    self.h = 8
-    self.w = 10
-    self.speed = 60
-    self.health = 10
-    self.hit = 0
+function player:initialize(x,y)
+    character.initialize(self, x, y, 1, 8, 10, 10)
+    self.speed=60
+    self.hit=0
 
 	self.firecooldown = 0
 	self.dmgcooldown = 0

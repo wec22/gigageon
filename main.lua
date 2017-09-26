@@ -42,12 +42,13 @@ function love.load()
 
     missioncomplete = 0
 
-    player = p()
+    -- this is calling a player on load. this will cause 2 playes to spawn if a spawn object is in the map. this player will spawn at 0,0 and the 'duplicate' will spwn as intended
+    testmap = tiled.map("maps.Testmaps.newTilesets")
     cam = gamera.new(0,0,512,512)
 
     cam:setScale(2)
-    cam:setPosition(player.x, player.y)
-    testmap = tiled.map("maps.Testmaps.newTilesets")
+    cam:setPosition(mainPlayer.x, mainPlayer.y)
+
 end
 
 function love.update(dt)
@@ -55,7 +56,7 @@ function love.update(dt)
 		lovebird:update()
 	end
 
-    cam:setPosition(math.floor(player.x + 0.5), math.floor(player.y + 0.5))
+    cam:setPosition(math.floor(mainPlayer.x + 0.5), math.floor(mainPlayer.y + 0.5))
 
 	if true then
 	    if pixelate._pixel_size>1 then
@@ -92,5 +93,5 @@ function love.draw()
                 end
         end)
     end)
-	player:gameover()
+	mainPlayer:gameover()
 end

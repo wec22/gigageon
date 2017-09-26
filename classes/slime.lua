@@ -49,16 +49,16 @@ function slime:update(dt)
     if self.health > 0 then
 
         local dx, dy = 0, 0
-        if player.x < self.x+110 or player.x > self.x-110 then
-            if player.y < self.y+110 or player.y > self.x-110 then
-                if player.x > self.x then
+        if mainPlayer.x < self.x+110 or mainPlayer.x > self.x-110 then
+            if mainPlayer.y < self.y+110 or mainPlayer.y > self.x-110 then
+                if mainPlayer.x > self.x then
                     dx = speed * dt
-                elseif player.x < self.x then
+                elseif mainPlayer.x < self.x then
                     dx = -speed * dt
                 end
-                if player.y > self.y then
+                if mainPlayer.y > self.y then
                     dy = speed * dt
-                elseif player.y < self.y then
+                elseif mainPlayer.y < self.y then
                     dy = -speed * dt
                 end
             end
@@ -92,12 +92,12 @@ function slime:draw()
         love.graphics.setColor(255, 0, 0)
     end
     if self.health > 0 then
-        if player.x>self.x-10 and player.x<self.x+10 then
+        if mainPlayer.x>self.x-10 and mainPlayer.x<self.x+10 then
             walkup_down:draw(self.x, self.y-5)
         else
-            if player.x>self.x then
+            if mainPlayer.x>self.x then
                 walkright:draw(self.x, self.y-5)
-            elseif player.x<self.x then
+            elseif mainPlayer.x<self.x then
                 walkleft:draw(self.x, self.y-5)
             end
         end
