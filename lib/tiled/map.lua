@@ -38,7 +38,7 @@ function map:initialize(filepath)
             table.insert(self.layers, tileLayer(v))
         elseif v.type == "imagelayer" and v.image then
             table.insert(self.layers, imageLayer(v))
-        elseif v.type == "imagelayer" and v.layers then
+        elseif v.type == "group" then
             table.insert(self.layers, groupLayer(v))
         elseif v.type == "objectgroup" then
             table.insert(self.layers, objectLayer(v))
