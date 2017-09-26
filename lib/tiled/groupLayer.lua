@@ -27,7 +27,7 @@ function groupLayer:initialize(t)
             table.insert(self.layers, tileLayer(v))
         elseif v.type == "imagelayer" and image then
             table.insert(self.layers, imageLayer(v))
-        elseif v.type == "imagelayer" and layers then
+        elseif v.type == "group" then
             table.insert(self.layers, groupLayer(v))
         elseif v.type == "objectgroup" then
             table.insert(self.layers, objectLayer(v))

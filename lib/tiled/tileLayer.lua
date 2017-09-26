@@ -34,23 +34,25 @@ function tileLayer:initialize(t)
 end
 
 function tileLayer:draw(x, y, map)
-    love.graphics.push()
+	if self.visible then
+	    love.graphics.push()
 
-    local r,g,b,a = love.graphics.getColor()
+	    local r,g,b,a = love.graphics.getColor()
 
-    love.graphics.setColor(r, g, b, a * self.opacity)
+	    love.graphics.setColor(r, g, b, a * self.opacity)
 
-    local i = 1
-    for r,row in ipairs(self.data) do
-        for c,v in ipairs(row) do
-            if v ~= 0 then
-                map.tiles[v]:draw((c-1)*map.tileW+x, (r-1)*map.tileH+y)
-            end
-        end
-    end
+	    local i = 1
+	    for r,row in ipairs(self.data) do
+	        for c,v in ipairs(row) do
+	            if v ~= 0 then
+	                map.tiles[v]:draw((c-1)*map.tileW+x, (r-1)*map.tileH+y)
+	            end
+	        end
+	    end
 
-    love.graphics.setColor(r,g,b)
-    love.graphics.pop()
+	    love.graphics.setColor(r,g,b)
+	    love.graphics.pop()
+	end
 end
 
 return tileLayer
