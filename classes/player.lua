@@ -170,7 +170,7 @@ function player:drawUI()
 	end
 	r,b,g = love.graphics.getColor()
 	love.graphics.setColor(255,0,0,128)
-	love.graphics.rectangle("fill", 10, 10, 25, (self.health/10)*100)
+	love.graphics.rectangle("fill", 10, 10 + (10 - self.health) * 10, 25, (self.health/10)*100)
 	love.graphics.setColor(255,0,0)
 	love.graphics.rectangle("line", 10, 10, 25, 100)
 
