@@ -5,7 +5,6 @@ local drawOrder = require("lib.drawOrder")
 local animation = require("classes.animation")
 
 -- Jumper Dependancies
-local Jumper = require("lib.jumper.grid")
 local Pathfinder = require("lib.jumper.pathfinder")
 local Grid = require ("lib.jumper.grid")
 -- Collision Map for aStarTest
@@ -46,7 +45,7 @@ local map = {
 local grid = Grid(map)
 local walkable = 0
 -- Creates a pthfinder object using Jump Point Search
-local myFinder = Pathfinder(grid, "ASTAR", walkable)
+local myFinder = Pathfinder(grid, 'ASTAR', walkable)
 
 local enemy = require("classes.enemy")
 local slime = class("enemy.slime", enemy)
@@ -84,54 +83,47 @@ end
 
 function slime:update(dt)
     -- variables for the slime and player positions
-    local startX = self.x / 16
-    local startY = self.y / 16 + 1
-    local playerx = mainPlayer.x / 16
-    local playery = mainPlayer.y / 16 + 1
+    local startX = math.floor(self.x / 16)
+    local startY = math.floor(self.y / 16 + 1)
+    local playerx = math.floor(mainPlayer.x / 16)
+    local playery = math.floor(mainPlayer.y / 16 + 1)
 
     -- Calculates the path, and length
     -- rn it doesnt like having it that way, so for now use:
-    local path, length = myFinder:getPath(startX, startY, playerx, playery)
+    local path = myFinder:getPath(startX, startY, playerx, playery)
     -- local path, length = myFinder:getPath(startX, startY, playerx, playery)
 
-
-    cols_len=0
-    walkright:update(dt)
-    walkleft:update(dt)
-    walkup_down:update(dt)
     local speed = self.speed
 
     if self.health > 0 then
 
         local dx, dy = 0, 0
         if path then
-            print(('Path found! Length: %.2f'):format(path:getLength()))
+            -- print(('Path found! Length: %.2f'):format(path:getLength()))
         	for node, count in path:nodes() do
-        	--   print(('Step: %d - x: %d - y: %d'):format(count, node:getX(), node:getY()))
-            -- i havent implemented the nodelist to movment for the slime yet but that will go here.
-            -- this code wont run because i dont think you can call 'self' in a for loop also i dont think its a good idea to change the position in one
+            -- until node met == true, wait
+            -- print(('Step: %d - x: %d - y: %d'):format(count, node:getX(), node:getY()))
                 if node:getX()>self.x then
                     if node:getY()>self.y then
+                        dy = -speed * dt
+                        dx = speed * dt
+                    end
+                elseif node:getX()>self.x then
+                    if node:getY()<self.y then
                         dy = speed * dt
                         dx = speed * dt
                     end
                 elseif node:getX()<self.x then
                     if node:getY()>self.y then
-                        dy = -speed * dt
+                        dy = speed * dt
                         dx = -speed * dt
-                    end
-                elseif node:getX()<self.x then
-                    if node:getY()>self.y then
-                        dy = -speed * dt
-                        dx = speed * dt
                     end
                 elseif node:getX()<self.x then
                     if node:getY()<self.y then
-                        dy = speed * dt
+                        dy = -speed * dt
                         dx = -speed * dt
                     end
-                end
-                if node:getX() > self.x then
+                elseif node:getX() > self.x then
                     dx = speed * dt
                 elseif node:getX() < self.x then
                     dx = -speed * dt
