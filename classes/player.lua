@@ -161,11 +161,20 @@ function player:update(dt)
 end
 
 --The game ending when the player dies
-function player:gameover()
+function player:drawUI()
     font = love.graphics.newFont(20)
     love.graphics.setFont(font)
-    love.graphics.print("Health : ", love.graphics.getWidth() - 110, 0)
-    love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
+	if devmode then
+		love.graphics.print("Health : ", love.graphics.getWidth() - 110, 0)
+    	love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
+	end
+	r,b,g = love.graphics.getColor()
+	love.graphics.setColor(255,0,0,128)
+	love.graphics.rectangle("fill", 10, 10, 25, (self.health/10)*100)
+	love.graphics.setColor(255,0,0)
+	love.graphics.rectangle("line", 10, 10, 25, 100)
+
+	love.graphics.setColor(r,b,g)
     if self.health <= 0 then
         love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())

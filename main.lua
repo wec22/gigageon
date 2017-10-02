@@ -5,7 +5,7 @@
 ]]
 
 --uncomment to enable devmode
-require("devmode")
+--require("devmode")
 
 local gamera = require("lib.gamera")
 local bump = require("lib.bump")
@@ -93,5 +93,5 @@ function love.draw()
                 end
         end)
     end)
-	mainPlayer:gameover()
+	mainPlayer:drawUI()
 end
