@@ -5,7 +5,7 @@
 ]]
 
 --uncomment to enable devmode
-require("devmode")
+--require("devmode")
 
 local gamera = require("lib.gamera")
 local bump = require("lib.bump")
@@ -20,7 +20,7 @@ local explosion = require("classes.explosion")
 
 --debug stuff
 if devmode then
-	local lovebird = require("lib.lovebird")
+	lovebird = require("lib.lovebird")
     lovebird:update()
 	members = drawOrder.members
 end
@@ -52,7 +52,7 @@ function love.load()
 end
 
 function love.update(dt)
-	if devode then
+	if devmode then
 		lovebird:update()
 	end
 
@@ -93,5 +93,5 @@ function love.draw()
                 end
         end)
     end)
-	mainPlayer:gameover()
+	mainPlayer:drawUI()
 end

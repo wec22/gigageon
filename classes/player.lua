@@ -60,6 +60,12 @@ function player:initialize(x,y)
     self.inputs.down:addDetector(det.button.gamepad("dpdown", 1))
     self.inputs.left:addDetector(det.button.gamepad("dpleft", 1))
     self.inputs.right:addDetector(det.button.gamepad("dpright", 1))
+
+	self.inputs.up:addDetector(det.button.axis("lefty","-", 1))
+    self.inputs.down:addDetector(det.button.axis("lefty","+", 1))
+    self.inputs.left:addDetector(det.button.axis("leftx","-", 1))
+    self.inputs.right:addDetector(det.button.axis("leftx","+", 1))
+
     self.inputs.fire:addDetector(det.button.gamepad("a", 1))
 
 	--Adding player to the physics world and the drawing registery
@@ -155,11 +161,20 @@ function player:update(dt)
 end
 
 --The game ending when the player dies
-function player:gameover()
+function player:drawUI()
     font = love.graphics.newFont(20)
     love.graphics.setFont(font)
-    love.graphics.print("Health : ", love.graphics.getWidth() - 110, 0)
-    love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
+	if devmode then
+		love.graphics.print("Health : ", love.graphics.getWidth() - 110, 0)
+    	love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
+	end
+	r,b,g = love.graphics.getColor()
+	love.graphics.setColor(255,0,0,128)
+	love.graphics.rectangle("fill", 10, 10, 25, (self.health/10)*100)
+	love.graphics.setColor(255,0,0)
+	love.graphics.rectangle("line", 10, 10, 25, 100)
+
+	love.graphics.setColor(r,b,g)
     if self.health <= 0 then
         love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
