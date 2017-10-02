@@ -60,6 +60,12 @@ function player:initialize(x,y)
     self.inputs.down:addDetector(det.button.gamepad("dpdown", 1))
     self.inputs.left:addDetector(det.button.gamepad("dpleft", 1))
     self.inputs.right:addDetector(det.button.gamepad("dpright", 1))
+
+	self.inputs.up:addDetector(det.button.axis("lefty","-", 1))
+    self.inputs.down:addDetector(det.button.axis("lefty","+", 1))
+    self.inputs.left:addDetector(det.button.axis("leftx","-", 1))
+    self.inputs.right:addDetector(det.button.axis("leftx","+", 1))
+
     self.inputs.fire:addDetector(det.button.gamepad("a", 1))
 
 	--Adding player to the physics world and the drawing registery
