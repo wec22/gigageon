@@ -15,6 +15,7 @@ local character = class("character", entity)
 function character:initialize(x,y,drawOrder,h,w, health)
     character.super.initialize(self, x,y,drawOrder,h,w)
     self.health = health
+	self.maxHealth = self.health
 
 end
 

@@ -39,6 +39,8 @@ walkright:setSpeed(0.5)
 
 function player:initialize(x,y)
     character.initialize(self, x, y, 1, 8, 10, 10)
+	self.specialMax = 10
+	self.specialMeter = 10
     self.speed=60
     self.hit=0
 
@@ -115,10 +117,20 @@ function player:update(dt)
         self.dmgcooldown = self.dmgcooldown - 1
     end
 
-    if self.inputs.fire() and self.firecooldown == 0 then
+	--Replenishes Special Bar
+	if self.specialMeter ~= self.specialMax then
+		if self.specialMeter + 0.005 > self.specialMax then
+			self.specialMeter = self.specialMeter + (self.specialMax - self.specialMeter)
+		else
+			self.specialMeter = self.specialMeter + 0.005
+		end
+	end
+
+    if self.inputs.fire() and self.firecooldown == 0 and self.specialMeter - 1 >= 0 then
 		fireball(self.lastpushed, self.x, self.y)
+		self.specialMeter = self.specialMeter - 1
         self.firecooldown = 20
-    end
+	end
 
 	--Updating fireballs from fireball table
     local index = 1
@@ -169,30 +181,38 @@ function player:drawUI()
     	love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
 	end
 	r,b,g = love.graphics.getColor()
+
+	--Setting up Health Bar
 	love.graphics.setColor(255,0,0,128)
-	love.graphics.rectangle("fill", 10, 10 + (10 - self.health) * 10, 25, (self.health/10)*100)
+	love.graphics.rectangle("fill", 10, 10 + (self.maxHealth - self.health) * 10, 25, (self.health / self.maxHealth) * 100)
 	love.graphics.setColor(255,0,0)
 	love.graphics.rectangle("line", 10, 10, 25, 100)
+
+	--Setting up Special Bar
+	love.graphics.setColor(255,255,0,128)
+	love.graphics.rectangle("fill", 40, 10 + (self.specialMax - self.specialMeter) * 10, 25, (self.specialMeter / self.specialMax) * 100)
+	love.graphics.setColor(255,255,0)
+	love.graphics.rectangle("line",40, 10, 25, 100)
 
 	love.graphics.setColor(r,b,g)
     if self.health <= 0 then
         love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(255, 255, 255)
-        love.graphics.print("Game Over", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
+        love.graphics.print("Game Over", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
 	end
 end
 
 --Function called for player idle animations
 function player:stand()
     if self.lastpushed == 'd' then
-        standright:draw(self.x-10, self.y-20)
+        standright:draw(self.x - 10, self.y - 20)
     elseif self.lastpushed == 'a' then
-        standleft:draw(self.x-10, self.y-20)
+        standleft:draw(self.x - 10, self.y - 20)
     elseif self.lastpushed == 'w' then
-        standup:draw(self.x-10, self.y-20)
+        standup:draw(self.x - 10, self.y - 20)
     elseif self.lastpushed == 's' then
-        standdown:draw(self.x-10, self.y-20)
+        standdown:draw(self.x - 10, self.y - 20)
     end
 end
 
@@ -213,16 +233,16 @@ function player:draw()
 
 	--Drawing correct animation based on player movement
     if self.inputs.right() then
-        walkright:draw(self.x-10, self.y-20)
+        walkright:draw(self.x - 10, self.y - 20)
         self.lastpushed = 'd'
     elseif self.inputs.left() then
-        walkleft:draw(self.x-10, self.y-20)
+        walkleft:draw(self.x - 10, self.y - 20)
         self.lastpushed = 'a'
     elseif self.inputs.up() then
-       walkup:draw(self.x-10, self.y-20)
+       walkup:draw(self.x - 10, self.y - 20)
         self.lastpushed = 'w'
     elseif self.inputs.down() then
-        walkdown:draw(self.x-10, self.y-20)
+        walkdown:draw(self.x - 10, self.y - 20)
         self.lastpushed = 's'
     else
         self:stand()
