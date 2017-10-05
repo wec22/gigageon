@@ -39,8 +39,8 @@ walkright:setSpeed(0.5)
 
 function player:initialize(x,y)
     character.initialize(self, x, y, 1, 8, 10, 10)
-	self.specialMax = 10
-	self.specialMeter = 10
+	self.EnergyMax = 10
+	self.EnergyBar = 10
     self.speed=60
     self.hit=0
 
@@ -118,17 +118,17 @@ function player:update(dt)
     end
 
 	--Replenishes Special Bar
-	if self.specialMeter ~= self.specialMax then
-		if self.specialMeter + 0.005 > self.specialMax then
-			self.specialMeter = self.specialMeter + (self.specialMax - self.specialMeter)
+	if self.EnergyBar ~= self.EnergyMax then
+		if self.EnergyBar + 0.005 > self.EnergyMax then
+			self.EnergyBar = self.EnergyBar + (self.EnergyMax - self.EnergyBar)
 		else
-			self.specialMeter = self.specialMeter + 0.005
+			self.EnergyBar = self.EnergyBar + 0.005
 		end
 	end
 
-    if self.inputs.fire() and self.firecooldown == 0 and self.specialMeter - 1 >= 0 then
+    if self.inputs.fire() and self.firecooldown == 0 and self.EnergyBar - 1 >= 0 then
 		fireball(self.lastpushed, self.x, self.y)
-		self.specialMeter = self.specialMeter - 1
+		self.EnergyBar = self.EnergyBar - 1
         self.firecooldown = 20
 	end
 
@@ -185,19 +185,11 @@ function player:drawUI()
 	--Setting up Health Bar
 	love.graphics.setColor(255,0,0,128)
 	love.graphics.rectangle("fill", 10, 10 + (self.maxHealth - self.health) * 10, 25, (self.health / self.maxHealth) * 100)
-	love.graphics.setColor(255,255,255)
 	love.graphics.rectangle("line", 10, 10, 25, 100)
 
-	--Setting up Special Bar
+	--Setting up Energy Bar
 	love.graphics.setColor(0,0,255,128)
-	love.graphics.rectangle("fill", 40, 10 + (self.specialMax - self.specialMeter) * 10, 25, (self.specialMeter / self.specialMax) * 100)
-
-	local yplacement = 10
-	love.graphics.setColor(255,255,255, 128)
-	for i=1, 10 do
-		love.graphics.rectangle("line",40, yplacement, 25, 10)
-		yplacement = yplacement + self.specialMax
-	end
+	love.graphics.rectangle("fill", 40, 10 + (self.EnergyMax - self.EnergyBar) * 10, 25, (self.EnergyBar / self.EnergyMax) * 100)
 	love.graphics.rectangle("line",40, 10, 25, 100)
 
 	--Game Over Screen
