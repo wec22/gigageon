@@ -101,7 +101,7 @@ function fireball:update(dt)
 end
 
 function fireball:draw()
-    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+    --love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
     love.graphics.draw(fireshot, self.x - 7, self.y - 5)
 end
 

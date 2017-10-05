@@ -15,7 +15,7 @@ local character = require("classes.character")
 local player = class("player", character):include(zinput)
 
 --Setting up player spritesheet for walking/idle
-local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
+local spritesheet = love.graphics.newImage("assets/art/SpriteSheet(WIP).png")
 spritesheet:setFilter("nearest","nearest")
 
 --Walking animations set up from spritesheet
@@ -185,15 +185,22 @@ function player:drawUI()
 	--Setting up Health Bar
 	love.graphics.setColor(255,0,0,128)
 	love.graphics.rectangle("fill", 10, 10 + (self.maxHealth - self.health) * 10, 25, (self.health / self.maxHealth) * 100)
-	love.graphics.setColor(255,0,0)
+	love.graphics.setColor(255,255,255)
 	love.graphics.rectangle("line", 10, 10, 25, 100)
 
 	--Setting up Special Bar
-	love.graphics.setColor(255,255,0,128)
+	love.graphics.setColor(0,0,255,128)
 	love.graphics.rectangle("fill", 40, 10 + (self.specialMax - self.specialMeter) * 10, 25, (self.specialMeter / self.specialMax) * 100)
-	love.graphics.setColor(255,255,0)
+
+	local yplacement = 10
+	love.graphics.setColor(255,255,255, 128)
+	for i=1, 10 do
+		love.graphics.rectangle("line",40, yplacement, 25, 10)
+		yplacement = yplacement + self.specialMax
+	end
 	love.graphics.rectangle("line",40, 10, 25, 100)
 
+	--Game Over Screen
 	love.graphics.setColor(r,b,g)
     if self.health <= 0 then
         love.graphics.setColor(0, 0, 0)
@@ -201,6 +208,7 @@ function player:drawUI()
         love.graphics.setColor(255, 255, 255)
         love.graphics.print("Game Over", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
 	end
+
 end
 
 --Function called for player idle animations
@@ -250,6 +258,10 @@ function player:draw()
 
 	--Changing color of player to normal in case of taking damage
     love.graphics.setColor(255, 255, 255, 255)
+
+	--Uncomment line below to draw player hitbox
+	--love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+
 end
 
 return player
