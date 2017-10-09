@@ -38,7 +38,7 @@ walkright:setSpeed(0.5)
 
 
 function player:initialize(x,y)
-    character.initialize(self, x, y, 1, 8, 10, 10)
+	character.initialize(self,x,y,10,8,1, 10)
 	self.EnergyMax = 10
 	self.EnergyBar = 10
     self.speed=60
@@ -46,10 +46,9 @@ function player:initialize(x,y)
 
 	self.firecooldown = 0
 	self.dmgcooldown = 0
-	--Table that holds all fireballs shot from the player
-    self.fireballs = {}
+
 	--Storing the last movement key pressed
-    self.lastpushed = 's'
+    self.direction = 's'
 
 	--Setting up gamepad controls
     self:newbutton("up", det.button.key("w"))
@@ -127,17 +126,10 @@ function player:update(dt)
 	end
 
     if self.inputs.fire() and self.firecooldown == 0 and self.EnergyBar - 1 >= 0 then
-		fireball(self.lastpushed, self.x, self.y)
+		fireball(self.direction, self.x, self.y)
 		self.EnergyBar = self.EnergyBar - 1
         self.firecooldown = 20
 	end
-
-	--Updating fireballs from fireball table
-    local index = 1
-    for _,v in pairs(self.fireballs) do
-        v:update(dt)
-        index = index + 1
-    end
 
     local speed = self.speed
 
@@ -145,17 +137,17 @@ function player:update(dt)
     local dx, dy = 0, 0
     if self.inputs.right() then
     	dx = speed * dt
-    	self.lastpushed = 'd'
+    	self.direction = 'right'
 	elseif self.inputs.left() then
     	dx = -speed * dt
-    	self.lastpushed = 'a'
+    	self.direction = 'left'
     end
     if self.inputs.down() then
     	dy = speed * dt
-    	self.lastpushed = 's'
+    	self.direction = 'down'
 	elseif self.inputs.up() then
     	dy = -speed * dt
-    	self.lastpushed = 'w'
+    	self.direction = 'up'
     end
 
 	--Collision logic
@@ -180,8 +172,8 @@ function player:drawUI()
 		love.graphics.print("Health : ", love.graphics.getWidth() - 110, 0)
     	love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
 	end
-	r,b,g = love.graphics.getColor()
 
+	r,b,g = love.graphics.getColor()
 	--Setting up Health Bar
 	love.graphics.setColor(255,0,0,128)
 	love.graphics.rectangle("fill", 10, 10 + (self.maxHealth - self.health) * 10, 25, (self.health / self.maxHealth) * 100)
@@ -205,27 +197,20 @@ end
 
 --Function called for player idle animations
 function player:stand()
-    if self.lastpushed == 'd' then
+    if self.direction == 'right' then
         standright:draw(self.x - 10, self.y - 20)
-    elseif self.lastpushed == 'a' then
+    elseif self.direction == 'left' then
         standleft:draw(self.x - 10, self.y - 20)
-    elseif self.lastpushed == 'w' then
+    elseif self.direction == 'up' then
         standup:draw(self.x - 10, self.y - 20)
-    elseif self.lastpushed == 's' then
+    elseif self.direction == 'down' then
         standdown:draw(self.x - 10, self.y - 20)
     end
 end
 
 function player:draw()
 
-	--Drawing fireballs from the fireball table
-    local index = 1
-    for _,v in pairs(self.fireballs) do
-        v:draw()
-        index = index + 1
-    end
-
-	--Playing blinks red after taking damage
+	--Player blinks red after taking damage
     if self.hit~=0 then
         love.graphics.setColor(255, 0, 0)
         self.hit = self.hit-1
@@ -234,16 +219,16 @@ function player:draw()
 	--Drawing correct animation based on player movement
     if self.inputs.right() then
         walkright:draw(self.x - 10, self.y - 20)
-        self.lastpushed = 'd'
+        self.direction = 'right'
     elseif self.inputs.left() then
         walkleft:draw(self.x - 10, self.y - 20)
-        self.lastpushed = 'a'
+        self.direction = 'left'
     elseif self.inputs.up() then
        walkup:draw(self.x - 10, self.y - 20)
-        self.lastpushed = 'w'
+        self.direction = 'up'
     elseif self.inputs.down() then
         walkdown:draw(self.x - 10, self.y - 20)
-        self.lastpushed = 's'
+        self.direction = 'down'
     else
         self:stand()
     end

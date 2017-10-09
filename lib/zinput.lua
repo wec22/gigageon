@@ -14,10 +14,10 @@ local button = {
         elseif what == "prev" then                --true if button was pressed last frame
             return self.prev
         elseif what == "pressed" then             --true if first pressed this frame
-            self.time = 0
+            self.time = 0, 0
             return self.value and not self.prev, time
         elseif what == "released" then            --true if released this frame
-            self.time = 0
+            self.time = 0, 0
             return not self.value and self.prev, time
         elseif what == "up" then                  --always true if the button is not pressed opposite of "value" or "down"
             return not self.value, time

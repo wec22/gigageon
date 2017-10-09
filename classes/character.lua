@@ -1,8 +1,11 @@
 --[[
 -- superclass of all npc, enemies, and players
 -- members:
-    -
+    - health
+	- maxhealth
 -- methods:
+	- takeDamage
+		- preforms the damage calculation and exposes damage to outside classes
     -
 
 
@@ -12,8 +15,8 @@ local class = require("lib.middleclass")
 local entity = require("classes.entity")
 local character = class("character", entity)
 
-function character:initialize(x,y,drawOrder,h,w, health)
-    character.super.initialize(self, x,y,drawOrder,h,w)
+function character:initialize(x,y,h,w,drawOrder, health)
+    character.super.initialize(self, x,y,h,w,drawOrder)
     self.health = health
 	self.maxHealth = self.health
 

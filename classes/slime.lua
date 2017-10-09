@@ -28,7 +28,7 @@ function slime:TakingDamage()
 end
 
 function slime:initialize(x,y)
-    enemy.initialize(self, x,y,1,10,14, 3)
+    enemy.initialize(self, x,y,14,10,1, 3)
 
     self.speed = 10
     self.hit = 0
