@@ -43,7 +43,7 @@ function love.load()
     missioncomplete = 0
 
     -- this is calling a player on load. this will cause 2 playes to spawn if a spawn object is in the map. this player will spawn at 0,0 and the 'duplicate' will spwn as intended
-    testmap = tiled.map("maps.Testmaps.newTilesets")
+    testmap = tiled.map("maps.Testmaps.dungeon_entrance")
     cam = gamera.new(0,0,512,512)
 
     cam:setScale(2)
