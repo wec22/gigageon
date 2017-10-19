@@ -12,11 +12,10 @@ function collision:initialize(x, y, w, h)
 
     self.w = w
     self.h = h
-    world:add(self, self.x,self.y,self.w,self.h)
 end
 
 function collision:remove()
-    world:remove(self)
+    getWorld():remove(self)
 end
 
 function collision:draw()

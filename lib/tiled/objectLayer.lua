@@ -21,7 +21,7 @@ local object = require(path .. "object")
 local layer = require(path .. "layer")
 local objectLayer = class("tiled.objectLayer", layer)
 
-function objectLayer:initialize(t)
+function objectLayer:initialize(t, world)
     print("Tiled: building new objectLayer")
 
     layer.initialize(self, t)
@@ -33,10 +33,11 @@ function objectLayer:initialize(t)
     end
 
     for _,v in ipairs(self.objects) do
-        if v.type == "slime" then
-            slime(v.x,v.y)
+		local t
+		if v.type == "slime" then
+            t = slime(v.x,v.y)
         elseif v.type == "wall" then
-            collisionBlock(v.x, v.y, v.width, v.height)
+            t = collisionBlock(v.x, v.y, v.width, v.height)
         elseif v.type == "doorway" then
             print("Tiled.objectlayer: doorway not implemented")
             --doorway()
@@ -45,9 +46,13 @@ function objectLayer:initialize(t)
 			--warp()
         elseif v.type == "spawn" then
             _G.mainPlayer = player(v.x, v.y)
+			t = mainPlayer
         elseif v.type == "npc" then
             print("Tiled.objectLayer: npc not implemented")
         end
+		if t then
+			world:add(t, t.x, t.y, t.w, t.h)
+		end
     end
 end
 

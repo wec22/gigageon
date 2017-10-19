@@ -6,7 +6,7 @@ local drawOrder = require("lib.drawOrder")
 local zinput = require("lib.zinput")
 local det = require("lib.detectors")
 
-local fireball = require("classes.fireball")
+local laser = require("classes.laser")
 local slime = require("classes.slime")
 local entity = require("classes.entity")
 
@@ -70,7 +70,7 @@ function player:initialize(x,y)
     self.inputs.fire:addDetector(det.button.gamepad("a", 1))
 
 	--Adding player to the physics world and the drawing registery
-    world:add(self, self.x, self.y, self.w, self.h)
+    --world:add(self, self.x, self.y, self.w, self.h)
     drawOrder:register(self)
 end
 
@@ -117,16 +117,16 @@ function player:update(dt)
     end
 
 	--Replenishes Special Bar
-	if self.EnergyBar ~= self.EnergyMax then
-		if self.EnergyBar + 0.005 > self.EnergyMax then
-			self.EnergyBar = self.EnergyBar + (self.EnergyMax - self.EnergyBar)
-		else
-			self.EnergyBar = self.EnergyBar + 0.005
+	if self.EnergyBar <= self.EnergyMax then
+		self.EnergyBar = self.EnergyBar + 0.5 * dt
+		if self.EnergyBar > self.EnergyMax then
+			self.EnergyBar = self.EnergyMax
 		end
 	end
 
     if self.inputs.fire() and self.firecooldown == 0 and self.EnergyBar - 1 >= 0 then
-		fireball(self.direction, self.x, self.y)
+		local f = laser(self.direction, self.x, self.y)
+		getWorld():add(f, f.x, f.y, f.w, f.h)
 		self.EnergyBar = self.EnergyBar - 1
         self.firecooldown = 20
 	end
@@ -153,7 +153,7 @@ function player:update(dt)
 	--Collision logic
     if dx ~= 0 or dy ~= 0 then
     	local cols
-		self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+		self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy)
 
 		for _,v in ipairs(cols) do
 			local col = v

@@ -34,7 +34,6 @@ function laser:initialize(direction, x, y)
         self.y = self.y + self.h + 4
     end
 
-	world:add(self, self.x,self.y,self.w,self.h)
 	drawOrder:register(self)
 
 end
@@ -58,7 +57,7 @@ function laser:update(dt)
 
 	if dx ~= 0 or dy ~= 0 then
 		local cols
-		self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy,function(item, other)
+		self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy,function(item, other)
 																						if other:isInstanceOf(explosion) then
 																						return "cross"
 																					else
@@ -73,8 +72,9 @@ function laser:update(dt)
 			end
 
 			if not v.other:isInstanceOf(explosion) then
-				explosion(self.x, self.y)
-				world:remove(self)
+				e = explosion(self.x-10, self.y-10)
+				getWorld():add(e, e.x, e.y, e.width, e.height)
+				getWorld():remove(self)
 				drawOrder:remove(self)
 			end
 		end

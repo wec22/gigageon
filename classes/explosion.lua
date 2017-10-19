@@ -29,10 +29,18 @@ function explosion:initialize(x, y)
     self.x = x or 0
     self.y = y or 0
 
+	self.x = self.x
+	self.y = self.y
+
+	self.width = 20
+	self.height = 20
+
     self.particle:start()
     self.particle:emit(200)
     drawOrder:register(self)
-    world:add(self, self.x-10, self.y-10, 20,20)
+
+
+    --world:add(self, self.x-10, self.y-10, 20,20)
 end
 
 function explosion:update(dt)
@@ -40,14 +48,14 @@ function explosion:update(dt)
 
     if self.particle:getCount() == 0 then
         drawOrder:remove(self)
-        world:remove(self)
+        getWorld():remove(self)
         self = nil
     end
 
 end
 
 function explosion:draw()
-    love.graphics.draw(self.particle, self.x, self.y)
+    love.graphics.draw(self.particle, self.x+10, self.y+10)
 end
 
 

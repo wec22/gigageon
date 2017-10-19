@@ -35,7 +35,6 @@ function slime:initialize(x,y)
 
 	self.cooldown = 0
 
-    world:add(self, self.x, self.y, self.w, self.h)
     drawOrder:register(self)
 end
 
@@ -74,7 +73,7 @@ function slime:update(dt)
 
         if dx ~= 0 or dy ~= 0 then
           local cols
-          self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+          self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy)
           for _,v in ipairs(cols) do
 
           end
@@ -82,7 +81,7 @@ function slime:update(dt)
     end
     if self.health == 0 then
         self.health = self.health - 1
-        world:remove(self)
+        getWorld():remove(self)
 		drawOrder:remove(self)
     end
   end

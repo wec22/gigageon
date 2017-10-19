@@ -31,7 +31,7 @@ local windowWidth, windowHeight = 512, 512
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false})
 
 --create the physics world
-world = bump.newWorld()
+--world = bump.newWorld()
 
 playerlocation = 1
 
@@ -43,7 +43,7 @@ function love.load()
     missioncomplete = 0
 
     -- this is calling a player on load. this will cause 2 playes to spawn if a spawn object is in the map. this player will spawn at 0,0 and the 'duplicate' will spwn as intended
-    testmap = tiled.map("maps.Testmaps.dungeon_entrance")
+    tiled.currentMap = tiled.map("maps.Testmaps.dungeon_entrance")
     cam = gamera.new(0,0,512,512)
 
     cam:setScale(2)
@@ -74,7 +74,7 @@ function love.update(dt)
 
 
     if pixelate._pixel_size == 1 then
-        local items = world:getItems()
+        local items = getWorld():getItems()
         for _,v in ipairs(items) do
             if v:isInstanceOf(entity) then
                 v:update(dt)
@@ -87,9 +87,9 @@ function love.draw()
     love.graphics.print(love.timer.getFPS(),0,0)
     pixelate:draw(function()
         cam:draw(function(l,t,w,h)
-                testmap:draw()
+                tiled.currentMap:draw()
                 if devmode and devmode.bump.enabled then
-                    devmode.bump.draw(world)
+                    devmode.bump.draw(getWorld())
                 end
         end)
     end)
