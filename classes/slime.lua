@@ -19,9 +19,9 @@ walkleft:setSpeed(0.35)
 walkright:setSpeed(0.35)
 
 
-function slime:TakingDamage()
+function slime:TakingDamage(damage)
     if self.cooldown == 0 then
-        self.health = self.health - 1
+        self.health = self.health - damage
         self.hit=5
     end
     self.cooldown = 10

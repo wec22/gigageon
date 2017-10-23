@@ -20,6 +20,7 @@ function fireball:initialize(lastpushed, x, y)
     self.y = y
 	self.w = 5
     self.h = 5
+	self.dmg = 1
 	self.offsetx = 0
 	self.offsety = 0
     self.fired = 0
@@ -85,7 +86,7 @@ function fireball:update(dt)
 				local col = v
 
 				if v.other:isInstanceOf(slime) then
-						v.other:TakingDamage()
+						v.other:TakingDamage(self.dmg)
 				end
 
 				if not v.other:isInstanceOf(explosion) then

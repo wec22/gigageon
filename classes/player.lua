@@ -9,6 +9,7 @@ local det = require("lib.detectors")
 local fireball = require("classes.fireball")
 local slime = require("classes.slime")
 local entity = require("classes.entity")
+local sword = require("classes.sword")
 
 
 local character = require("classes.character")
@@ -39,6 +40,7 @@ walkright:setSpeed(0.5)
 
 function player:initialize(x,y)
     character.initialize(self, x, y, 1, 8, 10, 10)
+	self.sword = sword(0,0,0,0)
 	self.EnergyMax = 10
 	self.EnergyBar = 10
     self.speed=60
@@ -57,6 +59,7 @@ function player:initialize(x,y)
     self:newbutton("left", det.button.key("a"))
     self:newbutton("right", det.button.key("d"))
     self:newbutton("fire", det.button.key("space"))
+	self:newbutton("sword", det.button.key("f"))
 
     self.inputs.up:addDetector(det.button.gamepad("dpup", 1))
     self.inputs.down:addDetector(det.button.gamepad("dpdown", 1))
@@ -117,6 +120,8 @@ function player:update(dt)
         self.dmgcooldown = self.dmgcooldown - 1
     end
 
+	self.sword:update(dt, self.lastpushed, self.x, self.y)
+
 	--Replenishes Special Bar
 	if self.EnergyBar ~= self.EnergyMax then
 		if self.EnergyBar + 0.005 > self.EnergyMax then
@@ -126,6 +131,7 @@ function player:update(dt)
 		end
 	end
 
+	--Energy and Firing mechanics
     if self.inputs.fire() and self.firecooldown == 0 and self.EnergyBar - 1 >= 0 then
 		fireball(self.lastpushed, self.x, self.y)
 		self.EnergyBar = self.EnergyBar - 1
@@ -157,6 +163,38 @@ function player:update(dt)
     	dy = -speed * dt
     	self.lastpushed = 'w'
     end
+
+	if self.inputs.sword("pressed") then
+
+		if self.lastpushed == 'w' then
+			self.sword.x = self.x + self.w - 2
+			self.sword.y = self.y - (32 - self.h) - 4
+			self.sword.w = 5
+			self.sword.h = 20
+		elseif self.lastpushed == 's' then
+			self.sword.x = self.x
+			self.sword.y = self.y + self.h
+			self.sword.w = 5
+			self.sword.h = 20
+		elseif self.lastpushed == 'a' then
+			self.sword.x = self.x - 20
+			self.sword.y = self.y
+			self.sword.w = 20
+			self.sword.h = 5
+		elseif self.lastpushed == 'd' then
+			self.sword.x = self.x + 10
+			self.sword.y = self.y + self.h - 2
+			self.sword.w = 20
+			self.sword.h = 5
+		end
+
+		self.sword = sword(self.sword.x, self.sword.y, self.sword.w, self.sword.h)
+
+		self.sword.pushed = true
+
+		world:add(self.sword, self.sword.x, self.sword.y, self.sword.w, self.sword.h)
+
+	end
 
 	--Collision logic
     if dx ~= 0 or dy ~= 0 then
@@ -217,6 +255,8 @@ function player:stand()
 end
 
 function player:draw()
+
+	love.graphics.rectangle("fill", self.sword.x, self.sword.y, self.sword.w, self.sword.h)
 
 	--Drawing fireballs from the fireball table
     local index = 1
