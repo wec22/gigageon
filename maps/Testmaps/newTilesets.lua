@@ -12185,7 +12185,7 @@ return {
           type = "spawn",
           shape = "rectangle",
           x = 414,
-          y = 357.818,
+          y = 358,
           width = 10,
           height = 10,
           rotation = 0,

@@ -9,13 +9,13 @@ local explosion = require("classes.explosion")
 
 local entity = require("classes.entity")
 local projectile = require("classes.projectile")
-local fireball = class("fireball",entity)
+local laser = class("laser",entity)
 
 local fireshot = love.graphics.newImage("assets/art/fireball_sprite.png")
 
 local cols_len = 0
 
-function fireball:initialize(lastpushed, x, y)
+function laser:initialize(direction, x, y)
 	self.x = x
     self.y = y
 	self.w = 5
@@ -23,89 +23,70 @@ function fireball:initialize(lastpushed, x, y)
 	self.dmg = 1
 	self.offsetx = 0
 	self.offsety = 0
-    self.fired = 0
+    self.direction = direction
 
-    self.lastpushed = lastpushed
-	self.removed = false
-
-    if self.lastpushed == 'd' then
-        self.fired = 1
-		self.offsetx = 9
-        self.x = self.x + self.w
-    elseif self.lastpushed == 'a' then
-        self.fired = 2
-		self.offsetx = -4
-        self.x = self.x - self.w
-    elseif self.lastpushed == 'w' then
-        self.fired = 3
-		self.offsety = -9
-        self.y = self.y - self.h
-    elseif self.lastpushed == 's' then
-        self.fired = 4
-		self.offsety = 4
-        self.y = self.y + self.h
+    if self.direction == 'right' then
+        self.x = self.x + self.w + 9
+    elseif self.direction == 'left' then
+        self.x = self.x - self.w - 4
+    elseif self.direction == 'up' then
+        self.y = self.y - self.h - 9
+    elseif self.direction == 'down' then
+        self.y = self.y + self.h + 4
     end
-
-	self.x = self.x + self.offsetx
-	self.y = self.y + self.offsety
 
 	world:add(self, self.x,self.y,self.w,self.h)
 	drawOrder:register(self)
 
 end
 
-function fireball:update(dt)
+function laser:update(dt)
+	local dx, dy = 0, 0
 
-	if self.removed == false then
-		local dx, dy = 0, 0
+    if self.direction == 'right' then
+        self.x = self.x + 300 * dt
+		dx = 1
+    elseif self.direction == 'left' then
+        self.x = self.x - 300 * dt
+		dx = 1
+    elseif self.direction == 'up' then
+        self.y = self.y - 300 * dt
+		dy = 1
+    elseif self.direction == 'down' then
+        self.y = self.y + 300 * dt
+		dy = 1
+    end
 
-	    if self.fired == 1 then
-	        self.x = self.x + 300 * dt
-			dx = 1
-	    elseif self.fired == 2 then
-	        self.x = self.x - 300 * dt
-			dx = 1
-	    elseif self.fired == 3 then
-	        self.y = self.y - 300 * dt
-			dy = 1
-	    elseif self.fired == 4 then
-	        self.y = self.y + 300 * dt
-			dy = 1
-	    end
+	if dx ~= 0 or dy ~= 0 then
+		local cols
+		self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy,function(item, other)
+																						if other:isInstanceOf(explosion) then
+																						return "cross"
+																					else
+																						return "touch"
+																					end
+																				end)
+		for _,v in ipairs(cols) do
+			local col = v
 
-		if dx ~= 0 or dy ~= 0 then
-		  local cols
-		  self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy,function(item, other)
-		  																				if other:isInstanceOf(explosion) then
-																							return "cross"
-																						else
-																							return "touch"
-																						end
-																					end)
-		  for _,v in ipairs(cols) do
-				local col = v
+			if v.other:isInstanceOf(slime) then
+					v.other:TakingDamage()
+			end
 
-				if v.other:isInstanceOf(slime) then
-						v.other:TakingDamage(self.dmg)
-				end
-
-				if not v.other:isInstanceOf(explosion) then
-					explosion(self.x, self.y)
-					self.removed = true
-					world:remove(self)
-					drawOrder:remove(self)
-				end
-
+			if not v.other:isInstanceOf(explosion) then
+				explosion(self.x, self.y)
+				world:remove(self)
+				drawOrder:remove(self)
 			end
 		end
 	end
 end
 
-function fireball:draw()
+function laser:draw()
     --love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
     love.graphics.draw(fireshot, self.x - 7, self.y - 5)
 end
 
 
 
-return fireball
+return laser
