@@ -9,7 +9,7 @@ local explosion = require("classes.explosion")
 
 local entity = require("classes.entity")
 local projectile = require("classes.projectile")
-local laser = class("laser",entity)
+local laser = class("laser", entity)
 
 local fireshot = love.graphics.newImage("assets/art/fireball_sprite.png")
 
@@ -35,7 +35,7 @@ function laser:initialize(direction, x, y)
         self.y = self.y + self.h + 4
     end
 
-	world:add(self, self.x,self.y,self.w,self.h)
+	world:add(self, self.x, self.y, self.w, self.h)
 	drawOrder:register(self)
 
 end
@@ -70,7 +70,7 @@ function laser:update(dt)
 			local col = v
 
 			if v.other:isInstanceOf(slime) then
-					v.other:TakingDamage()
+					v.other:TakingDamage(self.dmg)
 			end
 
 			if not v.other:isInstanceOf(explosion) then

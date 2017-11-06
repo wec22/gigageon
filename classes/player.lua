@@ -6,9 +6,10 @@ local drawOrder = require("lib.drawOrder")
 local zinput = require("lib.zinput")
 local det = require("lib.detectors")
 
-local fireball = require("classes.fireball")
+local laser = require("classes.laser")
 local slime = require("classes.slime")
 local entity = require("classes.entity")
+local sword = require("classes.sword")
 
 
 local character = require("classes.character")
@@ -38,7 +39,8 @@ walkright:setSpeed(0.5)
 
 
 function player:initialize(x,y)
-	character.initialize(self,x,y,10,8,1, 10)
+    character.initialize(self, x, y, 1, 8, 10, 10)
+	self.sword = sword(0,0,0,0)
 	self.EnergyMax = 10
 	self.EnergyBar = 10
     self.speed=60
@@ -46,9 +48,11 @@ function player:initialize(x,y)
 
 	self.firecooldown = 0
 	self.dmgcooldown = 0
+	--
+	self.lasers = {}
 
 	--Storing the last movement key pressed
-    self.direction = 's'
+    self.direction = 'down'
 
 	--Setting up gamepad controls
     self:newbutton("up", det.button.key("w"))
@@ -56,6 +60,7 @@ function player:initialize(x,y)
     self:newbutton("left", det.button.key("a"))
     self:newbutton("right", det.button.key("d"))
     self:newbutton("fire", det.button.key("space"))
+	self:newbutton("sword", det.button.key("f"))
 
     self.inputs.up:addDetector(det.button.gamepad("dpup", 1))
     self.inputs.down:addDetector(det.button.gamepad("dpdown", 1))
@@ -116,6 +121,8 @@ function player:update(dt)
         self.dmgcooldown = self.dmgcooldown - 1
     end
 
+	self.sword:update(dt, self.direction, self.x, self.y)
+
 	--Replenishes Special Bar
 	if self.EnergyBar ~= self.EnergyMax then
 		if self.EnergyBar + 0.005 > self.EnergyMax then
@@ -125,8 +132,9 @@ function player:update(dt)
 		end
 	end
 
+	--Energy and Firing mechanics
     if self.inputs.fire() and self.firecooldown == 0 and self.EnergyBar - 1 >= 0 then
-		fireball(self.direction, self.x, self.y)
+		laser(self.direction, self.x, self.y)
 		self.EnergyBar = self.EnergyBar - 1
         self.firecooldown = 20
 	end
@@ -150,6 +158,45 @@ function player:update(dt)
     	self.direction = 'up'
     end
 
+	--Updating fireballs from fireball table
+		local index = 1
+		for _,v in pairs(self.lasers) do
+			v:update(dt)
+			index = index + 1
+		end
+
+	--[[if self.inputs.sword("pressed") then
+
+		if self.direction == 'up' then
+			self.sword.x = self.x + self.w - 2
+			self.sword.y = self.y - (32 - self.h) - 4
+			self.sword.w = 5
+			self.sword.h = 20
+		elseif self.direction == 'down' then
+			self.sword.x = self.x
+			self.sword.y = self.y + self.h
+			self.sword.w = 5
+			self.sword.h = 20
+		elseif self.direction == 'right' then
+			self.sword.x = self.x - 20
+			self.sword.y = self.y
+			self.sword.w = 20
+			self.sword.h = 5
+		elseif self.direction == 'left' then
+			self.sword.x = self.x + 10
+			self.sword.y = self.y + self.h - 2
+			self.sword.w = 20
+			self.sword.h = 5
+		end
+
+		self.sword = sword(self.sword.x, self.sword.y, self.sword.w, self.sword.h)
+
+		self.sword.pushed = true
+
+		world:add(self.sword, self.sword.x, self.sword.y, self.sword.w, self.sword.h)
+
+	end
+	--]]
 	--Collision logic
     if dx ~= 0 or dy ~= 0 then
     	local cols
@@ -210,7 +257,16 @@ end
 
 function player:draw()
 
-	--Player blinks red after taking damage
+	love.graphics.rectangle("fill", self.sword.x, self.sword.y, self.sword.w, self.sword.h)
+
+	--Drawing lasers from the laser table
+    local index = 1
+    for _,v in pairs(self.lasers) do
+        v:draw()
+        index = index + 1
+    end
+
+	--Playing blinks red after taking damage
     if self.hit~=0 then
         love.graphics.setColor(255, 0, 0)
         self.hit = self.hit-1

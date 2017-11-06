@@ -16,6 +16,7 @@ local tiled = require("lib.tiled")
 
 local entity = require("classes.entity")
 local p = require("classes.player")
+local npc = require("classes.npc")
 local explosion = require("classes.explosion")
 
 --debug stuff
@@ -39,11 +40,16 @@ function love.load()
     pixelate = shine.pixelate()
     pixelate.samples = 5
     pixelate.pixel_size = 50
+	music = love.audio.newSource("assets/audio/Game1.wav")
+	local drawText = {"Aliens have invaded!\nPlease help us!!"}
+	townsfolk = npc(16*6,512-16*5, 1, drawText)
+	music:setLooping(true)
+	music:play()
 
     missioncomplete = 0
 
-    -- this is calling a player on load. this will cause 2 playes to spawn if a spawn object is in the map. this player will spawn at 0,0 and the 'duplicate' will spwn as intended
-    testmap = tiled.map("maps.Testmaps.dungeon_entrance")
+    -- this is calling a player on load. this will cause 2 playes to spawn if a spawn object is in the map. this player will spawn at 0,0 and the 'duplicate' will spawn as intended
+    testmap = tiled.map("maps.Testmaps.destroyedPark")
     cam = gamera.new(0,0,512,512)
 
     cam:setScale(2)
@@ -94,4 +100,5 @@ function love.draw()
         end)
     end)
 	mainPlayer:drawUI()
+	townsfolk:drawtextbox()
 end

@@ -23,6 +23,10 @@ function npc:initialize(x, y, interact, text)
 
     self.times = 0
     self.text = text
+	self.x = x
+	self.y = y
+	self.w = 16
+	self.h = 10
     --self.health = 1
     self.interaction = interact
     self.drawBox = false
@@ -64,8 +68,8 @@ end
 function npc:drawtextbox()
     if self.health > 0 then
         if not self.drawBox and self.interaction == 1 and cooldown == 0 then
-            if player.x < self.x+1+self.w+1 and self.x+1 < player.x+player.w and
-                   player.y < self.y+1+self.h+17 and self.y+1 < player.y+player.h then
+            if mainPlayer.x < self.x+1+self.w+1 and self.x+1 < mainPlayer.x+mainPlayer.w and
+                   mainPlayer.y < self.y+1+self.h+17 and self.y+1 < mainPlayer.y+mainPlayer.h then
                 love.graphics.print("Press 'e' to interact", 0, 0)
                 if love.keyboard.isDown('e') then
                     self.drawBox = true
