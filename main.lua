@@ -40,11 +40,14 @@ function love.load()
     pixelate = shine.pixelate()
     pixelate.samples = 5
     pixelate.pixel_size = 50
-	music = love.audio.newSource("assets/audio/Game1.wav")
-	local drawText = {"Aliens have invaded!\nPlease help us!!"}
-	townsfolk = npc(16*6,512-16*5, 1, drawText)
+
+	--music = love.audio.newSource("assets/audio/Game1.wav")
+	music = love.audio.newSource("assets/audio/spooky hallway.wav")
 	music:setLooping(true)
 	music:play()
+
+	local drawText = {"Aliens have invaded!\nPlease help us!!"}
+	townsfolk = npc(16*6,512-16*5, 1, drawText)
 
     missioncomplete = 0
 

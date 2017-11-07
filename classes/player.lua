@@ -39,7 +39,7 @@ walkright:setSpeed(0.5)
 
 
 function player:initialize(x,y)
-    character.initialize(self, x, y, 1, 8, 10, 10)
+    character.initialize(self, x, y, 8, 8, 10, 10)
 	self.sword = sword(0,0,0,0)
 	self.EnergyMax = 10
 	self.EnergyBar = 10
@@ -125,10 +125,10 @@ function player:update(dt)
 
 	--Replenishes Special Bar
 	if self.EnergyBar ~= self.EnergyMax then
-		if self.EnergyBar + 0.005 > self.EnergyMax then
+		if self.EnergyBar + .01 > self.EnergyMax then
 			self.EnergyBar = self.EnergyBar + (self.EnergyMax - self.EnergyBar)
 		else
-			self.EnergyBar = self.EnergyBar + 0.005
+			self.EnergyBar = self.EnergyBar + .01
 		end
 	end
 
@@ -257,7 +257,7 @@ end
 
 function player:draw()
 
-	love.graphics.rectangle("fill", self.sword.x, self.sword.y, self.sword.w, self.sword.h)
+	--love.graphics.rectangle("fill", self.sword.x, self.sword.y, self.sword.w, self.sword.h)
 
 	--Drawing lasers from the laser table
     local index = 1

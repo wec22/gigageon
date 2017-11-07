@@ -5,9 +5,14 @@ local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
 local animation = require("classes.animation")
 
+local zinput = require("lib.zinput")
+local det = require("lib.detectors")
+
 local entity = require("classes.entity")
 local character = require("classes.character")
 local npc = class("npc", character)
+npc:include(zinput)
+
 
 local spritesheet = love.graphics.newImage("assets/art/Sprites.png")
 spritesheet:setFilter("nearest","nearest")
@@ -31,6 +36,10 @@ function npc:initialize(x, y, interact, text)
     self.interaction = interact
     self.drawBox = false
     self.box = textbox(1, self.text)
+
+	self:newbutton("interact", det.button.key("e"))
+	self.inputs.interact:addDetector(det.button.gamepad("b", 1))
+
     world:add(self, self.x, self.y, self.w, self.h)
 
     drawOrder:register(self)
@@ -70,8 +79,8 @@ function npc:drawtextbox()
         if not self.drawBox and self.interaction == 1 and cooldown == 0 then
             if mainPlayer.x < self.x+1+self.w+1 and self.x+1 < mainPlayer.x+mainPlayer.w and
                    mainPlayer.y < self.y+1+self.h+17 and self.y+1 < mainPlayer.y+mainPlayer.h then
-                love.graphics.print("Press 'e' to interact", 0, 0)
-                if love.keyboard.isDown('e') then
+                love.graphics.print("Press 'e' or the b button to interact", 0, 0)
+                if self.inputs.interact() then
                     self.drawBox = true
                 end
             end
