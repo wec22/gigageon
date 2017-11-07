@@ -42,12 +42,9 @@ function love.load()
     pixelate.pixel_size = 50
 
 	--music = love.audio.newSource("assets/audio/Game1.wav")
-	music = love.audio.newSource("assets/audio/spooky hallway.wav")
+	music = love.audio.newSource("assets/audio/Game1.wav")
 	music:setLooping(true)
 	music:play()
-
-	local drawText = {"Aliens have invaded!\nPlease help us!!"}
-	townsfolk = npc(16*6,512-16*5, 1, drawText)
 
     missioncomplete = 0
 
@@ -103,5 +100,4 @@ function love.draw()
         end)
     end)
 	mainPlayer:drawUI()
-	townsfolk:drawtextbox()
 end

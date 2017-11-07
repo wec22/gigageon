@@ -74,7 +74,7 @@ function npc:draw()
     end
 end
 
-function npc:drawtextbox()
+function npc:drawTextBox()
     if self.health > 0 then
         if not self.drawBox and self.interaction == 1 and cooldown == 0 then
             if mainPlayer.x < self.x+1+self.w+1 and self.x+1 < mainPlayer.x+mainPlayer.w and

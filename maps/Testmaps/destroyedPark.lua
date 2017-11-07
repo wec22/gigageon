@@ -8,7 +8,7 @@ return {
   height = 32,
   tilewidth = 16,
   tileheight = 16,
-  nextobjectid = 68,
+  nextobjectid = 74,
   properties = {},
   tilesets = {
     {
@@ -12499,6 +12499,32 @@ return {
           y = 301.333,
           width = 9.33333,
           height = 211.333,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 68,
+          name = "help us!! slimes are scary",
+          type = "talking npc",
+          shape = "rectangle",
+          x = 78,
+          y = 400.667,
+          width = 19.3333,
+          height = 18.6667,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 72,
+          name = "",
+          type = "blank npc",
+          shape = "rectangle",
+          x = 43.3333,
+          y = 334.667,
+          width = 20,
+          height = 18,
           rotation = 0,
           visible = true,
           properties = {}

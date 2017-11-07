@@ -8,8 +8,8 @@ local det = require("lib.detectors")
 
 local laser = require("classes.laser")
 local slime = require("classes.slime")
+local npc = require("classes.npc")
 local entity = require("classes.entity")
-local sword = require("classes.sword")
 
 
 local character = require("classes.character")
@@ -37,14 +37,16 @@ walkup:setSpeed(0.5)
 walkleft:setSpeed(0.5)
 walkright:setSpeed(0.5)
 
+local i = 1
 
 function player:initialize(x,y)
     character.initialize(self, x, y, 8, 8, 10, 10)
-	self.sword = sword(0,0,0,0)
 	self.EnergyMax = 10
 	self.EnergyBar = 10
     self.speed=60
     self.hit=0
+
+	self.npcs = {}
 
 	self.firecooldown = 0
 	self.dmgcooldown = 0
@@ -60,7 +62,6 @@ function player:initialize(x,y)
     self:newbutton("left", det.button.key("a"))
     self:newbutton("right", det.button.key("d"))
     self:newbutton("fire", det.button.key("space"))
-	self:newbutton("sword", det.button.key("f"))
 
     self.inputs.up:addDetector(det.button.gamepad("dpup", 1))
     self.inputs.down:addDetector(det.button.gamepad("dpdown", 1))
@@ -100,6 +101,11 @@ function player:TakingDamage(x,y,h,w)
 	self.dmgcooldown = 10
 end
 
+function player:addNpc(x,y,i,text)
+	self.npcs[i] = npc(x,y,i,text)
+	i = i + 1
+end
+
 function player:update(dt)
     self:inputUpdate()
 
@@ -120,8 +126,6 @@ function player:update(dt)
 	if self.dmgcooldown ~= 0 then
         self.dmgcooldown = self.dmgcooldown - 1
     end
-
-	self.sword:update(dt, self.direction, self.x, self.y)
 
 	--Replenishes Special Bar
 	if self.EnergyBar ~= self.EnergyMax then
@@ -165,38 +169,6 @@ function player:update(dt)
 			index = index + 1
 		end
 
-	--[[if self.inputs.sword("pressed") then
-
-		if self.direction == 'up' then
-			self.sword.x = self.x + self.w - 2
-			self.sword.y = self.y - (32 - self.h) - 4
-			self.sword.w = 5
-			self.sword.h = 20
-		elseif self.direction == 'down' then
-			self.sword.x = self.x
-			self.sword.y = self.y + self.h
-			self.sword.w = 5
-			self.sword.h = 20
-		elseif self.direction == 'right' then
-			self.sword.x = self.x - 20
-			self.sword.y = self.y
-			self.sword.w = 20
-			self.sword.h = 5
-		elseif self.direction == 'left' then
-			self.sword.x = self.x + 10
-			self.sword.y = self.y + self.h - 2
-			self.sword.w = 20
-			self.sword.h = 5
-		end
-
-		self.sword = sword(self.sword.x, self.sword.y, self.sword.w, self.sword.h)
-
-		self.sword.pushed = true
-
-		world:add(self.sword, self.sword.x, self.sword.y, self.sword.w, self.sword.h)
-
-	end
-	--]]
 	--Collision logic
     if dx ~= 0 or dy ~= 0 then
     	local cols
@@ -213,6 +185,11 @@ end
 
 --The game ending when the player dies
 function player:drawUI()
+
+	for _,v in pairs(self.npcs) do
+		v:drawTextBox()
+	end
+
     font = love.graphics.newFont(20)
     love.graphics.setFont(font)
 	if devmode then
@@ -256,8 +233,6 @@ function player:stand()
 end
 
 function player:draw()
-
-	--love.graphics.rectangle("fill", self.sword.x, self.sword.y, self.sword.w, self.sword.h)
 
 	--Drawing lasers from the laser table
     local index = 1
