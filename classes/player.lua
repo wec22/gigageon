@@ -153,8 +153,7 @@ function player:update(dt)
 	elseif self.inputs.left() then
     	dx = -speed * dt
     	self.direction = 'left'
-    end
-    if self.inputs.down() then
+	elseif self.inputs.down() then
     	dy = speed * dt
     	self.direction = 'down'
 	elseif self.inputs.up() then

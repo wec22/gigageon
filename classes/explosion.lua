@@ -32,7 +32,7 @@ function explosion:initialize(x, y)
     self.particle:start()
     self.particle:emit(200)
     drawOrder:register(self)
-    world:add(self, self.x-10, self.y-10, 20,20)
+    world:add(self, self.x-10, self.y-10, 5,5)
 end
 
 function explosion:update(dt)
