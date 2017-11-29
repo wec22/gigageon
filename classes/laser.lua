@@ -4,36 +4,56 @@ local animation = require("classes.animation")
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
 
-local slime = require("classes.slime")
+local enemy = require("classes.enemy")
 local explosion = require("classes.explosion")
 
 local entity = require("classes.entity")
 local projectile = require("classes.projectile")
 local laser = class("laser", entity)
 
-local fireshot = love.graphics.newImage("assets/art/fireball_sprite.png")
-
 local cols_len = 0
 
-function laser:initialize(direction, x, y)
+function laser:initialize(direction, x, y, pOe)
 	self.x = x
     self.y = y
 	self.w = 5
     self.h = 5
 	self.dmg = 1
-	self.offsetx = 0
-	self.offsety = 0
+	self.pOe = pOe
+	self.px = mainPlayer.x
+	self.py = mainPlayer.y
+	self.offsetx = 9
+	self.offsety = 4
     self.direction = direction
+	self.speed = 300
+
+	self.fireshot = love.graphics.newImage("assets/art/fireball_sprite.png")
 
     if self.direction == 'right' then
-        self.x = self.x + self.w + 9
+        self.x = self.x + self.w + self.offsetx
     elseif self.direction == 'left' then
-        self.x = self.x - self.w - 4
+        self.x = self.x - self.w - self.offsety
     elseif self.direction == 'up' then
-        self.y = self.y - self.h - 9
+        self.y = self.y - self.h - self.offsetx
     elseif self.direction == 'down' then
-        self.y = self.y + self.h + 4
+    	self.y = self.y + self.h + self.offsety
     end
+
+	if self.pOe ~= 0 then
+		self.fireshot = love.graphics.newImage("assets/art/old_fireball_sprite.png")
+	end
+
+ 	right, left, up, down = false
+	if self.px > self.x + 5 then
+		right = true
+	elseif self.px < self.x - 5 then
+		left = true
+	end
+	if self.py > self.y + 5 then
+		down = true
+	elseif self.py < self.y - 5 then
+		up = true
+	end
 
 	world:add(self, self.x, self.y, self.w, self.h)
 	drawOrder:register(self)
@@ -41,36 +61,60 @@ function laser:initialize(direction, x, y)
 end
 
 function laser:update(dt)
-	local dx, dy = 0, 0
+	self.dx, self.dy = 0, 0
 
-    if self.direction == 'right' then
-        self.x = self.x + 300 * dt
-		dx = 1
-    elseif self.direction == 'left' then
-        self.x = self.x - 300 * dt
-		dx = 1
-    elseif self.direction == 'up' then
-        self.y = self.y - 300 * dt
-		dy = 1
-    elseif self.direction == 'down' then
-        self.y = self.y + 300 * dt
-		dy = 1
-    end
+	if self.pOe == 0 then
+    	if self.direction == 'right' then
+        	self.x = self.x + self.speed * dt
+			self.dx = 1
+    	elseif self.direction == 'left' then
+        	self.x = self.x - self.speed * dt
+			self.dx = 1
+    	elseif self.direction == 'up' then
+        	self.y = self.y - self.speed * dt
+			self.dy = 1
+    	elseif self.direction == 'down' then
+        	self.y = self.y + self.speed * dt
+			self.dy = 1
+    	end
 
-	if dx ~= 0 or dy ~= 0 then
-		local cols
-		self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy,function(item, other)
+		else
+			if right then
+				self.x = self.x + self.speed * dt
+	            self.dx = 1
+	        elseif left then
+				self.x = self.x - self.speed * dt
+	            self.dx = 1
+	        end
+	        if down then
+				self.y = self.y + self.speed * dt
+	            self.dy = 1
+	        elseif up then
+				self.y = self.y - self.speed * dt
+	            self.dy = 1
+	        end
+	end
+
+	if self.dx ~= 0 or self.dy ~= 0 then
+		self.cols = 0
+		self.x, self.y, self.cols, self.cols_len = world:move(self, self.x + self.dx, self.y + self.dy,function(item, other)
 																						if other:isInstanceOf(explosion) then
 																						return "cross"
 																					else
 																						return "touch"
 																					end
 																				end)
-		for _,v in ipairs(cols) do
-			local col = v
+		for _,v in ipairs(self.cols) do
+			self.col = v
 
-			if v.other:isInstanceOf(slime) then
+			if self.pOe == 0 then
+				if v.other:isInstanceOf(enemy) then
 					v.other:TakingDamage(self.dmg)
+				end
+			else
+				if v.other == mainPlayer then
+				   v.other:TakingDamage(self.dmg, self.x, self.y, self.h, self.w)
+			   end
 			end
 
 			if not v.other:isInstanceOf(explosion) then
@@ -84,7 +128,7 @@ end
 
 function laser:draw()
     --love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-    love.graphics.draw(fireshot, self.x - 7, self.y - 5)
+    love.graphics.draw(self.fireshot, self.x - 7, self.y - 5)
 end
 
 

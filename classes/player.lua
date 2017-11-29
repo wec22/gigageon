@@ -7,7 +7,7 @@ local zinput = require("lib.zinput")
 local det = require("lib.detectors")
 
 local laser = require("classes.laser")
-local slime = require("classes.slime")
+local enemy = require("classes.enemy")
 local npc = require("classes.npc")
 local entity = require("classes.entity")
 
@@ -50,7 +50,6 @@ function player:initialize(x,y)
 
 	self.firecooldown = 0
 	self.dmgcooldown = 0
-	--
 	self.lasers = {}
 
 	--Storing the last movement key pressed
@@ -94,7 +93,7 @@ function player:TakingDamage(x,y,h,w)
 	        self.y = self.y-30
 	    end
 
-	if self.dmgcooldown==0 then
+	if self.dmgcooldown == 0 then
 		self.health = self.health - 1
 	    self.hit = 5
 	end
@@ -138,7 +137,7 @@ function player:update(dt)
 
 	--Energy and Firing mechanics
     if self.inputs.fire() and self.firecooldown == 0 and self.EnergyBar - 1 >= 0 then
-		laser(self.direction, self.x, self.y)
+		laser(self.direction, self.x, self.y, 0)
 		self.EnergyBar = self.EnergyBar - 1
         self.firecooldown = 20
 	end
@@ -175,7 +174,7 @@ function player:update(dt)
 
 		for _,v in ipairs(cols) do
 			local col = v
-			if v.other:isInstanceOf(slime) then
+			if v.other:isInstanceOf(enemy) then
 				self:TakingDamage(v.other.x, v.other.y, v.other.h, v.other.w)
 			end
     	end

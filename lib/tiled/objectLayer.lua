@@ -13,6 +13,7 @@ local drawOrder = require("lib.drawOrder")
 
 local collisionBlock = require("classes.collisionBlock")
 local slime = require("classes.slime")
+local boss = require("classes.Bounty Hunter")
 local doorway = require("classes.doorway")
 local player = require("classes.player")
 local npc = require("classes.npc")
@@ -29,13 +30,33 @@ function objectLayer:initialize(t)
     self.draworder = t.draworder
     self.properties = t.properties
     self.objects = {}
+	self.x = {}
+	self.y = {}
     for _,v in ipairs(t.objects) do
         table.insert(self.objects, object(v))
     end
 
+	for _,v in ipairs(self.objects) do
+		if v.type == "1" then
+			table.insert(self.x, v.x)
+	        table.insert(self.y, v.y)
+		elseif v.type == "2" then
+			table.insert(self.x, v.x)
+		    table.insert(self.y, v.y)
+		elseif v.type == "3" then
+			table.insert(self.x, v.x)
+		    table.insert(self.y, v.y)
+		elseif v.type == "4" then
+			table.insert(self.x, v.x)
+			table.insert(self.y, v.y)
+		end
+	end
+
     for _,v in ipairs(self.objects) do
         if v.type == "slime" then
             slime(v.x,v.y)
+		elseif v.type == "bHunter" then
+	        boss(v.x,v.y, self.x, self.y)
         elseif v.type == "wall" then
             collisionBlock(v.x, v.y, v.width, v.height)
         elseif v.type == "doorway" then
