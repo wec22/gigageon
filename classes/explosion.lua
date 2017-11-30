@@ -12,7 +12,9 @@ local texture = love.graphics.newImage("assets/art/fireball_sprite.png")
 --local texture = love.graphics.newImage("plus.png")
 local particle = love.graphics.newParticleSystem(texture, 100000)
 
-particle:setColors(222,128,32,0, 222,128,64,32, 32,32,32,32, 16,16,16,28, 12,12,12,92, 32,32,32,0)
+--particle:setColors(222,128,32,0, 222,128,64,32, 32,32,32,32, 16,16,16,28, 12,12,12,92, 32,32,32,0)
+particle:setColors(0,221,166,0, 0,187,255,32, 32,32,32,32, 16,16,16,28, 12,12,12,92, 32,32,32,0)
+
 particle:setInsertMode("bottom")
 particle:setSizes(1, 1, 1, 1, 0.75, 0.5, 0.25, 0)
 particle:setLinearAcceleration(0,0,0,0)

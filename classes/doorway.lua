@@ -25,7 +25,7 @@ function doorway:loadMap(cache)
 	if cache == nil then
 		cache = true
 	end
-	if cache then print("true") else print("false") end
+	--if cache then print("true") else print("false") end
 	tiled.changeMap(self.mapName, self.targetID, cache)
 end
 

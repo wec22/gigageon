@@ -170,7 +170,7 @@ function player:update(dt)
 			if v.other:isInstanceOf(slime) then
 				self:TakingDamage(v.other.x, v.other.y, v.other.h, v.other.w)
 			elseif v.other:isInstanceOf(doorway) then
-				v.other:loadMap(false)
+				v.other:loadMap(true)
 				return false
 			end
     	end

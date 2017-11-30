@@ -26,15 +26,15 @@ function tiled.changeMap(newMap, ID, cache)
 	assert(newMap, "tiled: No filepath for new map given")
 	newMap = "maps."..string.gsub(newMap, "[%/%\\]", ".")
 	print(newMap)
-	if cache and currentMap then
+	if cache and tiled.currentMap then
 		print("Tiled: Caching current map")
 		tiled.mapCache[tiled.currentMap.filepath] = tiled.currentMap
 	end
 	if tiled.mapCache[newMap] then
-		print("Tiled: Loading map from cache")
+		print("Tiled: Loading map from cache: "..string.gsub(newMap,"%.", "/"))
 		tiled.currentMap = tiled.mapCache[newMap]
 	else
-		print("Tiled: Loading map from file")
+		print("Tiled: Loading map from file"..string.gsub(newMap,"%.", "/"))
 		tiled.currentMap = tiled.map(newMap)
 	end
 
@@ -64,7 +64,9 @@ function tiled.changeMap(newMap, ID, cache)
 		assert(#spawns==1, "Tiled: more than one spawn in map:"..newMap)
 		_G.mainPlayer = player(spawns[1].x, spawns[1].y)
 	end
-	tiled.currentMap.world:add(mainPlayer, mainPlayer.x, mainPlayer.y, mainPlayer.w, mainPlayer.h)
+	if not tiled.currentMap.world:hasItem(mainPlayer) then
+		tiled.currentMap.world:add(mainPlayer, mainPlayer.x, mainPlayer.y, mainPlayer.w, mainPlayer.h)
+	end
 end
 
 function tiled.clearCache()

@@ -98,7 +98,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.print(love.timer.getFPS(),0,0)
     pixelate:draw(function()
         cam:draw(function(l,t,w,h)
                 tiled.currentMap:draw()
@@ -108,4 +107,5 @@ function love.draw()
         end)
     end)
 	mainPlayer:drawUI()
+    love.graphics.print(love.timer.getFPS(),0,0)
 end

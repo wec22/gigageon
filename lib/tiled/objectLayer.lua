@@ -40,7 +40,6 @@ function objectLayer:initialize(t, world)
         elseif v.type == "wall" then
             t = collisionBlock(v.x, v.y, v.width, v.height)
         elseif v.type == "doorway" then
-            print("Tiled.objectlayer: doorway not implemented")
             t = doorway(v.x, v.y, v.width, v.height, v.properties.targetMap, v.properties.targetID, v.properties.sourceID or v.properties.ID)
 		elseif v.type == "warp" then
 			print("Tiled.objectLayer: warp not implemented")
