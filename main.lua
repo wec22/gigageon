@@ -31,11 +31,6 @@ local gameWidth, gameHeight = 512, 512 --fixed game resolution
 local windowWidth, windowHeight = 512, 512
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false})
 
---create the physics world
---world = bump.newWorld()
-
-playerlocation = 1
-
 function love.load()
     pixelate = shine.pixelate()
     pixelate.samples = 5
@@ -43,11 +38,7 @@ function love.load()
 
     missioncomplete = 0
 
-    -- this is calling a player on load. this will cause 2 playes to spawn if a spawn object is in the map. this player will spawn at 0,0 and the 'duplicate' will spwn as intended
-    --tiled.currentMap = tiled.map("maps.Testmaps.dungeon_entrance")
 	tiled.changeMap("testmaps/dungeon_entrance")
-	local mapWidth = tiled.currentMap.width * tiled.currentMap.tileW
-	local mapHeight = tiled.currentMap.width * tiled.currentMap.tileH
 
     cam:setScale(2)
     cam:setPosition(mainPlayer.x, mainPlayer.y)
@@ -65,9 +56,10 @@ function love.update(dt)
 		memcount = memcount+1
 	end
 
-
+	--change camera position
     cam:setPosition(math.floor(mainPlayer.x + 0.5), math.floor(mainPlayer.y + 0.5))
 
+	--update the pixelate shader
 	if true then
 	    if pixelate._pixel_size>1 then
 	        pixelate:set("pixel_size", pixelate._pixel_size-50*dt)
@@ -94,6 +86,7 @@ function love.update(dt)
 				end
             end
         end
+
     end
 end
 
