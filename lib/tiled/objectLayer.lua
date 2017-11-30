@@ -56,7 +56,7 @@ function objectLayer:initialize(t)
         if v.type == "slime" then
             slime(v.x,v.y)
 		elseif v.type == "bHunter" then
-	        boss(v.x,v.y, self.x, self.y)
+			mainPlayer:addBoss(v.x,v.y, self.x, self.y)
         elseif v.type == "wall" then
             collisionBlock(v.x, v.y, v.width, v.height)
         elseif v.type == "doorway" then

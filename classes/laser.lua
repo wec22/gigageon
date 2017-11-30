@@ -23,7 +23,7 @@ function laser:initialize(direction, x, y, pOe)
 	self.px = mainPlayer.x
 	self.py = mainPlayer.y
 	self.offsetx = 9
-	self.offsety = 4
+	self.offsety = 6
     self.direction = direction
 	self.speed = 300
 
@@ -43,18 +43,6 @@ function laser:initialize(direction, x, y, pOe)
 		self.fireshot = love.graphics.newImage("assets/art/old_fireball_sprite.png")
 	end
 
- 	right, left, up, down = false
-	if self.px > self.x + 5 then
-		right = true
-	elseif self.px < self.x - 5 then
-		left = true
-	end
-	if self.py > self.y + 5 then
-		down = true
-	elseif self.py < self.y - 5 then
-		up = true
-	end
-
 	world:add(self, self.x, self.y, self.w, self.h)
 	drawOrder:register(self)
 
@@ -63,37 +51,19 @@ end
 function laser:update(dt)
 	self.dx, self.dy = 0, 0
 
-	if self.pOe == 0 then
-    	if self.direction == 'right' then
-        	self.x = self.x + self.speed * dt
-			self.dx = 1
-    	elseif self.direction == 'left' then
-        	self.x = self.x - self.speed * dt
-			self.dx = 1
-    	elseif self.direction == 'up' then
-        	self.y = self.y - self.speed * dt
-			self.dy = 1
-    	elseif self.direction == 'down' then
-        	self.y = self.y + self.speed * dt
-			self.dy = 1
-    	end
-
-		else
-			if right then
-				self.x = self.x + self.speed * dt
-	            self.dx = 1
-	        elseif left then
-				self.x = self.x - self.speed * dt
-	            self.dx = 1
-	        end
-	        if down then
-				self.y = self.y + self.speed * dt
-	            self.dy = 1
-	        elseif up then
-				self.y = self.y - self.speed * dt
-	            self.dy = 1
-	        end
-	end
+    if self.direction == 'right' then
+        self.x = self.x + self.speed * dt
+		self.dx = 1
+    elseif self.direction == 'left' then
+    	self.x = self.x - self.speed * dt
+		self.dx = 1
+    elseif self.direction == 'up' then
+    	self.y = self.y - self.speed * dt
+		self.dy = 1
+    elseif self.direction == 'down' then
+    	self.y = self.y + self.speed * dt
+		self.dy = 1
+    end
 
 	if self.dx ~= 0 or self.dy ~= 0 then
 		self.cols = 0

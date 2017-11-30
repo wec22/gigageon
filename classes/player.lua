@@ -8,6 +8,7 @@ local det = require("lib.detectors")
 
 local laser = require("classes.laser")
 local enemy = require("classes.enemy")
+local boss = require("classes.Bounty Hunter")
 local npc = require("classes.npc")
 local entity = require("classes.entity")
 
@@ -38,6 +39,7 @@ walkleft:setSpeed(0.5)
 walkright:setSpeed(0.5)
 
 local i = 1
+local i2 = 1
 
 function player:initialize(x,y)
     character.initialize(self, x, y, 8, 8, 10, 10)
@@ -45,8 +47,11 @@ function player:initialize(x,y)
 	self.EnergyBar = 10
     self.speed=60
     self.hit=0
+	self.notification = 0
+	self.gained = 0
 
 	self.npcs = {}
+	self.bosses = {}
 
 	self.firecooldown = 0
 	self.dmgcooldown = 0
@@ -83,7 +88,7 @@ end
 function player:TakingDamage(x,y,h,w)
 
 	--Player knockback when taking damage
-	if self.x < x and self.y >= y and self.y <= y+h then
+	--[[if self.x < x and self.y >= y and self.y <= y+h then
 	        self.x = self.x-30
 	    elseif self.y > y and self.x >= x and self.x <= x+h then
 	        self.y = self.y+30
@@ -92,6 +97,7 @@ function player:TakingDamage(x,y,h,w)
 	    elseif  self.y < y and self.x >= x and self.x <= x+w then
 	        self.y = self.y-30
 	    end
+		--]]
 
 	if self.dmgcooldown == 0 then
 		self.health = self.health - 1
@@ -103,6 +109,11 @@ end
 function player:addNpc(x,y,i,text)
 	self.npcs[i] = npc(x,y,i,text)
 	i = i + 1
+end
+
+function player:addBoss(x,y,ox,oy)
+	self.bosses[i2] = boss(x,y,ox,oy)
+	i2 = i2 + 1
 end
 
 function player:update(dt)
@@ -120,6 +131,10 @@ function player:update(dt)
 	--Updating all cooldowns needed from player
     if self.firecooldown ~= 0 then
         self.firecooldown = self.firecooldown - 1
+    end
+
+	if self.notification ~= 0 then
+        self.notification = self.notification - 1
     end
 
 	if self.dmgcooldown ~= 0 then
@@ -167,6 +182,12 @@ function player:update(dt)
 			index = index + 1
 		end
 
+		index = 1
+		for _,v in pairs(self.bosses) do
+			v:update(dt)
+			index = index + 1
+		end
+
 	--Collision logic
     if dx ~= 0 or dy ~= 0 then
     	local cols
@@ -188,8 +209,18 @@ function player:drawUI()
 		v:drawTextBox()
 	end
 
-    font = love.graphics.newFont(20)
-    love.graphics.setFont(font)
+	--Health bar for bosses
+	for _,v in pairs(self.bosses) do
+		if v.health > 0 then
+			love.graphics.print("BOSS : ", 20, 430)
+			love.graphics.setColor(255,0,0,128)
+			love.graphics.rectangle("fill", 20, 460, 465 - (465/v.maxHealth) * (v.maxHealth - v.health), 20)
+			love.graphics.setColor(255,0,0,256)
+			love.graphics.rectangle("line", 20, 460, 465, 20)
+			love.graphics.setColor(255, 255, 255, 255)
+		end
+	end
+
 	if devmode then
 		love.graphics.print("Health : ", love.graphics.getWidth() - 110, 0)
     	love.graphics.print(self.health, love.graphics.getWidth() - 30, 0)
@@ -198,13 +229,13 @@ function player:drawUI()
 	r,b,g = love.graphics.getColor()
 	--Setting up Health Bar
 	love.graphics.setColor(255,0,0,128)
-	love.graphics.rectangle("fill", 10, 10 + (self.maxHealth - self.health) * 10, 25, (self.health / self.maxHealth) * 100)
+	love.graphics.rectangle("fill", 10, 10 + (self.maxHealth - self.health) * (100/self.maxHealth), 25, (self.health / self.maxHealth) * 100)
 	love.graphics.rectangle("line", 10, 10, 25, 100)
 
 	--Setting up Energy Bar
 	love.graphics.setColor(0,0,255,128)
-	love.graphics.rectangle("fill", 40, 10 + (self.EnergyMax - self.EnergyBar) * 10, 25, (self.EnergyBar / self.EnergyMax) * 100)
-	love.graphics.rectangle("line",40, 10, 25, 100)
+	love.graphics.rectangle("fill", 40, 10 + (self.EnergyMax - self.EnergyBar) * (100/self.EnergyMax), 25, (self.EnergyBar / self.EnergyMax) * 100)
+	love.graphics.rectangle("line", 40, 10, 25, 100)
 
 	--Game Over Screen
 	love.graphics.setColor(r,b,g)
@@ -232,6 +263,10 @@ end
 
 function player:draw()
 
+	--notification if player gains something new
+	if self.notification ~= 0 then
+		love.graphics.print("+" .. self.gained, self.x, self.y + 15)
+	end
 	--Drawing lasers from the laser table
     local index = 1
     for _,v in pairs(self.lasers) do

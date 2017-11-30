@@ -5,6 +5,7 @@ local drawOrder = require("lib.drawOrder")
 local animation = require("classes.animation")
 
 local enemy = require("classes.enemy")
+local slime = require("classes.slime")
 local laser = require("classes.laser")
 local bHunter = class("enemy.bHunter", enemy)
 
@@ -38,7 +39,7 @@ function bHunter:TakingDamage(damage)
 end
 
 function bHunter:initialize(x,y, ox, oy)
-    enemy.initialize(self, x, y, 14, 10, 1, 50)
+    enemy.initialize(self, x, y, 14, 10, 1, 1)
 
 	self.ox = ox
 	self.oy = oy
@@ -46,6 +47,7 @@ function bHunter:initialize(x,y, ox, oy)
 	self.moves = 1
 	self.moving = false
 	self.direction = 'down'
+	self.spawnSlimes = false
 
     self.speed = 100
     self.hit = 0
@@ -75,22 +77,32 @@ function bHunter:update(dt)
         if self.ox[self.index] > self.x + 5 then
             dx = speed * dt
 			self.moving = true
+			self.spawnSlimes = true
         elseif self.ox[self.index] < self.x - 5 then
             dx = -speed * dt
 			self.moving = true
+			self.spawnSlimes = true
         end
         if self.oy[self.index] > self.y + 5 then
             dy = speed * dt
 			self.moving = true
+			self.spawnSlimes = true
         elseif self.oy[self.index] < self.y - 5 then
             dy = -speed * dt
 			self.moving = true
+			self.spawnSlimes = true
         end
 
-		--Stopping once coming to indicated point
+		--Stopping once coming to indicated point and spawning slimes
 		if (self.oy[self.index] < self.y + 5 and self.oy[self.index] > self.y - 5)
 		  	and (self.ox[self.index] < self.x + 5 and self.ox[self.index] > self.x - 5) then
 				self.moving = false
+				if self.spawnSlimes then
+					for i=1, 5 do
+						slime(self.x + 10, self.y)
+					end
+					self.spawnSlimes = false
+				end
 		end
 
 		--Moving to next point after taking certain amount of damage
@@ -122,18 +134,13 @@ function bHunter:update(dt)
 
           end
         end
-    end
-
-	--Entity being killed
-    if self.health == 0 then
-        self.health = self.health - 1
-        world:remove(self)
-		drawOrder:remove(self)
-    end
 
 	if self.firecooldown == 0 and self.moving == false then
-		laser(self.direction, self.x, self.y, 1)
-        self.firecooldown = 80
+		if (mainPlayer.x > self.x - 5 and mainPlayer.x < self.x + 5)
+		 	or (mainPlayer.y > self.y - 5 and mainPlayer.y < self.y + 5) then
+			laser(self.direction, self.x, self.y, 1)
+        	self.firecooldown = 80
+		end
 	end
 
 	if self.firecooldown ~= 0 then
@@ -146,6 +153,18 @@ function bHunter:update(dt)
 			v:update(dt)
 			index = index + 1
 		end
+	end
+
+	--Entity being killed
+    if self.health == 0 then
+		mainPlayer.maxHealth = mainPlayer.maxHealth + 5
+		mainPlayer.health = mainPlayer.maxHealth
+		mainPlayer.gained = 5
+		mainPlayer.notification = 20
+        self.health = self.health - 1
+        world:remove(self)
+		drawOrder:remove(self)
+    end
 
   end
 
@@ -162,7 +181,7 @@ function bHunter:draw()
     end
 
 	--love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-
+	love.graphics.setColor(255, 0, 0)
     if self.health > 0 and self.moving == false then
     	if mainPlayer.x>self.x+10 then
             standright:draw(self.x-10, self.y-20)
