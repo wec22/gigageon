@@ -7,12 +7,11 @@
 --uncomment to enable devmode
 --require("devmode")
 
-local gamera = require("lib.gamera")
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
 local shine = require("lib.shine")
 local push = require("lib.push")
-local tiled = require("lib.tiled")
+tiled = require("lib.tiled")
 
 local entity = require("classes.entity")
 local p = require("classes.player")
@@ -23,6 +22,8 @@ if devmode then
 	lovebird = require("lib.lovebird")
     lovebird:update()
 	members = drawOrder.members
+	memory = 0
+	memcount = 0
 end
 
 --set up push resolution scaling
@@ -43,8 +44,10 @@ function love.load()
     missioncomplete = 0
 
     -- this is calling a player on load. this will cause 2 playes to spawn if a spawn object is in the map. this player will spawn at 0,0 and the 'duplicate' will spwn as intended
-    tiled.currentMap = tiled.map("maps.Testmaps.dungeon_entrance")
-    cam = gamera.new(0,0,512,512)
+    --tiled.currentMap = tiled.map("maps.Testmaps.dungeon_entrance")
+	tiled.changeMap("testmaps/dungeon_entrance")
+	local mapWidth = tiled.currentMap.width * tiled.currentMap.tileW
+	local mapHeight = tiled.currentMap.width * tiled.currentMap.tileH
 
     cam:setScale(2)
     cam:setPosition(mainPlayer.x, mainPlayer.y)
@@ -54,7 +57,14 @@ end
 function love.update(dt)
 	if devmode then
 		lovebird:update()
+		if memcount<60*10 then
+			memory = memory + collectgarbage("count")
+		elseif memcount == 60*10 then
+			print("average memory over 10 seconds: ", memory/memcount)
+		end
+		memcount = memcount+1
 	end
+
 
     cam:setPosition(math.floor(mainPlayer.x + 0.5), math.floor(mainPlayer.y + 0.5))
 
@@ -75,9 +85,13 @@ function love.update(dt)
 
     if pixelate._pixel_size == 1 then
         local items = getWorld():getItems()
-        for _,v in ipairs(items) do
+		local continue = true
+		for _,v in ipairs(items) do
             if v:isInstanceOf(entity) then
-                v:update(dt)
+                continue = v:update(dt)
+				if continue == false then
+					break
+				end
             end
         end
     end

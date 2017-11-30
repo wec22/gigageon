@@ -15,6 +15,7 @@ local collisionBlock = require("classes.collisionBlock")
 local slime = require("classes.slime")
 local doorway = require("classes.doorway")
 local player = require("classes.player")
+local spawn = require("classes.spawn")
 
 local object = require(path .. "object")
 
@@ -40,13 +41,14 @@ function objectLayer:initialize(t, world)
             t = collisionBlock(v.x, v.y, v.width, v.height)
         elseif v.type == "doorway" then
             print("Tiled.objectlayer: doorway not implemented")
-            --doorway()
+            t = doorway(v.x, v.y, v.width, v.height, v.properties.targetMap, v.properties.targetID, v.properties.sourceID or v.properties.ID)
 		elseif v.type == "warp" then
 			print("Tiled.objectLayer: warp not implemented")
 			--warp()
         elseif v.type == "spawn" then
-            _G.mainPlayer = player(v.x, v.y)
-			t = mainPlayer
+            --[[_G.mainPlayer = player(v.x, v.y)
+			t = mainPlayer]]
+			t = spawn(v.x,v.y,v.width,v.height)
         elseif v.type == "npc" then
             print("Tiled.objectLayer: npc not implemented")
         end
@@ -57,7 +59,7 @@ function objectLayer:initialize(t, world)
 end
 
 function objectLayer:draw()
-    drawOrder:draw()
+    drawOrder:draw(getWorld():getItems())
 end
 
 

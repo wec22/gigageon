@@ -157,7 +157,7 @@
    <properties>
     <property name="sourceID" type="int" value="0"/>
     <property name="sourceMap" value="Testmaps/dungeon_entrance"/>
-    <property name="targetID" value="0"/>
+    <property name="targetID" type="int" value="0"/>
     <property name="targetMap" value="Testmaps/newTilesets"/>
    </properties>
   </object>

@@ -149,15 +149,20 @@
   </layer>
  </group>
  <objectgroup name="Object Layer 1">
-  <object id="1" type="doorway" x="98" y="386" width="28" height="30">
+  <object id="1" name="entrance" type="doorway" x="98" y="386" width="28" height="30">
    <properties>
-    <property name="sourceID" value="0"/>
     <property name="sourceMap" value="Testmaps/newTilesets"/>
-    <property name="targetID" value="0"/>
+    <property name="targetID" type="int" value="0"/>
     <property name="targetMap" value="Testmaps/dungeon_entrance"/>
    </properties>
   </object>
-  <object id="3" type="doorway" x="354" y="214" width="28" height="26"/>
+  <object id="3" name="exit" type="doorway" x="354" y="214" width="28" height="26">
+   <properties>
+    <property name="sourceID" type="int" value="1"/>
+    <property name="sourceMap" value=""/>
+    <property name="targetMap" value="testmaps/boss_room"/>
+   </properties>
+  </object>
   <object id="5" type="wall" x="64" y="320" width="34" height="96"/>
   <object id="6" type="wall" x="96" y="240" width="192" height="48"/>
   <object id="7" type="wall" x="64" y="214" width="290" height="26"/>

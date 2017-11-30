@@ -19,7 +19,7 @@ return {
       tileheight = 16,
       spacing = 1,
       margin = 0,
-      image = "tilesets/roguelikeDungeon_transparent.png",
+      image = "../../tilesets/roguelikeDungeon_transparent.png",
       imagewidth = 492,
       imageheight = 305,
       tileoffset = {
@@ -1226,7 +1226,7 @@ return {
           properties = {
             ["sourceID"] = 0,
             ["sourceMap"] = "Testmaps/dungeon_entrance",
-            ["targetID"] = "0",
+            ["targetID"] = 0,
             ["targetMap"] = "Testmaps/newTilesets"
           }
         },

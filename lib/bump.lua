@@ -514,6 +514,16 @@ function World:getItems()
   return items, len
 end
 
+function World:getItemsOfType(type)
+	local t = {}
+	for _,v in ipairs(self:getItems()) do
+		if v:isInstanceOf(type) then
+			table.insert(t,v)
+		end
+	end
+	return t
+end
+
 function World:countItems()
   local len = 0
   for _ in pairs(self.rects) do len = len + 1 end

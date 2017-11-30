@@ -16,7 +16,7 @@ function order:register(t)
 		t.drawOrder = 1
 		print("drawOrder: missing a drawOrder value, defaulting to 1")
 	end
-	table.insert(self.members, t)
+	--table.insert(self.members, t)
 end
 
 function order:remove(t)
@@ -31,22 +31,31 @@ function order:remove(t)
 end
 
 local function sort(lh, rh)
-	if not lh then
+	if not lh or not lh:isInstanceOf(entity) then
 		return false
-	elseif not rh then
+	elseif not rh or not rh:isInstanceOf(entity) then
 		return true
 	elseif lh.drawOrder == rh.drawOrder then
+		assert(lh,"left hand expression is nil")
+		assert(rh,"right hand expression is nil")
 		return lh.y < rh.y
 	else
+		assert(lh,"left hand expression is nil")
+		assert(rh,"right hand expression is nil")
 		return lh.drawOrder < rh.drawOrder
 	end
 end
 
 
-function order:draw(x, y)
-	table.sort(self.members, sort)
-	for _,v in ipairs(self.members) do
-		v:draw(x, y)
+function order:draw(t, x, y)
+	local t = t or self.members
+	table.sort(t, sort)
+	for _,v in ipairs(t) do
+		if v:isInstanceOf(entity) then
+			v:draw(x, y)
+		else
+			break
+		end
 	end
 end
 

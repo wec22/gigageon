@@ -9,6 +9,9 @@ local det = require("lib.detectors")
 local laser = require("classes.laser")
 local slime = require("classes.slime")
 local entity = require("classes.entity")
+local doorway = require("classes.doorway")
+local spawn = require("classes.spawn")
+local explosion = require("classes.explosion")
 
 
 local character = require("classes.character")
@@ -39,8 +42,8 @@ walkright:setSpeed(0.5)
 
 function player:initialize(x,y)
 	character.initialize(self,x,y,10,8,1, 10)
-	self.EnergyMax = 10
-	self.EnergyBar = 10
+	self.energyMax = 10
+	self.energyBar = 10
     self.speed=60
     self.hit=0
 
@@ -117,17 +120,17 @@ function player:update(dt)
     end
 
 	--Replenishes Special Bar
-	if self.EnergyBar <= self.EnergyMax then
-		self.EnergyBar = self.EnergyBar + 0.5 * dt
-		if self.EnergyBar > self.EnergyMax then
-			self.EnergyBar = self.EnergyMax
+	if self.energyBar <= self.energyMax then
+		self.energyBar = self.energyBar + 0.5 * dt
+		if self.energyBar > self.energyMax then
+			self.energyBar = self.energyMax
 		end
 	end
 
-    if self.inputs.fire() and self.firecooldown == 0 and self.EnergyBar - 1 >= 0 then
+    if self.inputs.fire() and self.firecooldown == 0 and self.energyBar - 1 >= 0 then
 		local f = laser(self.direction, self.x, self.y)
 		getWorld():add(f, f.x, f.y, f.w, f.h)
-		self.EnergyBar = self.EnergyBar - 1
+		self.energyBar = self.energyBar - 1
         self.firecooldown = 20
 	end
 
@@ -153,12 +156,22 @@ function player:update(dt)
 	--Collision logic
     if dx ~= 0 or dy ~= 0 then
     	local cols
-		self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy)
+		self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy, function(item, other)
+																							if other:isInstanceOf(explosion) then
+																								return "cross"
+																							elseif other:isInstanceOf(spawn) then
+																								return "cross"
+																							else
+																								return "slide"
+																							end
+																						end)
 
 		for _,v in ipairs(cols) do
-			local col = v
 			if v.other:isInstanceOf(slime) then
 				self:TakingDamage(v.other.x, v.other.y, v.other.h, v.other.w)
+			elseif v.other:isInstanceOf(doorway) then
+				v.other:loadMap(false)
+				return false
 			end
     	end
 	end
@@ -181,7 +194,7 @@ function player:drawUI()
 
 	--Setting up Energy Bar
 	love.graphics.setColor(0,0,255,128)
-	love.graphics.rectangle("fill", 40, 10 + (self.EnergyMax - self.EnergyBar) * 10, 25, (self.EnergyBar / self.EnergyMax) * 100)
+	love.graphics.rectangle("fill", 40, 10 + (self.energyMax - self.energyBar) * 10, 25, (self.energyBar / self.energyMax) * 100)
 	love.graphics.rectangle("line",40, 10, 25, 100)
 
 	--Game Over Screen

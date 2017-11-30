@@ -4,7 +4,10 @@
   <property name="health" type="float" default="0"/>
  </objecttype>
  <objecttype name="doorway" color="#55ffff">
-  <property name="mapName" type="string"/>
+  <property name="sourceID" type="int" default="0"/>
+  <property name="sourceMap" type="string" default=""/>
+  <property name="targetID" type="int" default="0"/>
+  <property name="targetMap" type="string"/>
  </objecttype>
  <objecttype name="wall" color="#000000"/>
  <objecttype name="spawn" color="#ff0000"/>

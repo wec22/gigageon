@@ -1,6 +1,9 @@
 local path = (...) .. "."
+local gamera = require("lib.gamera")
 
-local class = require("lib.middleclass")
+local doorway = require("classes.doorway")
+local spawn = require("classes.spawn")
+local player = require("classes.player")
 
 local tiled = {}
 
@@ -19,19 +22,49 @@ tiled.objectLayer = require(path .. "objectLayer")
 tiled.currentMap = {}
 
 tiled.mapCache = {}
-function tiled.changeMap(newMap, spawnPoint, cache, prevDoor)
+function tiled.changeMap(newMap, ID, cache)
 	assert(newMap, "tiled: No filepath for new map given")
-
-	if cache then
+	newMap = "maps."..string.gsub(newMap, "[%/%\\]", ".")
+	print(newMap)
+	if cache and currentMap then
+		print("Tiled: Caching current map")
 		tiled.mapCache[tiled.currentMap.filepath] = tiled.currentMap
 	end
-	if tile.mapCache[newMap] then
+	if tiled.mapCache[newMap] then
+		print("Tiled: Loading map from cache")
 		tiled.currentMap = tiled.mapCache[newMap]
-		--add player at correct spawn point
 	else
+		print("Tiled: Loading map from file")
 		tiled.currentMap = tiled.map(newMap)
-		--add player at correct spawn point
 	end
+
+	--change camera dimensions to the size of the new map
+	local mapWidth = tiled.currentMap.width * tiled.currentMap.tileW
+	local mapHeight = tiled.currentMap.width * tiled.currentMap.tileH
+	if not cam then
+		cam = gamera.new(0, 0, mapWidth, mapHeight)
+	else
+		cam:setWorld(0, 0, mapWidth, mapHeight)
+	end
+
+	--add player at correct spawn point
+	if mainPlayer then
+		local items = tiled.currentMap.world:getItems()
+		for _,v in ipairs(items) do
+			if v:isInstanceOf(doorway) and v.ID == ID then
+				--spawn player at location of this doorway
+				mainPlayer.x = v.x+(v.w/2)-(mainPlayer.w/2)
+				mainPlayer.y = v.y+v.h
+				break
+			end
+		end
+	else
+		--spawn player at spawn
+		spawns = tiled.currentMap.world:getItemsOfType(spawn)
+		assert(#spawns==1, "Tiled: more than one spawn in map:"..newMap)
+		_G.mainPlayer = player(spawns[1].x, spawns[1].y)
+	end
+	tiled.currentMap.world:add(mainPlayer, mainPlayer.x, mainPlayer.y, mainPlayer.w, mainPlayer.h)
 end
 
 function tiled.clearCache()

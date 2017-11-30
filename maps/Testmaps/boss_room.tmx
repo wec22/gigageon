@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2718" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" infinite="0" nextobjectid="22">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" nextobjectid="24">
  <tileset firstgid="1" source="../../tilesets/dungeon.tsx"/>
  <tileset firstgid="523" source="../../tilesets/overworld.tsx"/>
  <tileset firstgid="2290" source="../../tilesets/Indoor.tsx"/>
@@ -225,6 +225,12 @@
   <object id="18" type="wall" x="928" y="192" width="80" height="48"/>
   <object id="19" type="wall" x="512" y="800" width="496" height="48"/>
   <object id="20" type="wall" x="16" y="821" width="22" height="27"/>
-  <object id="21" name="entrance" type="doorway" x="38" y="821" width="20" height="27"/>
+  <object id="21" name="entrance" type="doorway" x="38" y="821" width="20" height="27">
+   <properties>
+    <property name="targetID" type="int" value="1"/>
+    <property name="targetMap" value="testmaps/newTilesets"/>
+   </properties>
+  </object>
+  <object id="22" type="spawn" x="40" y="862" width="16" height="32"/>
  </objectgroup>
 </map>
