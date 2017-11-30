@@ -15,6 +15,7 @@ tiled = require("lib.tiled")
 
 local entity = require("classes.entity")
 local p = require("classes.player")
+local npc = require("classes.npc")
 local explosion = require("classes.explosion")
 
 --debug stuff
@@ -35,6 +36,11 @@ function love.load()
     pixelate = shine.pixelate()
     pixelate.samples = 5
     pixelate.pixel_size = 50
+
+	--music = love.audio.newSource("assets/audio/Game1.wav")
+	music = love.audio.newSource("assets/audio/Game1.wav")
+	music:setLooping(true)
+	music:play()
 
     missioncomplete = 0
 

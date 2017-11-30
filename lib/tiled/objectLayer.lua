@@ -13,9 +13,12 @@ local drawOrder = require("lib.drawOrder")
 
 local collisionBlock = require("classes.collisionBlock")
 local slime = require("classes.slime")
+local boss = require("classes.bountyHunter")
 local doorway = require("classes.doorway")
 local player = require("classes.player")
+
 local spawn = require("classes.spawn")
+local npc = require("classes.npc")
 
 local object = require(path .. "object")
 
@@ -29,14 +32,34 @@ function objectLayer:initialize(t, world)
     self.draworder = t.draworder
     self.properties = t.properties
     self.objects = {}
+	self.x = {}
+	self.y = {}
     for _,v in ipairs(t.objects) do
         table.insert(self.objects, object(v))
     end
+
+	for _,v in ipairs(self.objects) do
+		if v.type == "1" then
+			table.insert(self.x, v.x)
+	        table.insert(self.y, v.y)
+		elseif v.type == "2" then
+			table.insert(self.x, v.x)
+		    table.insert(self.y, v.y)
+		elseif v.type == "3" then
+			table.insert(self.x, v.x)
+		    table.insert(self.y, v.y)
+		elseif v.type == "4" then
+			table.insert(self.x, v.x)
+			table.insert(self.y, v.y)
+		end
+	end
 
     for _,v in ipairs(self.objects) do
 		local t
 		if v.type == "slime" then
             t = slime(v.x,v.y)
+		elseif v.type == "bountyHunter" then
+	        t = boss(v.x,v.y, self.x, self.y)
         elseif v.type == "wall" then
             t = collisionBlock(v.x, v.y, v.width, v.height)
         elseif v.type == "doorway" then
@@ -48,9 +71,12 @@ function objectLayer:initialize(t, world)
             --[[_G.mainPlayer = player(v.x, v.y)
 			t = mainPlayer]]
 			t = spawn(v.x,v.y,v.width,v.height)
-        elseif v.type == "npc" then
-            print("Tiled.objectLayer: npc not implemented")
-        end
+        elseif v.type == "blank npc" then
+            t = npc(v.x, v.y, 0, "")
+		elseif v.type == "talking npc" then
+			local npcText = {v.name}
+			mainPlayer:addNpc(v.x, v.y, 1, npcText)
+		end
 		if t then
 			world:add(t, t.x, t.y, t.w, t.h)
 		end

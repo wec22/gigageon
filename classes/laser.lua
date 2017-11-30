@@ -20,6 +20,7 @@ function laser:initialize(direction, x, y)
     self.y = y
 	self.w = 5
     self.h = 5
+	self.dmg = 1
 	self.offsetx = 0
 	self.offsety = 0
     self.direction = direction

@@ -7,7 +7,8 @@ local zinput = require("lib.zinput")
 local det = require("lib.detectors")
 
 local laser = require("classes.laser")
-local slime = require("classes.slime")
+local enemy = require("classes.enemy")
+local npc = require("classes.npc")
 local entity = require("classes.entity")
 local doorway = require("classes.doorway")
 local spawn = require("classes.spawn")
@@ -39,6 +40,7 @@ walkup:setSpeed(0.5)
 walkleft:setSpeed(0.5)
 walkright:setSpeed(0.5)
 
+local i = 1
 
 function player:initialize(x,y)
 	character.initialize(self,x,y,10,8,1, 10)
@@ -47,11 +49,14 @@ function player:initialize(x,y)
     self.speed=60
     self.hit=0
 
+	self.npcs = {}
+
 	self.firecooldown = 0
 	self.dmgcooldown = 0
+	self.lasers = {}
 
 	--Storing the last movement key pressed
-    self.direction = 's'
+    self.direction = 'down'
 
 	--Setting up gamepad controls
     self:newbutton("up", det.button.key("w"))
@@ -78,7 +83,7 @@ function player:initialize(x,y)
 end
 
 --Function called whenever player should lose health
-function player:TakingDamage(x,y,h,w)
+function player:takeDamage(dmg, x,y,h,w)
 
 	--Player knockback when taking damage
 	if self.x < x and self.y >= y and self.y <= y+h then
@@ -91,11 +96,18 @@ function player:TakingDamage(x,y,h,w)
 	        self.y = self.y-30
 	    end
 
-	if self.dmgcooldown==0 then
-		self.health = self.health - 1
+	if self.dmgcooldown == 0 then
+		self.health = self.health - dmg
 	    self.hit = 5
 	end
 	self.dmgcooldown = 10
+end
+
+function player:addNpc(x,y,i,text)
+	local t = npc(x,y,i,text)
+	self.npcs[i] = t
+	getworld():add(t,t.x,t.y,t.w,t.h)
+	i = i + 1
 end
 
 function player:update(dt)
@@ -128,7 +140,7 @@ function player:update(dt)
 	end
 
     if self.inputs.fire() and self.firecooldown == 0 and self.energyBar - 1 >= 0 then
-		local f = laser(self.direction, self.x, self.y)
+		local f = laser(self.direction, self.x, self.y, 0)
 		getWorld():add(f, f.x, f.y, f.w, f.h)
 		self.energyBar = self.energyBar - 1
         self.firecooldown = 20
@@ -144,15 +156,13 @@ function player:update(dt)
 	elseif self.inputs.left() then
     	dx = -speed * dt
     	self.direction = 'left'
-    end
-    if self.inputs.down() then
+	elseif self.inputs.down() then
     	dy = speed * dt
     	self.direction = 'down'
 	elseif self.inputs.up() then
     	dy = -speed * dt
     	self.direction = 'up'
     end
-
 	--Collision logic
     if dx ~= 0 or dy ~= 0 then
     	local cols
@@ -167,7 +177,7 @@ function player:update(dt)
 																						end)
 
 		for _,v in ipairs(cols) do
-			if v.other:isInstanceOf(slime) then
+			if v.other:isInstanceOf(enemy) then
 				self:TakingDamage(v.other.x, v.other.y, v.other.h, v.other.w)
 			elseif v.other:isInstanceOf(doorway) then
 				v.other:loadMap(true)
@@ -179,6 +189,11 @@ end
 
 --The game ending when the player dies
 function player:drawUI()
+
+	for _,v in pairs(self.npcs) do
+		v:drawTextBox()
+	end
+
     font = love.graphics.newFont(20)
     love.graphics.setFont(font)
 	if devmode then
@@ -223,7 +238,14 @@ end
 
 function player:draw()
 
-	--Player blinks red after taking damage
+	--Drawing lasers from the laser table
+    local index = 1
+    for _,v in pairs(self.lasers) do
+        v:draw()
+        index = index + 1
+    end
+
+	--Playing blinks red after taking damage
     if self.hit~=0 then
         love.graphics.setColor(255, 0, 0)
         self.hit = self.hit-1
