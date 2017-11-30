@@ -37,7 +37,7 @@ function tiled.changeMap(newMap, ID, cache)
 		print("Tiled: Loading map from file"..string.gsub(newMap,"%.", "/"))
 		tiled.currentMap = tiled.map(newMap)
 	end
-
+	pixelate._pixel_size = 50
 	--change camera dimensions to the size of the new map
 	local mapWidth = tiled.currentMap.width * tiled.currentMap.tileW
 	local mapHeight = tiled.currentMap.width * tiled.currentMap.tileH

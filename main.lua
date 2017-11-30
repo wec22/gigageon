@@ -107,5 +107,7 @@ function love.draw()
         end)
     end)
 	mainPlayer:drawUI()
-    love.graphics.print(love.timer.getFPS(),0,0)
+	if devmode then
+    	love.graphics.print(love.timer.getFPS(),0,0)
+	end
 end
