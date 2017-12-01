@@ -4,14 +4,12 @@ local animation = require("classes.animation")
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
 
-local enemy = require("classes.enemy")
 local explosion = require("classes.explosion")
-local player = require("classes.player")
 local collisionblock = require("classes.collisionBlock")
-
-
 local entity = require("classes.entity")
 local projectile = require("classes.projectile")
+local character = require("classes.character")
+
 local fireball = class("fireball", entity)
 
 local cols_len = 0
@@ -25,7 +23,7 @@ function fireball:initialize(direction, x, y)
     self.h = 5
 	self.dmg = 1
 	self.offsetx = 9
-	self.offsety = 4
+	self.offsety = 6
     self.direction = direction
 	self.speed = 300
 
@@ -74,14 +72,14 @@ function fireball:update(dt)
 			self.col = v
 			print("colliding with: ",v.other)
 			if v.type == "touch" then
-				if v.other:isInstanceOf(enemy) then
+				if v.other:isInstanceOf(character) then
 					v.other:takeDamage(self.dmg)
-				elseif v.other:isInstanceOf(player) then
-				   v.other:takeDamage(self.dmg, self.x, self.y, self.h, self.w)
-			   	end
+				end
 
 				if not v.other:isInstanceOf(explosion) then
-					explosion(self.x, self.y)
+					print("fireball exploding")
+					local t = explosion(self.x, self.y)
+					getWorld():add(t, t.x,t.y,t.w,t.h)
 					getWorld():remove(self)
 					drawOrder:remove(self)
 				end

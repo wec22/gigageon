@@ -77,7 +77,7 @@ function laser:update(dt)
 
 				if not v.other:isInstanceOf(explosion) then
 					e = explosion(self.x-10, self.y-10)
-					getWorld():add(e, e.x, e.y, e.width, e.height)
+					getWorld():add(e, e.x, e.y, e.w, e.h)
 					getWorld():remove(self)
 					drawOrder:remove(self)
 				end

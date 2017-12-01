@@ -34,8 +34,8 @@ function explosion:initialize(x, y)
 	self.x = self.x
 	self.y = self.y
 
-	self.width = 20
-	self.height = 20
+	self.w = 20
+	self.h = 20
 
     self.particle:start()
     self.particle:emit(200)

@@ -79,7 +79,12 @@ function slime:update(dt)
           end
         end
     end
+
     if self.health == 0 then
+		mainPlayer.energyMax = mainPlayer.energyMax + 1
+		mainPlayer.energyBar = mainPlayer.energyMax
+		mainPlayer.gained = 1
+		mainPlayer.notification = 20
         self.health = self.health - 1
         getWorld():remove(self)
 		drawOrder:remove(self)

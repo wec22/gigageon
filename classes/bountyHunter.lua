@@ -5,10 +5,12 @@ local drawOrder = require("lib.drawOrder")
 local animation = require("classes.animation")
 local bossPosition = require("classes.bossPosition")
 local spawn = require("classes.spawn")
-
 local enemy = require("classes.enemy")
 local fireball = require("classes.fireball")
-local bountyHunter = class("enemy.bountyHunter", enemy)
+local slime = require("classes.slime")
+local boss = require("classes.boss")
+
+local bountyHunter = class("enemy.bountyHunter", boss)
 
 local spritesheet = love.graphics.newImage("assets/art/SpriteSheet(WIP).png")
 spritesheet:setFilter("nearest","nearest")
@@ -49,6 +51,7 @@ function bountyHunter:initialize(x,y)
 	self.moves = 1
 	self.moving = false
 	self.direction = 'down'
+	self.spawnSlimes = false
 
     self.speed = 100
     self.hit = 0
@@ -82,22 +85,32 @@ function bountyHunter:update(dt)
         if self.ox[self.index] > self.x + 5 then
             dx = speed * dt
 			self.moving = true
+			self.spawnSlimes = true
         elseif self.ox[self.index] < self.x - 5 then
             dx = -speed * dt
 			self.moving = true
+			self.spawnSlimes = true
         end
         if self.oy[self.index] > self.y + 5 then
             dy = speed * dt
 			self.moving = true
+			self.spawnSlimes = true
         elseif self.oy[self.index] < self.y - 5 then
             dy = -speed * dt
 			self.moving = true
+			self.spawnSlimes = true
         end
 
-		--Stopping once coming to indicated point
+		--Stopping once coming to indicated point and spawning slimes
 		if (self.oy[self.index] < self.y + 5 and self.oy[self.index] > self.y - 5)
 		  	and (self.ox[self.index] < self.x + 5 and self.ox[self.index] > self.x - 5) then
 				self.moving = false
+				if self.spawnSlimes then
+					for i=1, 5 do
+						slime(self.x + 10, self.y)
+					end
+					self.spawnSlimes = false
+				end
 		end
 
 		--Moving to next point after taking certain amount of damage
@@ -131,19 +144,11 @@ function bountyHunter:update(dt)
 																									return "slide"
 																								end
 																							end)
-          for _,v in ipairs(cols) do
+			for _,v in ipairs(cols) do
 
-          end
-        end
-    end
-
-	--Entity being killed
-    if self.health == 0 then
-        self.health = self.health - 1
-        world:remove(self)
-		drawOrder:remove(self)
-    end
-
+			end
+    	end
+	end
 	if self.firecooldown == 0 and self.moving == false then
 		local t = fireball(self.direction, self.x, self.y, 1)
 		getWorld():add(t, t.x, t.y, t.h, t.w)
@@ -162,7 +167,7 @@ function bountyHunter:draw()
     end
 
 	--love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-
+	love.graphics.setColor(255, 0, 0)
     if self.health > 0 and self.moving == false then
     	if mainPlayer.x>self.x+10 then
             standright:draw(self.x-10, self.y-20)

@@ -69,11 +69,9 @@ function objectLayer:initialize(t, world)
 			print("Tiled.objectLayer: warp not implemented")
 			--warp()
         elseif v.type == "spawn" then
-            --[[_G.mainPlayer = player(v.x, v.y)
-			t = mainPlayer]]
 			t = spawn(v.x,v.y,v.width,v.height)
-        elseif v.type == "blank npc" then
-            t = npc(v.x, v.y, 0, "")
+        elseif v.type == "npc" then
+            t = npc(v.x, v.y, 0, v.properties.text)
 		elseif v.type == "talking npc" then
 			local npcText = {v.name}
 			mainPlayer:addNpc(v.x, v.y, 1, npcText)

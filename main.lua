@@ -5,7 +5,7 @@
 ]]
 
 --uncomment to enable devmode
---require("devmode")
+require("devmode")
 
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
@@ -44,7 +44,7 @@ function love.load()
 
     missioncomplete = 0
 
-	tiled.changeMap("testmaps/dungeon_entrance")
+	tiled.changeMap("testmaps/boss_room")
 
     cam:setScale(2)
     cam:setPosition(mainPlayer.x, mainPlayer.y)
