@@ -41,11 +41,11 @@ function bountyHunter:takeDamage(damage)
     self.cooldown = 10
 end
 
-function bountyHunter:initialize(x,y, ox, oy)
-    enemy.initialize(self, x, y, 14, 10, 1, 50)
+function bountyHunter:initialize(x,y)
+    enemy.initialize(self, x, y, 14, 10, 1, 1)
 
-	self.ox = ox
-	self.oy = oy
+	self.ox = {}
+	self.oy = {}
 
 	self.index = 1
 	self.moves = 1
@@ -55,6 +55,8 @@ function bountyHunter:initialize(x,y, ox, oy)
 
     self.speed = 100
     self.hit = 0
+
+	self.stuff = true
 
 	self.cooldown = 0
 
@@ -73,8 +75,9 @@ function bountyHunter:update(dt)
 
 	for _,v in ipairs(getWorld():getItemsOfType(bossPosition)) do
 
-		table.insert(self.ox, v.ID, v.x)
-		table.insert(self.oy, v.ID, v.y)
+		table.insert(self.ox, v.x)
+		table.insert(self.oy, v.y)
+
 	end
 
 	--Only continues when entity is alive
@@ -149,17 +152,27 @@ function bountyHunter:update(dt)
 
 			end
     	end
-	end
-	if self.firecooldown == 0 and self.moving == false then
-		local t = fireball(self.direction, self.x, self.y, 1)
-		getWorld():add(t, t.x, t.y, t.h, t.w)
-        self.firecooldown = 80
+
+		if self.firecooldown == 0 and self.moving == false then
+			local t = fireball(self.direction, self.x, self.y, 1)
+			getWorld():add(t, t.x, t.y, t.h, t.w)
+        	self.firecooldown = 80
+		end
+
+		if self.firecooldown ~= 0 then
+        	self.firecooldown = self.firecooldown - 1
+    	end
 	end
 
-	if self.firecooldown ~= 0 then
-        self.firecooldown = self.firecooldown - 1
-    end
-
+	if self.health == 0 then
+		mainPlayer.maxHealth = mainPlayer.maxHealth + 5
+		mainPlayer.health = mainPlayer.maxHealth
+		mainPlayer.gained = 5
+		mainPlayer.notification = 20
+	    self.health = self.health - 1
+	    getWorld():remove(self)
+		drawOrder:remove(self)
+	end
 end
 
 function bountyHunter:draw()
