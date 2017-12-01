@@ -13,9 +13,12 @@ local drawOrder = require("lib.drawOrder")
 
 local collisionBlock = require("classes.collisionBlock")
 local slime = require("classes.slime")
-local boss = require("classes.Bounty Hunter")
+local boss = require("classes.bountyHunter")
 local doorway = require("classes.doorway")
 local player = require("classes.player")
+local bossPosition = require("classes.bossPosition")
+
+local spawn = require("classes.spawn")
 local npc = require("classes.npc")
 
 local object = require(path .. "object")
@@ -23,7 +26,7 @@ local object = require(path .. "object")
 local layer = require(path .. "layer")
 local objectLayer = class("tiled.objectLayer", layer)
 
-function objectLayer:initialize(t)
+function objectLayer:initialize(t, world)
     print("Tiled: building new objectLayer")
 
     layer.initialize(self, t)
@@ -53,31 +56,36 @@ function objectLayer:initialize(t)
 	end
 
     for _,v in ipairs(self.objects) do
-        if v.type == "slime" then
-            slime(v.x,v.y)
-		elseif v.type == "bHunter" then
-			mainPlayer:addBoss(v.x,v.y, self.x, self.y)
+		local t
+		if v.type == "slime" then
+            t = slime(v.x,v.y)
+		elseif v.type == "bountyHunter" then
+	        t = boss(v.x,v.y, self.x, self.y)
         elseif v.type == "wall" then
-            collisionBlock(v.x, v.y, v.width, v.height)
+            t = collisionBlock(v.x, v.y, v.width, v.height)
         elseif v.type == "doorway" then
-            print("Tiled.objectlayer: doorway not implemented")
-            --doorway()
+            t = doorway(v.x, v.y, v.width, v.height, v.properties.targetMap, v.properties.targetID, v.properties.sourceID or v.properties.ID)
 		elseif v.type == "warp" then
 			print("Tiled.objectLayer: warp not implemented")
 			--warp()
         elseif v.type == "spawn" then
-            _G.mainPlayer = player(v.x, v.y)
-        elseif v.type == "blank npc" then
-            npc(v.x, v.y, 0, "")
+			t = spawn(v.x,v.y,v.width,v.height)
+        elseif v.type == "npc" then
+            t = npc(v.x, v.y, 0, v.properties.text)
 		elseif v.type == "talking npc" then
 			local npcText = {v.name}
 			mainPlayer:addNpc(v.x, v.y, 1, npcText)
+		elseif v.type == "bossPosition" then
+			t = bossPosition(v.x,v.y,v.width,v.height, v.properties.ID)
+		end
+		if t then
+			world:add(t, t.x, t.y, t.w, t.h)
 		end
     end
 end
 
 function objectLayer:draw()
-    drawOrder:draw()
+    drawOrder:draw(getWorld():getItems())
 end
 
 

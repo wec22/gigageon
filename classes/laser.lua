@@ -6,91 +6,81 @@ local drawOrder = require("lib.drawOrder")
 
 local enemy = require("classes.enemy")
 local explosion = require("classes.explosion")
+local collisionblock = require("classes.collisionBlock")
 
 local entity = require("classes.entity")
 local projectile = require("classes.projectile")
-local laser = class("laser", entity)
+local laser = class("laser",entity)
+
+local fireshot = love.graphics.newImage("assets/art/fireball_sprite.png")
 
 local cols_len = 0
 
-function laser:initialize(direction, x, y, pOe)
+function laser:initialize(direction, x, y)
 	self.x = x
     self.y = y
 	self.w = 5
     self.h = 5
 	self.dmg = 1
-	self.pOe = pOe
-	self.px = mainPlayer.x
-	self.py = mainPlayer.y
-	self.offsetx = 9
-	self.offsety = 6
+	self.offsetx = 0
+	self.offsety = 0
     self.direction = direction
-	self.speed = 300
-
-	self.fireshot = love.graphics.newImage("assets/art/fireball_sprite.png")
 
     if self.direction == 'right' then
-        self.x = self.x + self.w + self.offsetx
+        self.x = self.x + self.w + 9
     elseif self.direction == 'left' then
-        self.x = self.x - self.w - self.offsety
+        self.x = self.x - self.w - 4
     elseif self.direction == 'up' then
-        self.y = self.y - self.h - self.offsetx
+        self.y = self.y - self.h - 9
     elseif self.direction == 'down' then
-    	self.y = self.y + self.h + self.offsety
+        self.y = self.y + self.h + 4
     end
 
-	if self.pOe ~= 0 then
-		self.fireshot = love.graphics.newImage("assets/art/old_fireball_sprite.png")
-	end
-
-	world:add(self, self.x, self.y, self.w, self.h)
 	drawOrder:register(self)
 
 end
 
 function laser:update(dt)
-	self.dx, self.dy = 0, 0
+	local dx, dy = 0, 0
 
     if self.direction == 'right' then
-        self.x = self.x + self.speed * dt
-		self.dx = 1
+        self.x = self.x + 300 * dt
+		dx = 1
     elseif self.direction == 'left' then
-    	self.x = self.x - self.speed * dt
-		self.dx = 1
+        self.x = self.x - 300 * dt
+		dx = 1
     elseif self.direction == 'up' then
-    	self.y = self.y - self.speed * dt
-		self.dy = 1
+        self.y = self.y - 300 * dt
+		dy = 1
     elseif self.direction == 'down' then
-    	self.y = self.y + self.speed * dt
-		self.dy = 1
+        self.y = self.y + 300 * dt
+		dy = 1
     end
 
-	if self.dx ~= 0 or self.dy ~= 0 then
-		self.cols = 0
-		self.x, self.y, self.cols, self.cols_len = world:move(self, self.x + self.dx, self.y + self.dy,function(item, other)
-																						if other:isInstanceOf(explosion) then
-																						return "cross"
-																					else
-																						return "touch"
-																					end
-																				end)
-		for _,v in ipairs(self.cols) do
-			self.col = v
-
-			if self.pOe == 0 then
+	if dx ~= 0 or dy ~= 0 then
+		local cols
+		self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy,function(item, other)
+																							if other:isInstanceOf(collisionblock) then
+																								return "touch"
+																							elseif other:isInstanceOf(explosion) or not other:isInstanceOf(entity) then
+																								return "cross"
+																							else
+																								return "touch"
+																							end
+																						end)
+		for _,v in ipairs(cols) do
+			if v.type ~= "cross" then
 				if v.other:isInstanceOf(enemy) then
-					v.other:TakingDamage(self.dmg)
+					print("dealing damage to enemy")
+					v.other:takeDamage(self.dmg)
 				end
-			else
-				if v.other == mainPlayer then
-				   v.other:TakingDamage(self.dmg, self.x, self.y, self.h, self.w)
-			   end
-			end
 
-			if not v.other:isInstanceOf(explosion) then
-				explosion(self.x, self.y)
-				world:remove(self)
-				drawOrder:remove(self)
+				if not v.other:isInstanceOf(explosion) then
+					e = explosion(self.x-10, self.y-10)
+					getWorld():add(e, e.x, e.y, e.w, e.h)
+					getWorld():remove(self)
+					drawOrder:remove(self)
+				end
 			end
 		end
 	end
@@ -98,7 +88,7 @@ end
 
 function laser:draw()
     --love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-    love.graphics.draw(self.fireshot, self.x - 7, self.y - 5)
+    love.graphics.draw(fireshot, self.x - 7, self.y - 5)
 end
 
 

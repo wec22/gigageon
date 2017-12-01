@@ -40,8 +40,6 @@ function npc:initialize(x, y, interact, text)
 	self:newbutton("interact", det.button.key("e"))
 	self.inputs.interact:addDetector(det.button.gamepad("b", 1))
 
-    world:add(self, self.x, self.y, self.w, self.h)
-
     drawOrder:register(self)
 end
 

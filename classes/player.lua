@@ -8,10 +8,14 @@ local det = require("lib.detectors")
 
 local laser = require("classes.laser")
 local enemy = require("classes.enemy")
-local boss = require("classes.Bounty Hunter")
+local bountyHunter = require("classes.bountyHunter")
 local npc = require("classes.npc")
 local entity = require("classes.entity")
-
+local doorway = require("classes.doorway")
+local spawn = require("classes.spawn")
+local explosion = require("classes.explosion")
+local collisionblock = require("classes.collisionBlock")
+local boss = require("classes.boss")
 
 local character = require("classes.character")
 local player = class("player", character):include(zinput)
@@ -42,9 +46,9 @@ local i = 1
 local i2 = 1
 
 function player:initialize(x,y)
-    character.initialize(self, x, y, 8, 8, 10, 10)
-	self.EnergyMax = 10
-	self.EnergyBar = 10
+	character.initialize(self,x,y,10,8,1, 10)
+	self.energyMax = 10
+	self.energyBar = 10
     self.speed=60
     self.hit=0
 	self.notification = 0
@@ -80,40 +84,28 @@ function player:initialize(x,y)
     self.inputs.fire:addDetector(det.button.gamepad("a", 1))
 
 	--Adding player to the physics world and the drawing registery
-    world:add(self, self.x, self.y, self.w, self.h)
+    --world:add(self, self.x, self.y, self.w, self.h)
     drawOrder:register(self)
 end
 
 --Function called whenever player should lose health
-function player:TakingDamage(x,y,h,w)
-
-	--Player knockback when taking damage
-	--[[if self.x < x and self.y >= y and self.y <= y+h then
-	        self.x = self.x-30
-	    elseif self.y > y and self.x >= x and self.x <= x+h then
-	        self.y = self.y+30
-	    elseif self.x > x and self.y >= y and self.y <= y+h then
-	        self.x = self.x+30
-	    elseif  self.y < y and self.x >= x and self.x <= x+w then
-	        self.y = self.y-30
-	    end
-		--]]
-
+function player:takeDamage(dmg)
 	if self.dmgcooldown == 0 then
-		self.health = self.health - 1
+		self.health = self.health - dmg
 	    self.hit = 5
 	end
 	self.dmgcooldown = 10
 end
 
 function player:addNpc(x,y,i,text)
-	self.npcs[i] = npc(x,y,i,text)
+	local t = npc(x,y,i,text)
+	self.npcs[i] = t
+	getworld():add(t,t.x,t.y,t.w,t.h)
 	i = i + 1
 end
 
-function player:addBoss(x,y,ox,oy)
-	self.bosses[i2] = boss(x,y,ox,oy)
-	i2 = i2 + 1
+function player:addBoss(t)
+	table.insert(self.bosses,t)
 end
 
 function player:update(dt)
@@ -142,18 +134,17 @@ function player:update(dt)
     end
 
 	--Replenishes Special Bar
-	if self.EnergyBar ~= self.EnergyMax then
-		if self.EnergyBar + .01 > self.EnergyMax then
-			self.EnergyBar = self.EnergyBar + (self.EnergyMax - self.EnergyBar)
-		else
-			self.EnergyBar = self.EnergyBar + .01
+	if self.energyBar <= self.energyMax then
+		self.energyBar = self.energyBar + 0.5 * dt
+		if self.energyBar > self.energyMax then
+			self.energyBar = self.energyMax
 		end
 	end
 
-	--Energy and Firing mechanics
-    if self.inputs.fire() and self.firecooldown == 0 and self.EnergyBar - 1 >= 0 then
-		laser(self.direction, self.x, self.y, 0)
-		self.EnergyBar = self.EnergyBar - 1
+    if self.inputs.fire() and self.firecooldown == 0 and self.energyBar - 1 >= 0 then
+		local f = laser(self.direction, self.x, self.y, 0)
+		getWorld():add(f, f.x, f.y, f.w, f.h)
+		self.energyBar = self.energyBar - 1
         self.firecooldown = 20
 	end
 
@@ -167,36 +158,35 @@ function player:update(dt)
 	elseif self.inputs.left() then
     	dx = -speed * dt
     	self.direction = 'left'
-	elseif self.inputs.down() then
+	end
+	if self.inputs.down() then
     	dy = speed * dt
     	self.direction = 'down'
 	elseif self.inputs.up() then
     	dy = -speed * dt
     	self.direction = 'up'
     end
-
-	--Updating fireballs from fireball table
-		local index = 1
-		for _,v in pairs(self.lasers) do
-			v:update(dt)
-			index = index + 1
-		end
-
-		index = 1
-		for _,v in pairs(self.bosses) do
-			v:update(dt)
-			index = index + 1
-		end
-
 	--Collision logic
     if dx ~= 0 or dy ~= 0 then
     	local cols
-		self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+		self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy, function(item, other)
+																							if other:isInstanceOf(explosion) then
+																								return "cross"
+																							elseif other:isInstanceOf(collisionblock) then
+																								return "slide"
+																							elseif not other:isInstanceOf(entity) then
+																								return "cross"
+																							else
+																								return "slide"
+																							end
+																						end)
 
 		for _,v in ipairs(cols) do
-			local col = v
 			if v.other:isInstanceOf(enemy) then
-				self:TakingDamage(v.other.x, v.other.y, v.other.h, v.other.w)
+				self:takeDamage(1,v.other.x, v.other.y, v.other.h, v.other.w)
+			elseif v.other:isInstanceOf(doorway) then
+				v.other:loadMap(true)
+				return false
 			end
     	end
 	end
@@ -210,7 +200,7 @@ function player:drawUI()
 	end
 
 	--Health bar for bosses
-	for _,v in pairs(self.bosses) do
+	for _,v in pairs(getWorld():getItemsOfType(boss)) do
 		if v.health > 0 then
 			love.graphics.print("BOSS : ", 20, 430)
 			love.graphics.setColor(255,0,0,128)
@@ -234,7 +224,7 @@ function player:drawUI()
 
 	--Setting up Energy Bar
 	love.graphics.setColor(0,0,255,128)
-	love.graphics.rectangle("fill", 40, 10 + (self.EnergyMax - self.EnergyBar) * (100/self.EnergyMax), 25, (self.EnergyBar / self.EnergyMax) * 100)
+	love.graphics.rectangle("fill", 40, 10 + (self.energyMax - self.energyBar) * (100/self.energyMax), 25, (self.energyBar / self.energyMax) * 100)
 	love.graphics.rectangle("line", 40, 10, 25, 100)
 
 	--Game Over Screen

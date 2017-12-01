@@ -19,7 +19,7 @@ local tile = require(path .. "tile")
 local tileset = class("tiled.tileset")
 
 function tileset:initialize(t)
-    self.img = love.graphics.newImage(t.image)
+    self.img = love.graphics.newImage(string.sub(t.image,6))
     self.img:setFilter("linear", "nearest")
     self.tileW = t.tilewidth
     self.tileH = t.tileheight

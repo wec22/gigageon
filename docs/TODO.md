@@ -5,7 +5,3 @@
 - drawOrder fix
 	- the drawOrder table is global and cannot be recreated when moving to new maps
 	- must be completed before doorways can be done
-- world storage location refactor
-	- the world is created statically in the main file.
-	- it cannot be recreated when switching maps
-	- must be completed before doorways can be done

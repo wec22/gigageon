@@ -16,7 +16,7 @@ local objectLayer = require(path .. "objectLayer")
 
 local groupLayer = class("tiled.groupLayer", layer)
 
-function groupLayer:initialize(t)
+function groupLayer:initialize(t, world)
     print "Tiled: building new groupLayer"
 
     layer.initialize(self, t)
@@ -28,9 +28,9 @@ function groupLayer:initialize(t)
         elseif v.type == "imagelayer" and image then
             table.insert(self.layers, imageLayer(v))
         elseif v.type == "group" then
-            table.insert(self.layers, groupLayer(v))
+            table.insert(self.layers, groupLayer(v, world))
         elseif v.type == "objectgroup" then
-            table.insert(self.layers, objectLayer(v))
+            table.insert(self.layers, objectLayer(v, world))
         end
     end
 end

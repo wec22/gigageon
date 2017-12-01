@@ -1,30 +1,35 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "0.18.2",
+  tiledversion = "1.0.2718",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 64,
   height = 64,
   tilewidth = 16,
   tileheight = 16,
-  nextobjectid = 32,
+  nextobjectid = 31,
   properties = {},
   tilesets = {
     {
       name = "Dungeon",
       firstgid = 1,
-      filename = "tilesets/dungeon.tsx",
+      filename = "../../tilesets/dungeon.tsx",
       tilewidth = 16,
       tileheight = 16,
       spacing = 1,
       margin = 0,
-      image = "tilesets/roguelikeDungeon_transparent.png",
+      image = "../../tilesets/roguelikeDungeon_transparent.png",
       imagewidth = 492,
       imageheight = 305,
       tileoffset = {
         x = 0,
         y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 16,
+        height = 16
       },
       properties = {},
       terrains = {
@@ -495,17 +500,22 @@ return {
     {
       name = "overworld",
       firstgid = 523,
-      filename = "tilesets/overworld.tsx",
+      filename = "../../tilesets/overworld.tsx",
       tilewidth = 16,
       tileheight = 16,
       spacing = 1,
       margin = 0,
-      image = "tilesets/roguelikeSheet_transparent.png",
+      image = "../../tilesets/roguelikeSheet_transparent.png",
       imagewidth = 968,
       imageheight = 526,
       tileoffset = {
         x = 0,
         y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 16,
+        height = 16
       },
       properties = {},
       terrains = {
@@ -11356,17 +11366,22 @@ return {
     {
       name = "Indoor",
       firstgid = 2290,
-      filename = "tilesets/Indoor.tsx",
+      filename = "../../tilesets/Indoor.tsx",
       tilewidth = 16,
       tileheight = 16,
       spacing = 1,
       margin = 0,
-      image = "tilesets/roguelikeIndoor_transparent.png",
+      image = "../../tilesets/roguelikeIndoor_transparent.png",
       imagewidth = 457,
       imageheight = 305,
       tileoffset = {
         x = 0,
         y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 16,
+        height = 16
       },
       properties = {},
       terrains = {},
@@ -11777,7 +11792,7 @@ return {
           x = 464,
           y = 144,
           width = 16,
-          height = 94,
+          height = 96,
           rotation = 0,
           visible = true,
           properties = {}
@@ -11884,97 +11899,96 @@ return {
           height = 27,
           rotation = 0,
           visible = true,
-          properties = {}
-        }
-      }
-    },
-    {
-      type = "objectgroup",
-      name = "Boss",
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      draworder = "topdown",
-      properties = {},
-      objects = {
+          properties = {
+            ["targetID"] = 1,
+            ["targetMap"] = "testmaps/newTilesets"
+          }
+        },
         {
           id = 22,
           name = "",
-          type = "bHunter",
+          type = "spawn",
           shape = "rectangle",
-          x = 673,
-          y = 143,
-          width = 28,
-          height = 30,
+          x = 40,
+          y = 862,
+          width = 16,
+          height = 32,
           rotation = 0,
           visible = true,
           properties = {}
         },
         {
           id = 24,
-          name = "",
-          type = "1",
+          name = "boss",
+          type = "bountyHunter",
           shape = "rectangle",
-          x = 448,
-          y = 273,
-          width = 30,
-          height = 30,
+          x = 688,
+          y = 304,
+          width = 32,
+          height = 32,
           rotation = 0,
           visible = true,
           properties = {}
         },
         {
           id = 25,
-          name = "",
-          type = "2",
+          name = "Position 4",
+          type = "bossPosition",
           shape = "rectangle",
-          x = 448,
-          y = 688,
-          width = 30,
-          height = 30,
+          x = 528,
+          y = 272,
+          width = 32,
+          height = 32,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["ID"] = 4
+          }
         },
         {
           id = 26,
-          name = "",
-          type = "3",
+          name = "Position 3",
+          type = "bossPosition",
           shape = "rectangle",
-          x = 896,
-          y = 689,
-          width = 30,
-          height = 30,
+          x = 832,
+          y = 272,
+          width = 32,
+          height = 32,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["ID"] = 3
+          }
         },
         {
           id = 27,
-          name = "",
-          type = "4",
+          name = "Position 1",
+          type = "bossPosition",
           shape = "rectangle",
-          x = 895,
-          y = 274,
-          width = 30,
-          height = 30,
+          x = 528,
+          y = 608,
+          width = 32,
+          height = 32,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["ID"] = 1
+          }
         },
         {
-          id = 30,
-          name = "",
-          type = "spawn",
+          id = 28,
+          name = "Position 2",
+          type = "bossPosition",
           shape = "rectangle",
-          x = 47.3333,
-          y = 865.667,
-          width = 29,
-          height = 29,
+          x = 832,
+          y = 608,
+          width = 32,
+          height = 32,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["ID"] = 2
+          }
         }
       }
     }

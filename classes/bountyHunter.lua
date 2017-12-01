@@ -3,11 +3,14 @@ local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
 
 local animation = require("classes.animation")
-
+local bossPosition = require("classes.bossPosition")
+local spawn = require("classes.spawn")
 local enemy = require("classes.enemy")
+local fireball = require("classes.fireball")
 local slime = require("classes.slime")
-local laser = require("classes.laser")
-local bHunter = class("enemy.bHunter", enemy)
+local boss = require("classes.boss")
+
+local bountyHunter = class("enemy.bountyHunter", boss)
 
 local spritesheet = love.graphics.newImage("assets/art/SpriteSheet(WIP).png")
 spritesheet:setFilter("nearest","nearest")
@@ -30,7 +33,7 @@ walkleft:setSpeed(0.35)
 walkright:setSpeed(0.35)
 
 
-function bHunter:TakingDamage(damage)
+function bountyHunter:takeDamage(damage)
     if self.cooldown == 0 then
         self.health = self.health - damage
         self.hit = 5
@@ -38,11 +41,12 @@ function bHunter:TakingDamage(damage)
     self.cooldown = 10
 end
 
-function bHunter:initialize(x,y, ox, oy)
-    enemy.initialize(self, x, y, 14, 10, 1, 1)
+function bountyHunter:initialize(x,y)
+    enemy.initialize(self, x, y, 14, 10, 1, 50)
 
-	self.ox = ox
-	self.oy = oy
+	self.ox = {}
+	self.oy = {}
+
 	self.index = 1
 	self.moves = 1
 	self.moving = false
@@ -54,20 +58,24 @@ function bHunter:initialize(x,y, ox, oy)
 
 	self.cooldown = 0
 
-	self.lasers = {}
 	self.firecooldown = 0
-
-    world:add(self, self.x, self.y, self.w, self.h)
     drawOrder:register(self)
 end
 
-function bHunter:update(dt)
+function bountyHunter:update(dt)
     cols_len=0
     walkright:update(dt)
     walkleft:update(dt)
     walkdown:update(dt)
 	walkup:update(dt)
     local speed = self.speed
+
+
+	for _,v in ipairs(getWorld():getItemsOfType(bossPosition)) do
+
+		table.insert(self.ox, v.ID, v.x)
+		table.insert(self.oy, v.ID, v.y)
+	end
 
 	--Only continues when entity is alive
     if self.health > 0 then
@@ -129,55 +137,33 @@ function bHunter:update(dt)
 		--Collision logic
         if dx ~= 0 or dy ~= 0 then
           local cols
-          self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
-          for _,v in ipairs(cols) do
+          self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy, function(item, other)
+																								if other:isInstanceOf(bossPosition) or other:isInstanceOf(spawn) then
+																									return "cross"
+																								else
+																									return "slide"
+																								end
+																							end)
+			for _,v in ipairs(cols) do
 
-          end
-        end
-
+			end
+    	end
+	end
 	if self.firecooldown == 0 and self.moving == false then
-		if (mainPlayer.x > self.x - 5 and mainPlayer.x < self.x + 5)
-		 	or (mainPlayer.y > self.y - 5 and mainPlayer.y < self.y + 5) then
-			laser(self.direction, self.x, self.y, 1)
-        	self.firecooldown = 80
-		end
+		local t = fireball(self.direction, self.x, self.y, 1)
+		getWorld():add(t, t.x, t.y, t.h, t.w)
+        self.firecooldown = 80
 	end
 
 	if self.firecooldown ~= 0 then
         self.firecooldown = self.firecooldown - 1
     end
 
-	--Updating fireballs from fireball table
-		local index = 1
-		for _,v in pairs(self.lasers) do
-			v:update(dt)
-			index = index + 1
-		end
-	end
+end
 
-	--Entity being killed
-    if self.health == 0 then
-		mainPlayer.maxHealth = mainPlayer.maxHealth + 5
-		mainPlayer.health = mainPlayer.maxHealth
-		mainPlayer.gained = 5
-		mainPlayer.notification = 20
-        self.health = self.health - 1
-        world:remove(self)
-		drawOrder:remove(self)
-    end
-
-  end
-
-function bHunter:draw()
+function bountyHunter:draw()
     if self.hit~=0 then
         love.graphics.setColor(255, 0, 0)
-    end
-
-	--Drawing lasers from the laser table
-    local index = 1
-    for _,v in pairs(self.lasers) do
-        v:draw()
-        index = index + 1
     end
 
 	--love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
@@ -221,4 +207,4 @@ function bHunter:draw()
     love.graphics.setColor(255, 255, 255, 255)
 end
 
-return bHunter
+return bountyHunter
