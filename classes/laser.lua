@@ -4,8 +4,9 @@ local animation = require("classes.animation")
 local bump = require("lib.bump")
 local drawOrder = require("lib.drawOrder")
 
-local slime = require("classes.slime")
+local enemy = require("classes.enemy")
 local explosion = require("classes.explosion")
+local collisionblock = require("classes.collisionBlock")
 
 local entity = require("classes.entity")
 local projectile = require("classes.projectile")
@@ -59,24 +60,27 @@ function laser:update(dt)
 	if dx ~= 0 or dy ~= 0 then
 		local cols
 		self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy,function(item, other)
-																						if other:isInstanceOf(explosion) then
-																						return "cross"
-																					else
-																						return "touch"
-																					end
-																				end)
+																							if other:isInstanceOf(collisionblock) then
+																								return "touch"
+																							elseif other:isInstanceOf(explosion) or not other:isInstanceOf(entity) then
+																								return "cross"
+																							else
+																								return "touch"
+																							end
+																						end)
 		for _,v in ipairs(cols) do
-			local col = v
+			if v.type ~= "cross" then
+				if v.other:isInstanceOf(enemy) then
+					print("dealing damage to enemy")
+					v.other:takeDamage(self.dmg)
+				end
 
-			if v.other:isInstanceOf(slime) then
-					v.other:TakingDamage()
-			end
-
-			if not v.other:isInstanceOf(explosion) then
-				e = explosion(self.x-10, self.y-10)
-				getWorld():add(e, e.x, e.y, e.width, e.height)
-				getWorld():remove(self)
-				drawOrder:remove(self)
+				if not v.other:isInstanceOf(explosion) then
+					e = explosion(self.x-10, self.y-10)
+					getWorld():add(e, e.x, e.y, e.width, e.height)
+					getWorld():remove(self)
+					drawOrder:remove(self)
+				end
 			end
 		end
 	end

@@ -1,14 +1,14 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "1.0.3",
+  tiledversion = "1.0.2718",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 64,
   height = 64,
   tilewidth = 16,
   tileheight = 16,
-  nextobjectid = 24,
+  nextobjectid = 31,
   properties = {},
   tilesets = {
     {
@@ -11792,7 +11792,7 @@ return {
           x = 464,
           y = 144,
           width = 16,
-          height = 94,
+          height = 96,
           rotation = 0,
           visible = true,
           properties = {}
@@ -11916,6 +11916,79 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 24,
+          name = "boss",
+          type = "bountyHunter",
+          shape = "rectangle",
+          x = 688,
+          y = 304,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 25,
+          name = "Position 4",
+          type = "bossPosition",
+          shape = "rectangle",
+          x = 528,
+          y = 272,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ID"] = 4
+          }
+        },
+        {
+          id = 26,
+          name = "Position 3",
+          type = "bossPosition",
+          shape = "rectangle",
+          x = 832,
+          y = 272,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ID"] = 3
+          }
+        },
+        {
+          id = 27,
+          name = "Position 1",
+          type = "bossPosition",
+          shape = "rectangle",
+          x = 528,
+          y = 608,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ID"] = 1
+          }
+        },
+        {
+          id = 28,
+          name = "Position 2",
+          type = "bossPosition",
+          shape = "rectangle",
+          x = 832,
+          y = 608,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ID"] = 2
+          }
         }
       }
     }

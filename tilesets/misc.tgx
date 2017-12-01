@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templategroup name="misc" nexttemplateid="1">
  <template name="spawn" id="0">
-  <object type="spawn" width="16" height="16"/>
+  <object type="spawn" width="16" height="32"/>
  </template>
 </templategroup>

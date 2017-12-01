@@ -13,7 +13,7 @@ local entity = require("classes.entity")
 local doorway = require("classes.doorway")
 local spawn = require("classes.spawn")
 local explosion = require("classes.explosion")
-
+local collisionblock = require("classes.collisionBlock")
 
 local character = require("classes.character")
 local player = class("player", character):include(zinput)
@@ -156,7 +156,8 @@ function player:update(dt)
 	elseif self.inputs.left() then
     	dx = -speed * dt
     	self.direction = 'left'
-	elseif self.inputs.down() then
+	end
+	if self.inputs.down() then
     	dy = speed * dt
     	self.direction = 'down'
 	elseif self.inputs.up() then
@@ -169,7 +170,9 @@ function player:update(dt)
 		self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy, function(item, other)
 																							if other:isInstanceOf(explosion) then
 																								return "cross"
-																							elseif other:isInstanceOf(spawn) then
+																							elseif other:isInstanceOf(collisionblock) then
+																								return "slide"
+																							elseif not other:isInstanceOf(entity) then
 																								return "cross"
 																							else
 																								return "slide"
@@ -178,7 +181,7 @@ function player:update(dt)
 
 		for _,v in ipairs(cols) do
 			if v.other:isInstanceOf(enemy) then
-				self:TakingDamage(v.other.x, v.other.y, v.other.h, v.other.w)
+				self:takeDamage(1,v.other.x, v.other.y, v.other.h, v.other.w)
 			elseif v.other:isInstanceOf(doorway) then
 				v.other:loadMap(true)
 				return false

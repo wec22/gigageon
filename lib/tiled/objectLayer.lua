@@ -16,6 +16,7 @@ local slime = require("classes.slime")
 local boss = require("classes.bountyHunter")
 local doorway = require("classes.doorway")
 local player = require("classes.player")
+local bossPosition = require("classes.bossPosition")
 
 local spawn = require("classes.spawn")
 local npc = require("classes.npc")
@@ -76,6 +77,8 @@ function objectLayer:initialize(t, world)
 		elseif v.type == "talking npc" then
 			local npcText = {v.name}
 			mainPlayer:addNpc(v.x, v.y, 1, npcText)
+		elseif v.type == "bossPosition" then
+			t = bossPosition(v.x,v.y,v.width,v.height, v.properties.ID)
 		end
 		if t then
 			world:add(t, t.x, t.y, t.w, t.h)
