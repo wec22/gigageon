@@ -41,11 +41,11 @@ function bountyHunter:takeDamage(damage)
     self.cooldown = 10
 end
 
-function bountyHunter:initialize(x,y)
+function bountyHunter:initialize(x,y, ox, oy)
     enemy.initialize(self, x, y, 14, 10, 1, 50)
 
-	self.ox = {}
-	self.oy = {}
+	self.ox = ox
+	self.oy = oy
 
 	self.index = 1
 	self.moves = 1
@@ -107,7 +107,8 @@ function bountyHunter:update(dt)
 				self.moving = false
 				if self.spawnSlimes then
 					for i=1, 5 do
-						slime(self.x + 10, self.y)
+						s = slime(self.x + 10, self.y)
+						getWorld():add(s, s.x, s.y, s.w, s.h)
 					end
 					self.spawnSlimes = false
 				end
