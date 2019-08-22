@@ -7,6 +7,8 @@ local imageLayer = require(path .. "imageLayer")
 local groupLayer = require(path .. "groupLayer")
 local objectLayer = require(path .. "objectLayer")
 
+local bump = require("lib.bump")
+
 local tileset = require(path .. "tileset")
 
 local map = class("tiled.map")
@@ -14,12 +16,16 @@ local map = class("tiled.map")
 function map:initialize(filepath)
     local t = require(filepath)
 
+	self.filepath = filepath
+
     self.width = t.width
     self.height = t.height
 
     self.tileW = t.tilewidth
     self.tileH = t.tileheight
 
+	self.world = bump.newWorld(self.tileW * 4)
+	assert(self.world, "world not created")
     self.tilesets = {}
     for _,v in ipairs(t.tilesets) do
         table.insert(self.tilesets, tileset(v))
@@ -38,10 +44,10 @@ function map:initialize(filepath)
             table.insert(self.layers, tileLayer(v))
         elseif v.type == "imagelayer" and v.image then
             table.insert(self.layers, imageLayer(v))
-        elseif v.type == "imagelayer" and v.layers then
-            table.insert(self.layers, groupLayer(v))
+        elseif v.type == "group" then
+            table.insert(self.layers, groupLayer(v, self.world))
         elseif v.type == "objectgroup" then
-            table.insert(self.layers, objectLayer(v))
+            table.insert(self.layers, objectLayer(v, self.world))
         end
     end
 end

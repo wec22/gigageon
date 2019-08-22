@@ -1,5 +1,13 @@
 devmode = {}
 devmode.bump = require("lib.bump_debug")
+devmode.inspect = require("lib.inspect")
+
+
+devmode.bump.enabled = true
+devmode.bump.drawGrid = true
+function devmode.bump.toggle()
+	devmode.bump.enabled = not devmode.bump.enabled
+end
 
 function devmode.memory()
     local count = collectgarbage("count")

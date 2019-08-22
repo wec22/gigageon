@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="slime" color="#0055ff">
+  <property name="Height" type="int" default="16"/>
+  <property name="Width" type="int" default="16"/>
+  <property name="health" type="float" default="0"/>
+ </objecttype>
+ <objecttype name="wall" color="#000000"/>
+ <objecttype name="spawn" color="#ff0000"/>
+ <objecttype name="doorway" color="#55ffff">
+  <property name="sourceID" type="int" default="0"/>
+  <property name="sourceMap" type="string" default=""/>
+  <property name="targetID" type="int" default="0"/>
+  <property name="targetMap" type="string"/>
+ </objecttype>
+ <objecttype name="bountyHunter" color="#aa007f"/>
+ <objecttype name="bossPosition" color="#f000b4">
+  <property name="ID" type="int" default="0"/>
+ </objecttype>
+</objecttypes>

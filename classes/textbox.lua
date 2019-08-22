@@ -2,11 +2,16 @@ local class = require("lib.middleclass")
 
 local animation = require("classes.animation")
 
+local zinput = require("lib.zinput")
+local det = require("lib.detectors")
+
 local textbox = class("textbox")
 
 
 local arrow = love.graphics.newImage("assets/art/textarrow.png")
 local textarrow = animation(arrow, 16, 16, 0.1, 1, 2)
+
+textbox:include(zinput)
 
 textarrow:setSpeed(0.3)
 
@@ -14,6 +19,9 @@ function textbox:initialize(cooldown, text)
     self.text = text
     self.cooldown = 20
     self.index = 1
+
+	self:newbutton("interact", det.button.key("e"))
+	self.inputs.interact:addDetector(det.button.gamepad("b", 1))
 end
 
 function textbox:resetIndex()
@@ -36,7 +44,7 @@ function textbox:update(dt)
 end
 
 function textbox:draw()
-    if(self.text[self.index]) then
+    if self.text[self.index] then
         local textboxlocationy = love.graphics.getHeight() - 100
         love.graphics.setColor(0, 0, 0, 255*.7)
         love.graphics.rectangle("fill", 0, textboxlocationy, love.graphics.getWidth(), 100)
@@ -46,8 +54,8 @@ function textbox:draw()
         love.graphics.print(self.text[self.index], 10, textboxlocationy)
         textarrow:draw(love.graphics.getWidth()-32, textboxlocationy+75)
 
-        if(love.keyboard.isDown("e")) then
-            if(self.cooldown==0) then
+        if self.inputs.interact() then
+            if self.cooldown==0 then
                 self.index = self.index + 1
                 self.cooldown = 20
                 self.cooldown=15

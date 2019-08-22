@@ -1,4 +1,5 @@
 --[[
+-- * is this class even necessary *
 -- represents an object as used in tiled
 -- members
     - id            - the id given by tiled

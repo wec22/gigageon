@@ -16,12 +16,13 @@ local collisionblock = require("classes.collisionBlock")
 local entity = class("entity")
 
 
-function entity:initialize(x, y, drawOrder, h, w)
+function entity:initialize(x, y, w, h, drawOrder)
     self.x = x or 0
     self.y = y or 0
-    self.drawOrder = drawOrder or 1
-    self.w = w
-    self.h = h
+	self.w = w
+	self.h = h
+	self.drawOrder = drawOrder or 1
+
 
 
     --self.hitbox = collisionblock(self.x,self.y,self.w,self.h)

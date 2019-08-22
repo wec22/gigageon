@@ -19,23 +19,22 @@ walkleft:setSpeed(0.35)
 walkright:setSpeed(0.35)
 
 
-function slime:TakingDamage()
-    if(self.cooldown==0) then
-        self.health = self.health - 1
+function slime:takeDamage(damage)
+    if self.cooldown == 0 then
+        self.health = self.health - damage
         self.hit=5
     end
     self.cooldown = 10
 end
 
 function slime:initialize(x,y)
-    enemy.initialize(self, x,y,1,10,14, 3)
+    enemy.initialize(self, x,y,14,10,1, 3)
 
     self.speed = 10
     self.hit = 0
 
 	self.cooldown = 0
 
-    world:add(self, self.x, self.y, self.w, self.h)
     drawOrder:register(self)
 end
 
@@ -74,15 +73,20 @@ function slime:update(dt)
 
         if dx ~= 0 or dy ~= 0 then
           local cols
-          self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+          self.x, self.y, cols, cols_len = getWorld():move(self, self.x + dx, self.y + dy)
           for _,v in ipairs(cols) do
 
           end
         end
     end
+
     if self.health == 0 then
+		mainPlayer.energyMax = mainPlayer.energyMax + 1
+		mainPlayer.energyBar = mainPlayer.energyMax
+		mainPlayer.gained = 1
+		mainPlayer.notification = 20
         self.health = self.health - 1
-        world:remove(self)
+        getWorld():remove(self)
 		drawOrder:remove(self)
     end
   end
