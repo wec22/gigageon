@@ -38,7 +38,7 @@ function love.load()
     pixelate.pixel_size = 50
 
 	--music = love.audio.newSource("assets/audio/Game1.wav")
-	music = love.audio.newSource("assets/audio/Game1.wav")
+	music = love.audio.newSource("assets/audio/Game1.wav", "stream")
 	music:setLooping(true)
 	music:play()
 
